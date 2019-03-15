@@ -63,4 +63,17 @@ public class SoftwareCompany {
 	public static void setSoftwareCompany(SoftwareCompany softwareCompany) {
 		SoftwareCompany.softwareCompany = softwareCompany;
 	}
+	public void insertClient(Client C1) {
+		clients.add(C1);
+	}
+	public void insertContract(Contract CNT1) {
+		contracts.add(CNT1);
+	}
+	public void insertDesigner(Designer DSN1) {
+		designers.add(DSN1);
+	}
+	public void insertProject(Project PRJ1) {
+		projects.add(PRJ1);
+		
+	}
 }

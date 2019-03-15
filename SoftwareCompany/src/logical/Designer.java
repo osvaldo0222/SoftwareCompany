@@ -8,10 +8,10 @@ public class Designer {
 	protected String gender;
 	protected int age;
 	protected float salary;
-	protected String project_name;
+	protected String project;
 	protected String calification;
 	
-	public Designer(String id, String name, String last_name, String address, String gender, int age, float salary, String project_name, String calification) {
+	public Designer(String id, String name, String last_name, String address, String gender, int age, float salary, String project, String calification) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -20,7 +20,7 @@ public class Designer {
 		this.gender = gender;
 		this.age = age;
 		this.salary = salary;
-		this.project_name = project_name;
+		this.project = project;
 		this.calification = calification;
 	}
 
@@ -80,12 +80,12 @@ public class Designer {
 		this.salary = salary;
 	}
 
-	public String getProject_name() {
-		return project_name;
+	public String getProject() {
+		return project;
 	}
 
-	public void setProject_name(String project_name) {
-		this.project_name = project_name;
+	public void setProject(String project) {
+		this.project = project;
 	}
 
 	public String getCalification() {

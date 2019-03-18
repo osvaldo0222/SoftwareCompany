@@ -1,6 +1,6 @@
 package logical;
 
-public class Boss extends Designer {
+public class Boss extends Worker {
 	private int cant_workers;
 
 	public Boss(String id, String name, String last_name, String address, String gender, int age, float salary, String project, String calification, int cant_workers) {

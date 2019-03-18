@@ -5,13 +5,13 @@ import java.util.ArrayList;
 public class Project {
 	private String id;
 	private String name;
-	private ArrayList<Designer> designers;
+	private ArrayList<Worker> workers;
 	
 	public Project(String id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.designers = new ArrayList<>();
+		this.workers = new ArrayList<>();
 	}
 
 	public String getId() {
@@ -30,11 +30,11 @@ public class Project {
 		this.name = name;
 	}
 
-	public ArrayList<Designer> getDesigners() {
-		return designers;
+	public ArrayList<Worker> getDesigners() {
+		return workers;
 	}
 
-	public void setDesigners(ArrayList<Designer> designers) {
-		this.designers = designers;
+	public void setDesigners(ArrayList<Worker> workers) {
+		this.workers = workers;
 	}
 }

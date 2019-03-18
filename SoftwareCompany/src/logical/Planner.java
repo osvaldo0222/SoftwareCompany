@@ -1,6 +1,6 @@
 package logical;
 
-public class Planner extends Designer {
+public class Planner extends Worker {
 	private int cant_days;
 
 	public Planner(String id, String name, String last_name, String address, String gender, int age, float salary, String project, String calification, int cant_days) {

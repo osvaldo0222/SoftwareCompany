@@ -3,7 +3,7 @@ package logical;
 import java.util.ArrayList;
 
 public class SoftwareCompany {
-	private ArrayList<Designer> designers;
+	private ArrayList<Worker> workers;
 	private ArrayList<Project> projects;
 	private ArrayList<Client> clients;
 	private ArrayList<Contract> contracts;
@@ -11,7 +11,7 @@ public class SoftwareCompany {
 	
 	private SoftwareCompany() {
 		super();
-		this.designers = new ArrayList<>();
+		this.workers = new ArrayList<>();
 		this.projects = new ArrayList<>();
 		this.clients = new ArrayList<>();
 		this.contracts = new ArrayList<>();
@@ -24,12 +24,12 @@ public class SoftwareCompany {
 		return softwareCompany;
 	}
 
-	public ArrayList<Designer> getDesigners() {
-		return designers;
+	public ArrayList<Worker> getDesigners() {
+		return workers;
 	}
 
-	public void setDesigners(ArrayList<Designer> designers) {
-		this.designers = designers;
+	public void setDesigners(ArrayList<Worker> workers) {
+		this.workers = workers;
 	}
 
 	public ArrayList<Project> getProjects() {
@@ -63,17 +63,20 @@ public class SoftwareCompany {
 	public static void setSoftwareCompany(SoftwareCompany softwareCompany) {
 		SoftwareCompany.softwareCompany = softwareCompany;
 	}
+	
 	public void insertClient(Client C1) {
 		clients.add(C1);
 	}
+	
 	public void insertContract(Contract CNT1) {
 		contracts.add(CNT1);
 	}
-	public void insertDesigner(Designer DSN1) {
-		designers.add(DSN1);
+	
+	public void insertDesigner(Worker worker) {
+		workers.add(worker);
 	}
+	
 	public void insertProject(Project PRJ1) {
 		projects.add(PRJ1);
-		
 	}
 }

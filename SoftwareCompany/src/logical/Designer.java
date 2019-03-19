@@ -3,16 +3,16 @@ package logical;
 public class Designer extends Worker {
 	private String master;
 
-	public Designer(String id, String name, String last_name, String address, String gender, int age, float salary, String project, String calification, String especialidad) {
+	public Designer(String id, String name, String last_name, String address, String gender, int age, float salary, String project, String calification, String master) {
 		super(id, name, last_name, address, gender, age, salary, project, calification);
 		this.master = master;
 	}
 
-	public String getEspecialidad() {
+	public String getMaster() {
 		return master;
 	}
 
-	public void setEspecialidad(String especialidad) {
+	public void setMaster(String master) {
 		this.master = master;
 	}
 }

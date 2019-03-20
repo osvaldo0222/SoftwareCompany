@@ -7,13 +7,15 @@ public class Project {
 	private String name;
 	private ArrayList<Worker> workers;
 	private String type;
+	private String language;
 
-	public Project(String id, String name, ArrayList<Worker> workers, String type) {
+	public Project(String id, String name, ArrayList<Worker> workers, String type, String language) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.workers = workers;
 		this.type = type;
+		this.language = language;
 	}
 
 	public ArrayList<Worker> getWorkers() {
@@ -54,5 +56,13 @@ public class Project {
 
 	public void setDesigners(ArrayList<Worker> workers) {
 		this.workers = workers;
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 }

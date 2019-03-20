@@ -8,14 +8,16 @@ public class Contract {
 	private Date dueDate;
 	private String idClient;
 	private String name_project;
+	private float price;
 	
-	public Contract(String id, Date dateBegin, Date dueDate, String idClient, String name_project) {
+	public Contract(String id, Date dateBegin, Date dueDate, String idClient, String name_project, float price) {
 		super();
 		this.id = id;
 		this.dateBegin = dateBegin;
 		this.dueDate = dueDate;
 		this.idClient = idClient;
 		this.name_project = name_project;
+		this.price = price;
 	}
 
 	public String getId() {
@@ -56,5 +58,13 @@ public class Contract {
 
 	public void setName_project(String name_project) {
 		this.name_project = name_project;
+	}
+
+	public float getPrice() {
+		return price;
+	}
+
+	public void setPrice(float price) {
+		this.price = price;
 	}
 }

@@ -1,5 +1,7 @@
 package logical;
 
+import java.util.ArrayList;
+
 public abstract class Worker {
 	protected String id;
 	protected String name;
@@ -8,10 +10,10 @@ public abstract class Worker {
 	protected String gender;
 	protected int age;
 	protected float salary;
-	protected String project;
+	protected ArrayList<String> project;
 	protected String calification;
 	
-	public Worker(String id, String name, String last_name, String address, String gender, int age, float salary, String project, String calification) {
+	public Worker(String id, String name, String last_name, String address, String gender, int age, float salary, String calification) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -20,7 +22,7 @@ public abstract class Worker {
 		this.gender = gender;
 		this.age = age;
 		this.salary = salary;
-		this.project = project;
+		this.project = new ArrayList<>();
 		this.calification = calification;
 	}
 
@@ -80,19 +82,23 @@ public abstract class Worker {
 		this.salary = salary;
 	}
 
-	public String getProject() {
-		return project;
-	}
-
-	public void setProject(String project) {
-		this.project = project;
-	}
-
 	public String getCalification() {
 		return calification;
 	}
 
 	public void setCalification(String calification) {
 		this.calification = calification;
+	}
+
+	public ArrayList<String> getProject() {
+		return project;
+	}
+
+	public void setProject(ArrayList<String> project) {
+		this.project = project;
+	}
+	
+	public void insertProject(String nameProject) {
+		this.project.add(nameProject);
 	}
 }

@@ -10,8 +10,8 @@ public abstract class Worker {
 	protected String gender;
 	protected int age;
 	protected float salary;
-	protected ArrayList<String> project;
-	protected String calification;
+	protected ArrayList<String> projects;
+	//protected String calification;
 	
 	public Worker(String id, String name, String last_name, String address, String gender, int age, float salary, String calification) {
 		super();
@@ -22,8 +22,8 @@ public abstract class Worker {
 		this.gender = gender;
 		this.age = age;
 		this.salary = salary;
-		this.project = new ArrayList<>();
-		this.calification = calification;
+		this.projects = new ArrayList<>();
+		//this.calification = calification;
 	}
 
 	public String getId() {
@@ -82,23 +82,23 @@ public abstract class Worker {
 		this.salary = salary;
 	}
 
-	public String getCalification() {
+	/*public String getCalification() {
 		return calification;
 	}
 
 	public void setCalification(String calification) {
 		this.calification = calification;
+	}*/
+
+	public ArrayList<String> getProjects() {
+		return projects;
 	}
 
-	public ArrayList<String> getProject() {
-		return project;
-	}
-
-	public void setProject(ArrayList<String> project) {
-		this.project = project;
+	public void setProjects(ArrayList<String> projects) {
+		this.projects = projects;
 	}
 	
 	public void insertProject(String nameProject) {
-		this.project.add(nameProject);
+		this.projects.add(nameProject);
 	}
 }

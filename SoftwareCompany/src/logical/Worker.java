@@ -9,9 +9,8 @@ public abstract class Worker {
 	protected String address;
 	protected String gender;
 	protected int age;
-	protected float salary;
+	protected float salary_per_hour;
 	protected ArrayList<String> projects;
-	//protected String calification;
 	
 	public Worker(String id, String name, String last_name, String address, String gender, int age, float salary, String calification) {
 		super();
@@ -21,9 +20,8 @@ public abstract class Worker {
 		this.address = address;
 		this.gender = gender;
 		this.age = age;
-		this.salary = salary;
+		this.salary_per_hour = salary;
 		this.projects = new ArrayList<>();
-		//this.calification = calification;
 	}
 
 	public String getId() {
@@ -75,20 +73,12 @@ public abstract class Worker {
 	}
 
 	public float getSalary() {
-		return salary;
+		return salary_per_hour;
 	}
 
 	public void setSalary(float salary) {
-		this.salary = salary;
+		this.salary_per_hour = salary;
 	}
-
-	/*public String getCalification() {
-		return calification;
-	}
-
-	public void setCalification(String calification) {
-		this.calification = calification;
-	}*/
 
 	public ArrayList<String> getProjects() {
 		return projects;

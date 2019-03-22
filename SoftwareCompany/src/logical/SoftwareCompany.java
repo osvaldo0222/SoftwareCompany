@@ -79,4 +79,46 @@ public class SoftwareCompany {
 	public void insertProject(Project PRJ1) {
 		projects.add(PRJ1);
 	}
+	
+	public String calification(String id) {
+		String calification = "";
+		int total = 0;
+		int good = 0;
+		Worker aux = workerById(id);
+		if (aux != null) {
+			for (Contract contract : contracts) {
+				for (Worker contraWorker : contract.getProject().getWorkers()) {
+					if (contraWorker.equals(aux)) {
+						total++;
+						if (!contract.getDueDate().before(contract.getFinalDate())) {
+							good++;
+						}
+					}
+				}
+			}
+		}
+		
+		if (total > 0) {
+			float percentage = (float) good/total;
+			if (percentage >= 1) {
+				calification = "Excelente";
+			} else if (percentage < 1 && percentage >= 0.8) {
+				calification = "Bueno";
+			} else {
+				calification = "Deficiente";
+			}
+		}
+		return calification;
+	}
+
+	private Worker workerById(String id) {
+		Worker aux = null;
+		for (Worker worker : workers) {
+			if (worker.getId().equalsIgnoreCase(id)) {
+				aux = worker;
+				break;
+			}
+		}
+		return aux;
+	}
 }

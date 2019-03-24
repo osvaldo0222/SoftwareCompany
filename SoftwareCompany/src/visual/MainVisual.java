@@ -68,10 +68,8 @@ public class MainVisual {
 		mntmNuevoProyecto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ProjectRegistration dialog = new ProjectRegistration();
-				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			    int height = screenSize.height;
-			    int width = screenSize.width;
-			   dialog.setSize(width/2, height/2);
+				
+			   dialog.setSize(640, 480);
 			   dialog.setLocationRelativeTo(null);
 				
 				dialog.setVisible(true);

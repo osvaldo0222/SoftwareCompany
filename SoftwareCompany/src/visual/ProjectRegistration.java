@@ -46,6 +46,7 @@ public class ProjectRegistration extends JDialog {
 	 * Create the dialog.
 	 */
 	public ProjectRegistration() {
+		setFont(new Font("SansSerif", Font.PLAIN, 16));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ProjectRegistration.class.getResource("/Imgs/newProject.png")));
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setTitle("Nuevo Proyecto");
@@ -56,6 +57,7 @@ public class ProjectRegistration extends JDialog {
 		FirstPanel.setLayout(null);
 		
 		JPanel InformacionGeneralPanel = new JPanel();
+		InformacionGeneralPanel.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		InformacionGeneralPanel.setBorder(new TitledBorder(null, "Informaci\u00F3n General", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		InformacionGeneralPanel.setBounds(10, 29, 601, 203);
 		FirstPanel.add(InformacionGeneralPanel);

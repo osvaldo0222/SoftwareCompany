@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class Programmer extends Worker {
 	private ArrayList<String> programingLanguages;
 
-	public Programmer(String id, String name, String last_name, String address, String gender, int age, float salary, String calification) {
-		super(id, name, last_name, address, gender, age, salary, calification);
+	public Programmer(String code, String id, String name, String last_name, String address, String gender, int age, String phone, float salary) {
+		super(code, id, name, last_name, address, gender, age, phone, salary);
 		this.programingLanguages = new ArrayList<>();
 	}
 

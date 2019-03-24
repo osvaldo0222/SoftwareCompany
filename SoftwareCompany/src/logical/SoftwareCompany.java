@@ -65,7 +65,7 @@ public class SoftwareCompany {
 		contracts.add(CNT1);
 	}
 	
-	public void insertDesigner(Worker worker) {
+	public void insertWorker(Worker worker) {
 		workers.add(worker);
 	}
 	
@@ -104,7 +104,7 @@ public class SoftwareCompany {
 		return calification;
 	}
 
-	private Worker workerById(String id) {
+	public Worker workerById(String id) {
 		Worker aux = null;
 		for (Worker worker : workers) {
 			if (worker.getId().equalsIgnoreCase(id)) {

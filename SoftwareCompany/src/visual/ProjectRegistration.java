@@ -78,34 +78,12 @@ public class ProjectRegistration extends JDialog {
 		JComboBox comboBoxTipoWorkers = new JComboBox();
 		comboBoxTipoWorkers.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		
-		JPanel panel = new JPanel();
-		panel.setLayout(null);
-		panel.setBounds(30, 11, 163, 33);
-		FirstPanel.add(panel);
-		
-		JLabel lblInformacinGeneral = new JLabel("Informaci\u00F3n General");
-		lblInformacinGeneral.setFont(new Font("SansSerif", Font.ITALIC, 14));
-		lblInformacinGeneral.setBounds(10, 0, 143, 26);
-		panel.add(lblInformacinGeneral);
-		
-		JPanel Force1Panel = new JPanel();
-		Force1Panel.setBounds(30, 207, 112, 33);
-		FirstPanel.add(Force1Panel);
-		Force1Panel.setLayout(null);
-		
-		JLabel lblTrabajadores = new JLabel("Trabajadores");
-		lblTrabajadores.setBounds(10, 0, 98, 26);
-		Force1Panel.add(lblTrabajadores);
-		lblTrabajadores.setFont(new Font("SansSerif", Font.ITALIC, 14));
-		
 		JPanel InformacionGeneralPanel = new JPanel();
-
 		InformacionGeneralPanel.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
-		InformacionGeneralPanel.setBounds(10, 29, 601, 153);
-
+		//InformacionGeneralPanel.setBounds(10, 11, 601, 221);
 		InformacionGeneralPanel.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		InformacionGeneralPanel.setBorder(new TitledBorder(null, "Informaci\u00F3n General", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		InformacionGeneralPanel.setBounds(10, 29, 601, 203);
+		InformacionGeneralPanel.setBounds(10, 11, 601, 170);
 
 		FirstPanel.add(InformacionGeneralPanel);
 		InformacionGeneralPanel.setLayout(null);
@@ -204,7 +182,7 @@ public class ProjectRegistration extends JDialog {
 		
 		JPanel TrabajadoresPanel = new JPanel();
 		TrabajadoresPanel.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
-		TrabajadoresPanel.setBounds(10, 223, 601, 203);
+		TrabajadoresPanel.setBounds(10, 204, 601, 203);
 		FirstPanel.add(TrabajadoresPanel);
 		TrabajadoresPanel.setLayout(null);
 		

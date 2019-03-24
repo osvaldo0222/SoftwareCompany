@@ -35,14 +35,16 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.CompoundBorder;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import javax.swing.JList;
 
 public class ProjectRegistration extends JDialog {
 
 	private final JPanel FirstPanel = new JPanel();
 	private JTextField txtCodigoProyecto;
 	private JTextField txtNombreProyecto;
-	private JTable WorkersTable;
-	private JTable SelectedWorkersTable;
+	Validation VD=new Validation();
 
 	/**
 	 * Launch the application.
@@ -72,21 +74,44 @@ public class ProjectRegistration extends JDialog {
 		FirstPanel.setLayout(null);
 		
 		JComboBox comboBoxTipoProyecto = new JComboBox();
+		
 		comboBoxTipoProyecto.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		JComboBox comboBoxLenguaje = new JComboBox();
+		
 		comboBoxLenguaje.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		JComboBox comboBoxTipoWorkers = new JComboBox();
+		
 		comboBoxTipoWorkers.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		
+		JPanel panel_1 = new JPanel();
+		panel_1.setLayout(null);
+		panel_1.setBounds(20, 204, 113, 32);
+		FirstPanel.add(panel_1);
+		
+		JLabel lblTrabajadores = new JLabel("Trabajadores");
+		lblTrabajadores.setBounds(14, 11, 108, 14);
+		panel_1.add(lblTrabajadores);
+		lblTrabajadores.setFont(new Font("SansSerif", Font.ITALIC, 14));
+		
+		JLabel lblNewLabel = new JLabel("Informaci\u00F3n General");
+		lblNewLabel.setBounds(34, 11, 141, 19);
+		FirstPanel.add(lblNewLabel);
+		lblNewLabel.setFont(new Font("SansSerif", Font.ITALIC, 14));
+		
 		JPanel InformacionGeneralPanel = new JPanel();
-		InformacionGeneralPanel.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
+		InformacionGeneralPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		//InformacionGeneralPanel.setBounds(10, 11, 601, 221);
 		InformacionGeneralPanel.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		InformacionGeneralPanel.setBorder(new TitledBorder(null, "Informaci\u00F3n General", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		InformacionGeneralPanel.setBounds(10, 11, 601, 170);
+		//InformacionGeneralPanel.setBorder(new TitledBorder(null, "Informaci\u00F3n General", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		InformacionGeneralPanel.setBounds(10, 26, 601, 170);
 
 		FirstPanel.add(InformacionGeneralPanel);
 		InformacionGeneralPanel.setLayout(null);
+		
+		JPanel panel = new JPanel();
+		panel.setBounds(10, -16, 159, 27);
+		InformacionGeneralPanel.add(panel);
+		panel.setLayout(null);
 		
 		JLabel lblCodigo = new JLabel("Codigo:");
 		lblCodigo.setFont(new Font("SansSerif", Font.PLAIN, 14));
@@ -101,7 +126,7 @@ public class ProjectRegistration extends JDialog {
 		{
 			JLabel lblLenguaje = new JLabel("Lenguaje:");
 			lblLenguaje.setFont(new Font("SansSerif", Font.PLAIN, 14));
-			lblLenguaje.setBounds(298, 104, 82, 26);
+			lblLenguaje.setBounds(310, 104, 72, 26);
 			InformacionGeneralPanel.add(lblLenguaje);
 		}
 		{
@@ -112,9 +137,11 @@ public class ProjectRegistration extends JDialog {
 		}
 		
 		txtCodigoProyecto = new JTextField();
-		txtCodigoProyecto.addMouseListener(new MouseAdapter() {
+		txtCodigoProyecto.setEditable(false);
+		
+		txtCodigoProyecto.addFocusListener(new FocusAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void focusGained(FocusEvent e) {
 				txtCodigoProyecto.setBackground(Color.YELLOW);
 				txtNombreProyecto.setBackground(Color.WHITE);
 				comboBoxLenguaje.setBackground(Color.WHITE);
@@ -131,14 +158,15 @@ public class ProjectRegistration extends JDialog {
 		
 		
 		
-		txtCodigoProyecto.setBounds(115, 24, 170, 26);
+		
+		txtCodigoProyecto.setBounds(115, 24, 185, 26);
 		InformacionGeneralPanel.add(txtCodigoProyecto);
 		txtCodigoProyecto.setColumns(10);
 		
 		
-		comboBoxTipoProyecto.addMouseListener(new MouseAdapter() {
+		comboBoxTipoProyecto.addFocusListener(new FocusAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void focusGained(FocusEvent e) {
 				txtCodigoProyecto.setBackground(Color.WHITE);
 				txtNombreProyecto.setBackground(Color.WHITE);
 				comboBoxLenguaje.setBackground(Color.WHITE);
@@ -146,14 +174,22 @@ public class ProjectRegistration extends JDialog {
 				comboBoxTipoWorkers.setBackground(Color.WHITE);
 			}
 		});
+		
+		
 		comboBoxTipoProyecto.setModel(new DefaultComboBoxModel(new String[] {"<Selecciona un tipo de App>", "Mobile", "Web", "Desktop"}));
-		comboBoxTipoProyecto.setBounds(115, 106, 170, 26);
+		comboBoxTipoProyecto.setBounds(115, 106, 185, 26);
 		InformacionGeneralPanel.add(comboBoxTipoProyecto);
 		
 		txtNombreProyecto = new JTextField();
-		txtNombreProyecto.addMouseListener(new MouseAdapter() {
+		txtNombreProyecto.addKeyListener(new KeyAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void keyTyped(KeyEvent e) {
+					VD.justLetters(e);
+			}
+		});
+		txtNombreProyecto.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
 				txtCodigoProyecto.setBackground(Color.WHITE);
 				txtNombreProyecto.setBackground(Color.YELLOW);
 				comboBoxLenguaje.setBackground(Color.WHITE);
@@ -161,14 +197,15 @@ public class ProjectRegistration extends JDialog {
 				comboBoxTipoWorkers.setBackground(Color.WHITE);
 			}
 		});
+		
 		txtNombreProyecto.setBounds(115, 65, 447, 26);
 		InformacionGeneralPanel.add(txtNombreProyecto);
 		txtNombreProyecto.setColumns(10);
 		
 		
-		comboBoxLenguaje.addMouseListener(new MouseAdapter() {
+		comboBoxLenguaje.addFocusListener(new FocusAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void focusGained(FocusEvent e) {
 				txtCodigoProyecto.setBackground(Color.WHITE);
 				txtNombreProyecto.setBackground(Color.WHITE);
 				comboBoxLenguaje.setBackground(Color.YELLOW);
@@ -176,13 +213,14 @@ public class ProjectRegistration extends JDialog {
 				comboBoxTipoWorkers.setBackground(Color.WHITE);
 			}
 		});
+		
 		comboBoxLenguaje.setModel(new DefaultComboBoxModel(new String[] {"<Selecciona un lenguaje>", "PHP", "Python", "Java", "RubyOnRails", "Swift", "C#", "VisualBasic", "Delphi", "C", "C++"}));
 		comboBoxLenguaje.setBounds(392, 106, 170, 26);
 		InformacionGeneralPanel.add(comboBoxLenguaje);
 		
 		JPanel TrabajadoresPanel = new JPanel();
 		TrabajadoresPanel.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
-		TrabajadoresPanel.setBounds(10, 204, 601, 203);
+		TrabajadoresPanel.setBounds(10, 223, 601, 203);
 		FirstPanel.add(TrabajadoresPanel);
 		TrabajadoresPanel.setLayout(null);
 		
@@ -192,9 +230,10 @@ public class ProjectRegistration extends JDialog {
 		TrabajadoresPanel.add(lblBuscarPor);
 		
 		
-		comboBoxTipoWorkers.addMouseListener(new MouseAdapter() {
+		
+		comboBoxTipoWorkers.addFocusListener(new FocusAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void focusGained(FocusEvent e) {
 				txtCodigoProyecto.setBackground(Color.WHITE);
 				txtNombreProyecto.setBackground(Color.WHITE);
 				comboBoxLenguaje.setBackground(Color.WHITE);
@@ -202,45 +241,32 @@ public class ProjectRegistration extends JDialog {
 				comboBoxTipoWorkers.setBackground(Color.YELLOW);
 			}
 		});
+		
 		comboBoxTipoWorkers.setModel(new DefaultComboBoxModel(new String[] {"<Selecciona>", "Dise\u00F1ador", "Jefe", "Planeador", "Programador"}));
 		comboBoxTipoWorkers.setBounds(118, 27, 163, 26);
 		TrabajadoresPanel.add(comboBoxTipoWorkers);
-		
-		JPanel panelForTable = new JPanel();
-		panelForTable.setBounds(10, 64, 271, 128);
-		TrabajadoresPanel.add(panelForTable);
-		panelForTable.setLayout(new BorderLayout(0, 0));
-		
-		JScrollPane scrollPane = new JScrollPane();
-		panelForTable.add(scrollPane, BorderLayout.CENTER);
-		
-		WorkersTable = new JTable();
-		scrollPane.setViewportView(WorkersTable);
-		
-		JPanel SelectedWorkersPanel = new JPanel();
-		SelectedWorkersPanel.setBounds(317, 64, 274, 128);
-		TrabajadoresPanel.add(SelectedWorkersPanel);
-		SelectedWorkersPanel.setLayout(new BorderLayout(0, 0));
-		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		SelectedWorkersPanel.add(scrollPane_1, BorderLayout.CENTER);
-		
-		SelectedWorkersTable = new JTable();
-		scrollPane_1.setViewportView(SelectedWorkersTable);
 		
 		JLabel lblSeleccionado = new JLabel("Seleccionados:");
 		lblSeleccionado.setFont(new Font("SansSerif", Font.PLAIN, 14));
 		lblSeleccionado.setBounds(317, 27, 132, 26);
 		TrabajadoresPanel.add(lblSeleccionado);
+		
+		JList list = new JList();
+		list.setBounds(19, 64, 271, 128);
+		TrabajadoresPanel.add(list);
+		
+		JList list_1 = new JList();
+		list_1.setBounds(309, 64, 271, 128);
+		TrabajadoresPanel.add(list_1);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("OK");
+				JButton okButton = new JButton("Siguiente");
 				okButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
-				okButton.setIcon(new ImageIcon(ProjectRegistration.class.getResource("/Imgs/ok.png")));
+				okButton.setIcon(new ImageIcon(ProjectRegistration.class.getResource("/Imgs/next.png")));
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
@@ -248,7 +274,7 @@ public class ProjectRegistration extends JDialog {
 			{
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
-				cancelButton.setIcon(new ImageIcon(ProjectRegistration.class.getResource("/Imgs/cancel.png")));
+				cancelButton.setIcon(new ImageIcon(ProjectRegistration.class.getResource("/Imgs/exit.png")));
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}

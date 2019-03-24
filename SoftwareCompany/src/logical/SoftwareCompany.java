@@ -8,6 +8,7 @@ public class SoftwareCompany {
 	private ArrayList<Client> clients;
 	private ArrayList<Contract> contracts;
 	private static SoftwareCompany softwareCompany = null;
+	public static int codWorkers = 0;
 	
 	private SoftwareCompany() {
 		super();
@@ -23,15 +24,7 @@ public class SoftwareCompany {
 		}
 		return softwareCompany;
 	}
-
-	public ArrayList<Worker> getDesigners() {
-		return workers;
-	}
-
-	public void setDesigners(ArrayList<Worker> workers) {
-		this.workers = workers;
-	}
-
+	
 	public ArrayList<Project> getProjects() {
 		return projects;
 	}
@@ -120,5 +113,21 @@ public class SoftwareCompany {
 			}
 		}
 		return aux;
+	}
+
+	public ArrayList<Worker> getWorkers() {
+		return workers;
+	}
+
+	public void setWorkers(ArrayList<Worker> workers) {
+		this.workers = workers;
+	}
+
+	public static int getCodWorkers() {
+		return codWorkers;
+	}
+
+	public static void setCodWorkers(int codWorkers) {
+		SoftwareCompany.codWorkers = codWorkers;
 	}
 }

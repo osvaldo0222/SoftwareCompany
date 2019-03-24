@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.SwingConstants;
@@ -20,6 +21,10 @@ import java.awt.CardLayout;
 import javax.swing.JRadioButton;
 import java.awt.Font;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import logical.SoftwareCompany;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
@@ -37,6 +42,9 @@ import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
 
 public class WorkerRegistration extends JDialog {
 
@@ -188,6 +196,12 @@ public class WorkerRegistration extends JDialog {
 			panel_1.setLayout(null);
 			
 			JLabel lblImage = new JLabel("<Imagen>");
+			lblImage.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					
+				}
+			});
 			lblImage.setHorizontalAlignment(SwingConstants.CENTER);
 			lblImage.setFont(new Font("SansSerif", Font.PLAIN, 14));
 			lblImage.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -200,8 +214,10 @@ public class WorkerRegistration extends JDialog {
 			panel_1.add(lblNewLabel_1);
 			
 			txtCodigo = new JTextField();
+			txtCodigo.setHorizontalAlignment(SwingConstants.RIGHT);
 			txtCodigo.setEditable(false);
 			txtCodigo.setBounds(202, 21, 118, 20);
+			txtCodigo.setText("TRA-" + (SoftwareCompany.codWorkers + 1));
 			panel_1.add(txtCodigo);
 			txtCodigo.setColumns(10);
 			
@@ -411,6 +427,11 @@ public class WorkerRegistration extends JDialog {
 			}
 			{
 				JButton cancelButton = new JButton("Salir");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						dispose();
+					}
+				});
 				cancelButton.setIcon(new ImageIcon(WorkerRegistration.class.getResource("/Imgs/exit.png")));
 				cancelButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
 				cancelButton.setActionCommand("Cancel");

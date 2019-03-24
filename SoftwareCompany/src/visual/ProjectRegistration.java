@@ -20,6 +20,8 @@ import javax.swing.UIManager;
 import java.awt.Color;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ProjectRegistration extends JDialog {
 
@@ -85,6 +87,11 @@ public class ProjectRegistration extends JDialog {
 		}
 		
 		txtCodigoProyecto = new JTextField();
+		txtCodigoProyecto.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
 		txtCodigoProyecto.setBounds(118, 31, 170, 26);
 		InformacionGeneralPanel.add(txtCodigoProyecto);
 		txtCodigoProyecto.setColumns(10);

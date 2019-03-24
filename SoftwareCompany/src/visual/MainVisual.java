@@ -69,7 +69,7 @@ public class MainVisual {
 			public void actionPerformed(ActionEvent e) {
 				ProjectRegistration dialog = new ProjectRegistration();
 				
-			   dialog.setSize(640, 480);
+			   dialog.setSize(640, 530);
 			   dialog.setLocationRelativeTo(null);
 				
 				dialog.setVisible(true);

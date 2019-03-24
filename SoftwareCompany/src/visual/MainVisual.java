@@ -4,10 +4,14 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.ImageIcon;
 
 public class MainVisual {
 
@@ -60,6 +64,19 @@ public class MainVisual {
 		menuBar.add(mnProyectos);
 		
 		JMenuItem mntmNuevoProyecto = new JMenuItem("Nuevo Proyecto");
+		mntmNuevoProyecto.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/newProject30.png")));
+		mntmNuevoProyecto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ProjectRegistration dialog = new ProjectRegistration();
+				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			    int height = screenSize.height;
+			    int width = screenSize.width;
+			   dialog.setSize(width/2, height/2);
+			   dialog.setLocationRelativeTo(null);
+				
+				dialog.setVisible(true);
+			}
+		});
 		mnProyectos.add(mntmNuevoProyecto);
 	}
 

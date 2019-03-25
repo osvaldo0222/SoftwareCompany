@@ -76,6 +76,19 @@ public class MainVisual {
 			}
 		});
 		mnProyectos.add(mntmNuevoProyecto);
+		
+		JMenu mnTrabajadores = new JMenu("Trabajadores");
+		menuBar.add(mnTrabajadores);
+		
+		JMenuItem mntmRegistrar = new JMenuItem("Nuevo Trabajador");
+		mntmRegistrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				WorkerRegistration registration = new WorkerRegistration();
+				registration.setModal(true);
+				registration.setVisible(true);
+			}
+		});
+		mnTrabajadores.add(mntmRegistrar);
 	}
 
 }

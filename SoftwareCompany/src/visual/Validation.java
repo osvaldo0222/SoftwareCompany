@@ -1,6 +1,13 @@
 package visual;
 
+import java.awt.Color;
 import java.awt.event.KeyEvent;
+
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.text.NumberFormatter;
 
 public class Validation {
 	private Character character;
@@ -28,6 +35,28 @@ public class Validation {
 			e.consume();
 		} else if (point) {
 			e.consume();
+		}
+	}
+	
+	public void setFocusBackground(Object object, boolean focus) { //focus = true (GainedFocus), focus = false (LostFocus)
+		if (object instanceof JTextField) {
+			if (focus) {
+				((JTextField) object).setBackground(Color.yellow);
+			} else {
+				((JTextField) object).setBackground(Color.white);
+			}
+		} else if (object instanceof JComboBox) {
+			if (focus) {
+				((JComboBox) object).setBackground(Color.yellow);
+			} else {
+				((JComboBox) object).setBackground(Color.white);
+			}
+		} else if (object instanceof JSpinner) {
+			if (focus) {
+				((JSpinner) object).setBackground(Color.yellow);
+			} else {
+				((JSpinner) object).setBackground(Color.white);
+			}
 		}
 	}
 }

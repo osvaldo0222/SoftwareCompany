@@ -66,6 +66,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.Color;
 import java.awt.SystemColor;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class WorkerRegistration extends JDialog {
 
@@ -234,18 +236,17 @@ public class WorkerRegistration extends JDialog {
 					}
 					JFileChooser file = new JFileChooser();
 			        file.setCurrentDirectory(new File(System.getProperty("user.home")));
-			        //filter the files
-			        FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Images", "jpg","gif","png");
+			        FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Images", "jpeg", "jpg", "gif", "png");
 			        file.addChoosableFileFilter(filter);
+			        file.setFileFilter(filter);
 			        int result = file.showSaveDialog(null);
-			        //if the user click on save in Jfilechooser
 			        if(result == JFileChooser.APPROVE_OPTION){
 			        	File selectedFile = file.getSelectedFile();
 			            String path = selectedFile.getAbsolutePath();
 			            lblImage.setIcon(ResizeImage(path));
-			        } else if(result == JFileChooser.CANCEL_OPTION){
+			        } /*else if(result == JFileChooser.CANCEL_OPTION){
 			        	System.out.println("No File Select");
-			        }	 
+			        }*/
 				}
 			});
 			lblImage.setHorizontalAlignment(SwingConstants.CENTER);
@@ -282,6 +283,16 @@ public class WorkerRegistration extends JDialog {
 				formatCedula = new MaskFormatter("###-#######-#");
 				formatCedula.setPlaceholderCharacter('_');
 				txtCedula = new JFormattedTextField(formatCedula);
+				txtCedula.addFocusListener(new FocusAdapter() {
+					@Override
+					public void focusGained(FocusEvent arg0) {
+						validation.setFocusBackground(txtCedula, true);
+					}
+					@Override
+					public void focusLost(FocusEvent e) {
+						validation.setFocusBackground(txtCedula, false);
+					}
+				});
 				txtCedula.addKeyListener(new KeyAdapter() {
 					@Override
 					public void keyReleased(KeyEvent e) {
@@ -317,6 +328,16 @@ public class WorkerRegistration extends JDialog {
 			txtCedula.setColumns(10);
 			
 			txtNombres = new JTextField();
+			txtNombres.addFocusListener(new FocusAdapter() {
+				@Override
+				public void focusGained(FocusEvent e) {
+					validation.setFocusBackground(txtNombres, true);
+				}
+				@Override
+				public void focusLost(FocusEvent e) {
+					validation.setFocusBackground(txtNombres, false);
+				}
+			});
 			txtNombres.setEditable(false);
 			txtNombres.addKeyListener(new KeyAdapter() {
 				@Override
@@ -341,6 +362,16 @@ public class WorkerRegistration extends JDialog {
 			}
 			{
 				txtApellidos = new JTextField();
+				txtApellidos.addFocusListener(new FocusAdapter() {
+					@Override
+					public void focusGained(FocusEvent e) {
+						validation.setFocusBackground(txtApellidos, true);
+					}
+					@Override
+					public void focusLost(FocusEvent e) {
+						validation.setFocusBackground(txtApellidos, false);
+					}
+				});
 				txtApellidos.setEditable(false);
 				txtApellidos.addKeyListener(new KeyAdapter() {
 					@Override
@@ -354,6 +385,16 @@ public class WorkerRegistration extends JDialog {
 			}
 			{
 				txtDireccion = new JTextField();
+				txtDireccion.addFocusListener(new FocusAdapter() {
+					@Override
+					public void focusGained(FocusEvent e) {
+						validation.setFocusBackground(txtDireccion, true);
+					}
+					@Override
+					public void focusLost(FocusEvent e) {
+						validation.setFocusBackground(txtDireccion, false);
+					}
+				});
 				txtDireccion.addKeyListener(new KeyAdapter() {
 					@Override
 					public void keyTyped(KeyEvent e) {
@@ -373,7 +414,16 @@ public class WorkerRegistration extends JDialog {
 			}
 			
 			cbxGenero = new JComboBox();
-			cbxGenero.setEditable(true);
+			cbxGenero.addFocusListener(new FocusAdapter() {
+				@Override
+				public void focusGained(FocusEvent e) {
+					validation.setFocusBackground(cbxGenero, true);
+				}
+				@Override
+				public void focusLost(FocusEvent e) {
+					validation.setFocusBackground(cbxGenero, false);
+				}
+			});
 			cbxGenero.setEnabled(false);
 			cbxGenero.setModel(new DefaultComboBoxModel(new String[] {"<Seleccione>", "Masculino", "Femenino"}));
 			cbxGenero.setBounds(85, 252, 107, 20);
@@ -385,6 +435,17 @@ public class WorkerRegistration extends JDialog {
 			panel_1.add(lblEdad);
 			
 			spnEdad = new JSpinner();
+			spnEdad.setBackground(Color.WHITE);
+			spnEdad.addFocusListener(new FocusAdapter() {
+				@Override
+				public void focusGained(FocusEvent e) {
+					validation.setFocusBackground(spnEdad, true);
+				}
+				@Override
+				public void focusLost(FocusEvent e) {
+					validation.setFocusBackground(spnEdad, false);
+				}
+			});
 			spnEdad.setEnabled(false);
 			spnEdad.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
 			JFormattedTextField formato1 = ((JSpinner.DefaultEditor) spnEdad.getEditor()).getTextField();
@@ -404,6 +465,16 @@ public class WorkerRegistration extends JDialog {
 					formatTelefono = new MaskFormatter("(###) ###-####");
 					formatTelefono.setPlaceholderCharacter('_');
 					txtTelefono = new JFormattedTextField(formatTelefono);
+					txtTelefono.addFocusListener(new FocusAdapter() {
+						@Override
+						public void focusGained(FocusEvent e) {
+							validation.setFocusBackground(txtTelefono, true);
+						}
+						@Override
+						public void focusLost(FocusEvent e) {
+							validation.setFocusBackground(txtTelefono, false);
+						}
+					});
 					txtTelefono.setEditable(false);
 				} catch (Exception e) {
 					txtTelefono = new JTextField();
@@ -420,6 +491,16 @@ public class WorkerRegistration extends JDialog {
 			}
 			{
 				txtSalario = new JTextField();
+				txtSalario.addFocusListener(new FocusAdapter() {
+					@Override
+					public void focusGained(FocusEvent e) {
+						validation.setFocusBackground(txtSalario, true);
+					}
+					@Override
+					public void focusLost(FocusEvent e) {
+						validation.setFocusBackground(txtSalario, false);
+					}
+				});
 				txtSalario.addKeyListener(new KeyAdapter() {
 					@Override
 					public void keyTyped(KeyEvent e) {
@@ -463,6 +544,8 @@ public class WorkerRegistration extends JDialog {
 		panelJefe.add(lblAsociados);
 		
 		txtAsociados = new JTextField();
+		txtAsociados.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtAsociados.setText("0");
 		txtAsociados.setEditable(false);
 		txtAsociados.setBounds(10, 41, 157, 20);
 		panelJefe.add(txtAsociados);
@@ -474,6 +557,16 @@ public class WorkerRegistration extends JDialog {
 		panelJefe.add(lblAosDeExperencia);
 		
 		spnExperencia = new JSpinner();
+		spnExperencia.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				validation.setFocusBackground(spnExperencia, true);
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				validation.setFocusBackground(spnExperencia, false);
+			}
+		});
 		spnExperencia.setEnabled(false);
 		spnExperencia.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		JFormattedTextField formato = ((JSpinner.DefaultEditor) spnExperencia.getEditor()).getTextField();
@@ -545,6 +638,16 @@ public class WorkerRegistration extends JDialog {
 		panelDisenador.add(lblEspecialidad);
 		
 		cbxEspecialidad = new JComboBox();
+		cbxEspecialidad.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				validation.setFocusBackground(cbxEspecialidad, true);
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				validation.setFocusBackground(cbxEspecialidad, false);
+			}
+		});
 		cbxEspecialidad.setModel(new DefaultComboBoxModel(new String[] {"<Seleccione>", "App. Escritorio", "Paginas WEB", "Movil"}));
 		cbxEspecialidad.setBounds(10, 41, 157, 20);
 		cbxEspecialidad.setEnabled(false);
@@ -559,6 +662,16 @@ public class WorkerRegistration extends JDialog {
 		panelPlanificador.add(lblFrecuenciaDePlanificacin);
 		
 		spnFrecPlani = new JSpinner();
+		spnFrecPlani.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				validation.setFocusBackground(spnFrecPlani, true);
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				validation.setFocusBackground(spnFrecPlani, false);
+			}
+		});
 		spnFrecPlani.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
 		spnFrecPlani.setBounds(10, 41, 157, 20);
 		JFormattedTextField formato1 = ((JSpinner.DefaultEditor) spnExperencia.getEditor()).getTextField();

@@ -14,14 +14,14 @@ public class Validation {
 		}
 	}
 	
-	public void toUpperCase(KeyEvent e) {
+	public void toUpperCase(KeyEvent e) { 
 		character = e.getKeyChar();
 		if (Character.isLowerCase(character)) {
 			e.setKeyChar(Character.toUpperCase(character));
 		}
 	}
 
-	public void justFloatNumbers(KeyEvent e, String number) {
+	public void justFloatNumbers(KeyEvent e, String number) { //Para campos que van para flotantes
 		character = e.getKeyChar();
 		boolean point = character == 46 && number.contains(".");
 		if (!(character >= '0' && character <= '9') && !(character == 46)) {

@@ -67,6 +67,7 @@ public class SoftwareCompany {
 	
 	public void insertWorker(Worker worker) {
 		workers.add(worker);
+		codWorkers++;
 	}
 	
 	public void insertProject(Project PRJ1) {

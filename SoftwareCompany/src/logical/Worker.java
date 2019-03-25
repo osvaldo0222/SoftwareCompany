@@ -30,6 +30,7 @@ public abstract class Worker {
 		this.phone = phone;
 		this.salary_per_hour = salary;
 		this.projects = new ArrayList<>();
+		this.picture = new ImageIcon();
 	}
 
 	public String getId() {

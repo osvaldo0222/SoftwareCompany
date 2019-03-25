@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 public abstract class Worker {
 	protected String code;
 	protected String id;
-	private ImageIcon picture;
+	protected ImageIcon picture;
 	protected String name;
 	protected String last_name;
 	protected String address;

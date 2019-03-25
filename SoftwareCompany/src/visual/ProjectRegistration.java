@@ -12,6 +12,13 @@ import java.awt.Dialog.ModalityType;
 import java.awt.Dialog.ModalExclusionType;
 import java.awt.Toolkit;
 import javax.swing.border.TitledBorder;
+
+import logical.Boss;
+import logical.Designer;
+import logical.Planner;
+import logical.Programmer;
+import logical.SoftwareCompany;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -30,6 +37,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputMethodListener;
 import java.awt.event.InputMethodEvent;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.SoftBevelBorder;
@@ -81,7 +89,9 @@ public class ProjectRegistration extends JDialog {
 		comboBoxLenguaje.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		JComboBox comboBoxTipoWorkers = new JComboBox();
 		
+		
 		comboBoxTipoWorkers.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		DefaultListModel DLM=new DefaultListModel<>();
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setLayout(null);
@@ -241,6 +251,52 @@ public class ProjectRegistration extends JDialog {
 				comboBoxTipoWorkers.setBackground(Color.YELLOW);
 			}
 		});
+		comboBoxTipoWorkers.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (comboBoxTipoWorkers.getSelectedItem().toString().equalsIgnoreCase("Programador")) {
+					for (int i = 0; i < SoftwareCompany.getInstance().getWorkers().size(); i++) {
+						if (SoftwareCompany.getInstance().getWorkers().get(i) instanceof Programmer) {
+							DLM.addElement(SoftwareCompany.getInstance().getWorkers().get(i).getName()+""+SoftwareCompany.getInstance().getWorkers().get(i).getName());
+							
+						}
+						
+						
+					}
+					
+				}else if (comboBoxTipoWorkers.getSelectedItem().toString().equalsIgnoreCase("Jefe")) {
+					for (int i = 0; i < SoftwareCompany.getInstance().getWorkers().size(); i++) {
+						if (SoftwareCompany.getInstance().getWorkers().get(i) instanceof Boss) {
+							DLM.addElement(SoftwareCompany.getInstance().getWorkers().get(i).getName()+""+SoftwareCompany.getInstance().getWorkers().get(i).getName());
+							
+						}
+						
+						
+					}
+					
+					
+				}else if(comboBoxTipoWorkers.getSelectedItem().toString().equalsIgnoreCase("Disenador")) {
+					for (int i = 0; i < SoftwareCompany.getInstance().getWorkers().size(); i++) {
+						if (SoftwareCompany.getInstance().getWorkers().get(i) instanceof Designer) {
+							DLM.addElement(SoftwareCompany.getInstance().getWorkers().get(i).getName()+""+SoftwareCompany.getInstance().getWorkers().get(i).getName());
+							
+						}
+						
+						
+					}
+					
+				}else if (comboBoxTipoWorkers.getSelectedItem().toString().equalsIgnoreCase("Planeador")) {
+					for (int i = 0; i < SoftwareCompany.getInstance().getWorkers().size(); i++) {
+						if (SoftwareCompany.getInstance().getWorkers().get(i) instanceof Planner) {
+							DLM.addElement(SoftwareCompany.getInstance().getWorkers().get(i).getName()+""+SoftwareCompany.getInstance().getWorkers().get(i).getName());
+							
+						}
+						
+						
+					}
+				}
+				
+			}
+		});
 		
 		comboBoxTipoWorkers.setModel(new DefaultComboBoxModel(new String[] {"<Selecciona>", "Dise\u00F1ador", "Jefe", "Planeador", "Programador"}));
 		comboBoxTipoWorkers.setBounds(118, 27, 163, 26);
@@ -251,13 +307,13 @@ public class ProjectRegistration extends JDialog {
 		lblSeleccionado.setBounds(317, 27, 132, 26);
 		TrabajadoresPanel.add(lblSeleccionado);
 		
-		JList list = new JList();
-		list.setBounds(19, 64, 271, 128);
-		TrabajadoresPanel.add(list);
+		JList listWorkers = new JList();
+		listWorkers.setBounds(19, 64, 271, 128);
+		TrabajadoresPanel.add(listWorkers);
 		
-		JList list_1 = new JList();
-		list_1.setBounds(309, 64, 271, 128);
-		TrabajadoresPanel.add(list_1);
+		JList listWorkersSelected = new JList();
+		listWorkersSelected.setBounds(309, 64, 271, 128);
+		TrabajadoresPanel.add(listWorkersSelected);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));

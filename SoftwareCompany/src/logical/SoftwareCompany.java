@@ -9,6 +9,7 @@ public class SoftwareCompany {
 	private ArrayList<Contract> contracts;
 	private static SoftwareCompany softwareCompany = null;
 	public static int codWorkers = 0;
+	public static int codProjects=0;
 	
 	private SoftwareCompany() {
 		super();
@@ -130,5 +131,13 @@ public class SoftwareCompany {
 
 	public static void setCodWorkers(int codWorkers) {
 		SoftwareCompany.codWorkers = codWorkers;
+	}
+
+	public static int getCodProjects() {
+		return codProjects;
+	}
+
+	public static void setCodProjects(int codProjects) {
+		SoftwareCompany.codProjects = codProjects;
 	}
 }

@@ -82,6 +82,7 @@ public class MainVisual {
 		menuBar.add(mnTrabajadores);
 		
 		JMenuItem mntmRegistrar = new JMenuItem("Nuevo Trabajador");
+		mntmRegistrar.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/worker30px.png")));
 		mntmRegistrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				WorkerRegistration registration = new WorkerRegistration();
@@ -90,6 +91,13 @@ public class MainVisual {
 			}
 		});
 		mnTrabajadores.add(mntmRegistrar);
+		
+		JMenu mnClientes = new JMenu("Clientes");
+		menuBar.add(mnClientes);
+		
+		JMenuItem mntmNuevoCliente = new JMenuItem("Nuevo Cliente");
+		mntmNuevoCliente.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/user30px.png")));
+		mnClientes.add(mntmNuevoCliente);
 	}
 
 }

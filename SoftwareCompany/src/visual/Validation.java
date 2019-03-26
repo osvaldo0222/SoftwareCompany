@@ -38,6 +38,13 @@ public class Validation {
 		}
 	}
 	
+	public void justMailCharacter(KeyEvent e) {
+		character = e.getKeyChar();
+		if (!Character.isLetter(character) && !(character >= '0' && character <= '9') && !(character == 95) && !(character == 64) && !(character == 45) && !(character == 46)) {
+			e.consume();
+		}
+	}
+	
 	public void setFocusBackground(Object object, boolean focus) { //focus = true (GainedFocus), focus = false (LostFocus)
 		if (object instanceof JTextField) {
 			if (focus) {

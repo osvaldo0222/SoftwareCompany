@@ -9,7 +9,8 @@ public class SoftwareCompany {
 	private ArrayList<Contract> contracts;
 	private static SoftwareCompany softwareCompany = null;
 	public static int codWorkers = 0;
-	public static int codProjects=0;
+	public static int codProjects = 0;
+	public static int codClients = 0;
 	
 	private SoftwareCompany() {
 		super();

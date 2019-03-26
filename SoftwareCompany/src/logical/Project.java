@@ -11,13 +11,15 @@ public class Project {
 	private String state; // Nuevo/En Proceso/Prorrogado/Atrasado/Terminado
 	private boolean ended;
 
-	public Project(String id, String name, ArrayList<Worker> workers, String type, String language) {
+	public Project(String id, String name, ArrayList<Worker> workers, String type, String language, String state) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.workers = workers;
 		this.type = type;
 		this.language = language;
+		this.state = state;
+		this.ended = false;
 	}
 
 	public ArrayList<Worker> getWorkers() {
@@ -66,5 +68,21 @@ public class Project {
 
 	public void setLanguage(String language) {
 		this.language = language;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public boolean isEnded() {
+		return ended;
+	}
+
+	public void setEnded(boolean ended) {
+		this.ended = ended;
 	}
 }

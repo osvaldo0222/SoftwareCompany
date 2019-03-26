@@ -123,7 +123,7 @@ public class WorkerRegistration extends JDialog {
 		{
 			JPanel panel = new JPanel();
 			panel.setBounds(5, 5, 160, 518);
-			panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+			panel.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
 			contentPanel.add(panel);
 			{
 				btnProgramador = new JButton("Programador");
@@ -239,6 +239,7 @@ public class WorkerRegistration extends JDialog {
 			        FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Images", "jpeg", "jpg", "gif", "png");
 			        file.addChoosableFileFilter(filter);
 			        file.setFileFilter(filter);
+			        file.setAcceptAllFileFilterUsed(false);
 			        int result = file.showSaveDialog(null);
 			        if(result == JFileChooser.APPROVE_OPTION){
 			        	File selectedFile = file.getSelectedFile();
@@ -251,7 +252,7 @@ public class WorkerRegistration extends JDialog {
 			});
 			lblImage.setHorizontalAlignment(SwingConstants.CENTER);
 			lblImage.setFont(new Font("SansSerif", Font.PLAIN, 14));
-			lblImage.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+			lblImage.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
 			lblImage.setBounds(10, 21, 118, 97);
 			panel_1.add(lblImage);
 			
@@ -282,47 +283,47 @@ public class WorkerRegistration extends JDialog {
 			try {
 				formatCedula = new MaskFormatter("###-#######-#");
 				formatCedula.setPlaceholderCharacter('_');
-				txtCedula = new JFormattedTextField(formatCedula);
-				txtCedula.addFocusListener(new FocusAdapter() {
-					@Override
-					public void focusGained(FocusEvent arg0) {
-						validation.setFocusBackground(txtCedula, true);
-					}
-					@Override
-					public void focusLost(FocusEvent e) {
-						validation.setFocusBackground(txtCedula, false);
-					}
-				});
-				txtCedula.addKeyListener(new KeyAdapter() {
-					@Override
-					public void keyReleased(KeyEvent e) {
-						if (!(e.getKeyChar() == 13 || (e.getKeyChar() >= 48 && e.getKeyChar()  <= 57))) {
-							return;
-						}
-						String cedula = txtCedula.getText();
-						if (!cedula.contains("_")) {
-							txtCedula.setEditable(false);
-							btnModificarCedula.setEnabled(true);
-							btnGuardar.setEnabled(true);
-							worker = SoftwareCompany.getInstance().workerById(cedula);
-							if (worker != null) {
-								completeInformation();
-								setTitle("Modificar Trabajador: " + worker.getId());
-								btnGuardar.setText("Modificar");
-								txtDireccion.requestFocus();
-								return;
-							} else {
-								clearCamps();
-								enableCamps();
-								txtNombres.requestFocus();
-								return;
-							}
-						}
-					}
-				});
+				txtCedula = new JFormattedTextField(formatCedula);				
 			} catch (Exception e) {
 				txtCedula = new JTextField();
 			}
+			txtCedula.addFocusListener(new FocusAdapter() {
+				@Override
+				public void focusGained(FocusEvent arg0) {
+					validation.setFocusBackground(txtCedula, true);
+				}
+				@Override
+				public void focusLost(FocusEvent e) {
+					validation.setFocusBackground(txtCedula, false);
+				}
+			});
+			txtCedula.addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyReleased(KeyEvent e) {
+					if (!(e.getKeyChar() == 13 || (e.getKeyChar() >= 48 && e.getKeyChar()  <= 57))) {
+						return;
+					}
+					String cedula = txtCedula.getText();
+					if (!cedula.contains("_")) {
+						txtCedula.setEditable(false);
+						btnModificarCedula.setEnabled(true);
+						btnGuardar.setEnabled(true);
+						worker = SoftwareCompany.getInstance().workerById(cedula);
+						if (worker != null) {
+							completeInformation();
+							setTitle("Modificar Trabajador: " + worker.getId());
+							btnGuardar.setText("Modificar");
+							txtDireccion.requestFocus();
+							return;
+						} else {
+							clearCamps();
+							enableCamps();
+							txtNombres.requestFocus();
+							return;
+						}
+					}
+				}
+			});
 			txtCedula.setBounds(202, 61, 118, 20);
 			panel_1.add(txtCedula);
 			txtCedula.setColumns(10);
@@ -465,20 +466,20 @@ public class WorkerRegistration extends JDialog {
 					formatTelefono = new MaskFormatter("(###) ###-####");
 					formatTelefono.setPlaceholderCharacter('_');
 					txtTelefono = new JFormattedTextField(formatTelefono);
-					txtTelefono.addFocusListener(new FocusAdapter() {
-						@Override
-						public void focusGained(FocusEvent e) {
-							validation.setFocusBackground(txtTelefono, true);
-						}
-						@Override
-						public void focusLost(FocusEvent e) {
-							validation.setFocusBackground(txtTelefono, false);
-						}
-					});
-					txtTelefono.setEditable(false);
 				} catch (Exception e) {
 					txtTelefono = new JTextField();
 				}
+				txtTelefono.addFocusListener(new FocusAdapter() {
+					@Override
+					public void focusGained(FocusEvent e) {
+						validation.setFocusBackground(txtTelefono, true);
+					}
+					@Override
+					public void focusLost(FocusEvent e) {
+						validation.setFocusBackground(txtTelefono, false);
+					}
+				});
+				txtTelefono.setEditable(false);
 				txtTelefono.setBounds(85, 293, 107, 20);
 				panel_1.add(txtTelefono);
 				txtTelefono.setColumns(10);
@@ -680,7 +681,7 @@ public class WorkerRegistration extends JDialog {
 		panelPlanificador.add(spnFrecPlani);
 		{
 			JPanel buttonPane = new JPanel();
-			buttonPane.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+			buttonPane.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
 			buttonPane.setLayout(new FlowLayout(FlowLayout.LEFT));
 			getContentPane().add(buttonPane, BorderLayout.NORTH);
 			{

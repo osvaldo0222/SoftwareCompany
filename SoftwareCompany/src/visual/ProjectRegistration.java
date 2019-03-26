@@ -47,6 +47,8 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.ListSelectionModel;
 
 public class ProjectRegistration extends JDialog {
 
@@ -55,10 +57,12 @@ public class ProjectRegistration extends JDialog {
 	private JTextField txtNombreProyecto;
 	Validation VD=new Validation();
 	private DefaultListModel DLM;
+	private DefaultListModel DLMWorkersSelected;
 	private JList listWorkers;
 	private JComboBox comboBoxTipoWorkers;
 	private JComboBox comboBoxLenguaje;
 	private JComboBox comboBoxTipoProyecto;
+	private JList listWorkersSelected ;
 
 	/**
 	 * Launch the application.
@@ -99,13 +103,23 @@ public class ProjectRegistration extends JDialog {
 		
 		comboBoxTipoWorkers.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		DLM=new DefaultListModel();
+		DLMWorkersSelected=new DefaultListModel();
+		
+	    listWorkersSelected = new JList();
+	    listWorkersSelected.addMouseListener(new MouseAdapter() {
+	    	@Override
+	    	public void mouseClicked(MouseEvent e) {
+	    		removeLanguaje();
+	    		
+	    	}
+	    });
 		
 		JPanel InformacionGeneralPanel = new JPanel();
 		InformacionGeneralPanel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 1, true), "Informaci\u00F3n General", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		//InformacionGeneralPanel.setBounds(10, 11, 601, 221);
 		InformacionGeneralPanel.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		//InformacionGeneralPanel.setBorder(new TitledBorder(null, "Informaci\u00F3n General", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		InformacionGeneralPanel.setBounds(10, 81, 572, 132);
+		InformacionGeneralPanel.setBounds(10, 11, 572, 132);
 
 		FirstPanel.add(InformacionGeneralPanel);
 		InformacionGeneralPanel.setLayout(null);
@@ -134,16 +148,9 @@ public class ProjectRegistration extends JDialog {
 		}
 		
 		txtCodigoProyecto = new JTextField();
+		txtCodigoProyecto.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtCodigoProyecto.setEditable(false);
-		txtCodigoProyecto.setText("TRA-" + (SoftwareCompany.codProjects + 1));
-		
-
-		
-		
-		
-		
-		
-		
+		txtCodigoProyecto.setText("PRO-" + (SoftwareCompany.codProjects + 1));
 		
 		
 		
@@ -218,13 +225,13 @@ public class ProjectRegistration extends JDialog {
 		
 		JPanel TrabajadoresPanel = new JPanel();
 		TrabajadoresPanel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 1, true), "Trabajadores", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		TrabajadoresPanel.setBounds(10, 224, 572, 157);
+		TrabajadoresPanel.setBounds(10, 154, 572, 201);
 		FirstPanel.add(TrabajadoresPanel);
 		TrabajadoresPanel.setLayout(null);
 		
-		JLabel lblBuscarPor = new JLabel("Buscar por:");
+		JLabel lblBuscarPor = new JLabel("Filtro:");
 		lblBuscarPor.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		lblBuscarPor.setBounds(10, 22, 96, 20);
+		lblBuscarPor.setBounds(27, 22, 71, 20);
 		TrabajadoresPanel.add(lblBuscarPor);
 		
 		
@@ -241,7 +248,7 @@ public class ProjectRegistration extends JDialog {
 		});
 		comboBoxTipoWorkers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Oyeeeeeee");
+				//System.out.println("Oyeeeeeee");
 				FuntioncomboTipoWorkers(comboBoxTipoWorkers, comboBoxLenguaje);
 				
 				
@@ -263,25 +270,31 @@ public class ProjectRegistration extends JDialog {
 		TrabajadoresPanel.add(lblSeleccionado);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(28, 53, 243, 82);
+		scrollPane.setBounds(28, 53, 243, 137);
 		TrabajadoresPanel.add(scrollPane);
 		
 		listWorkers = new JList();
+		listWorkers.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				addLanguaje();
+				
+				
+				
+			}
+		});
+		listWorkers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(listWorkers);
 		listWorkers.setModel(DLM);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(299, 53, 243, 82);
+		scrollPane_1.setBounds(299, 53, 243, 137);
 		TrabajadoresPanel.add(scrollPane_1);
 		
-		JList listWorkersSelected = new JList();
-		scrollPane_1.setViewportView(listWorkersSelected);
 		
-		JPanel panel = new JPanel();
-		panel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		panel.setBackground(Color.WHITE);
-		panel.setBounds(10, 11, 572, 59);
-		FirstPanel.add(panel);
+		listWorkersSelected.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		scrollPane_1.setViewportView(listWorkersSelected);
+		listWorkersSelected.setModel(DLMWorkersSelected);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
@@ -312,6 +325,22 @@ public class ProjectRegistration extends JDialog {
 		}
 	}
 	
+	private void addLanguaje() {
+		
+		DLMWorkersSelected.addElement(listWorkers.getSelectedValue());
+		DLM.remove(listWorkers.getSelectedIndex());
+	}
+private void removeLanguaje() {
+		
+		DLM.addElement(listWorkersSelected.getSelectedValue());
+		DLMWorkersSelected.remove(listWorkersSelected.getSelectedIndex());
+	}
+	
+	private boolean validateWorkerPanel() {
+		boolean validate=false;
+		
+		return validate;
+	}
 	private boolean validateData() {
 		boolean validate=false;
 		String getTxtFromTxtNombreProjecto=txtNombreProyecto.getText();
@@ -319,7 +348,7 @@ public class ProjectRegistration extends JDialog {
 		String getTxtFromComboBoxTipoPro=(String) comboBoxTipoProyecto.getSelectedItem();
 		System.out.println(getTxtFromComboBoxTipoPro);
 		String getTxtFromComboBoxLanguaje=comboBoxLenguaje.getSelectedItem().toString();
-		if (getTxtFromTxtNombreProjecto.equalsIgnoreCase("") && getTxtFromComboBoxTipoPro.equalsIgnoreCase("") && comboBoxTipoProyecto.getSelectedIndex()>0 && getTxtFromComboBoxLanguaje.equalsIgnoreCase("") && comboBoxLenguaje.getSelectedIndex()>0) {
+		if (!getTxtFromTxtCodContract.equalsIgnoreCase("") && getTxtFromTxtNombreProjecto.equalsIgnoreCase("") && getTxtFromComboBoxTipoPro.equalsIgnoreCase("") && comboBoxTipoProyecto.getSelectedIndex()>0 && getTxtFromComboBoxLanguaje.equalsIgnoreCase("") && comboBoxLenguaje.getSelectedIndex()>0) {
 			JOptionPane.showMessageDialog(null, "Rellena Todos los campos requeridos", "Registro Proyecto", JOptionPane.ERROR_MESSAGE);
 			
 		}

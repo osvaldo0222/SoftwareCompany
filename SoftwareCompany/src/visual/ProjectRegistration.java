@@ -179,7 +179,7 @@ public class ProjectRegistration extends JDialog {
 		txtNombreProyecto.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-					VD.justLetters(e);
+				VD.justLetters(e);
 			}
 		});
 		txtNombreProyecto.addFocusListener(new FocusAdapter() {
@@ -255,11 +255,6 @@ public class ProjectRegistration extends JDialog {
 			}
 		});
 		
-		
-		
-		
-		
-		
 		comboBoxTipoWorkers.setModel(new DefaultComboBoxModel(new String[] {"<Selecciona>", "Dise\u00F1ador", "Jefe", "Planeador", "Programador"}));
 		comboBoxTipoWorkers.setBounds(108, 23, 163, 20);
 		TrabajadoresPanel.add(comboBoxTipoWorkers);
@@ -277,10 +272,7 @@ public class ProjectRegistration extends JDialog {
 		listWorkers.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				addLanguaje();
-				
-				
-				
+				addLanguaje();	
 			}
 		});
 		listWorkers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -330,7 +322,7 @@ public class ProjectRegistration extends JDialog {
 		DLMWorkersSelected.addElement(listWorkers.getSelectedValue());
 		DLM.remove(listWorkers.getSelectedIndex());
 	}
-private void removeLanguaje() {
+	private void removeLanguaje() {
 		
 		DLM.addElement(listWorkersSelected.getSelectedValue());
 		DLMWorkersSelected.remove(listWorkersSelected.getSelectedIndex());
@@ -342,8 +334,8 @@ private void removeLanguaje() {
 		return validate;
 	}
 	private boolean validateData() {
-		boolean validate=false;
-		String getTxtFromTxtNombreProjecto=txtNombreProyecto.getText();
+		boolean validate = false;
+		String getTxtFromTxtNombreProjecto = txtNombreProyecto.getText();
 		String getTxtFromTxtCodContract=txtCodigoProyecto.getText();
 		String getTxtFromComboBoxTipoPro=(String) comboBoxTipoProyecto.getSelectedItem();
 		System.out.println(getTxtFromComboBoxTipoPro);

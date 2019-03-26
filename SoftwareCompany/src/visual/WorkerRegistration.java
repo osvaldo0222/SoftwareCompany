@@ -219,7 +219,7 @@ public class WorkerRegistration extends JDialog {
 		panel.setLayout(null);
 		{
 			JPanel panel_1 = new JPanel();
-			panel_1.setBorder(new TitledBorder(null, "Informaci\u00F3n General", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			panel_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Informaci\u00F3n General", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 			panel_1.setBounds(10, 11, 380, 325);
 			panel.add(panel_1);
 			panel_1.setLayout(null);

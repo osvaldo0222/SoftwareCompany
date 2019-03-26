@@ -8,6 +8,8 @@ public class Project {
 	private ArrayList<Worker> workers;
 	private String type;
 	private String language;
+	private String state; // Nuevo/En Proceso/Prorrogado/Atrasado/Terminado
+	private boolean ended;
 
 	public Project(String id, String name, ArrayList<Worker> workers, String type, String language) {
 		super();

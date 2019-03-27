@@ -10,6 +10,8 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.Toolkit;
+
+import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
@@ -17,9 +19,11 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.MaskFormatter;
 
+import logical.Client;
 import logical.SoftwareCompany;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.Font;
 import java.awt.Image;
@@ -52,24 +56,10 @@ public class ClientRegistration extends JDialog {
 	private JTextField txtFechaRegistro;
 	private JButton btnGuardar;
 	private JButton btnSalir;
+	private JButton btnEditCedula;
 	private JLabel lblImagen;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			ClientRegistration dialog = new ClientRegistration();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Create the dialog.
-	 */
+	private Client client;
+	
 	public ClientRegistration() {
 		setFont(new Font("SansSerif", Font.PLAIN, 14));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ClientRegistration.class.getResource("/Imgs/user.png")));
@@ -90,7 +80,7 @@ public class ClientRegistration extends JDialog {
 		
 		JLabel lblCdigo = new JLabel("C\u00F3digo:");
 		lblCdigo.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		lblCdigo.setBounds(138, 25, 57, 14);
+		lblCdigo.setBounds(138, 25, 57, 19);
 		panel.add(lblCdigo);
 		
 		JLabel lblNombres = new JLabel("Nombres:");
@@ -100,7 +90,7 @@ public class ClientRegistration extends JDialog {
 		
 		JLabel lblApellidos = new JLabel("Apellidos:");
 		lblApellidos.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		lblApellidos.setBounds(10, 181, 68, 14);
+		lblApellidos.setBounds(10, 181, 68, 19);
 		panel.add(lblApellidos);
 		
 		JLabel lblCedula = new JLabel("Cedula:");
@@ -144,6 +134,43 @@ public class ClientRegistration extends JDialog {
 		} catch (Exception e) {
 			txtCedula = new JTextField();
 		}
+		txtCedula.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (!(e.getKeyChar() == 13 || (e.getKeyChar() >= 48 && e.getKeyChar()  <= 57))) {
+					return;
+				}
+				String cedula = txtCedula.getText();
+				if (!cedula.contains("_")) {
+					txtCedula.setEditable(false);
+					stateOfCampos(true);
+					btnGuardar.setEnabled(true);
+					client = SoftwareCompany.getInstance().clientById(cedula);
+					if (client != null) {
+						if (client.getPicture() == null) {
+							lblImagen.setIcon(new ImageIcon(ClientRegistration.class.getResource("/com/sun/java/swing/plaf/windows/icons/UpFolder.gif")));
+							lblImagen.setText("<Imagen>");
+						} else {
+							lblImagen.setIcon(client.getPicture());
+						}
+						txtCodigo.setText(client.getCode());
+						txtTelefono.setText(client.getPhone());
+						txtNombres.setText(client.getName());
+						txtApellidos.setText(client.getLast_name());
+						txtDireccion.setText(client.getAddress());
+						txtCorreo.setText(client.getMail());
+						txtCantProyectos.setText(client.getCant_projects() + "");
+						txtFechaRegistro.setText((new SimpleDateFormat("yyyy/MM/dd")).format(client.getRegistration_date()));
+						btnGuardar.setText("Modificar");
+						setTitle("Modificar Cliente: " + cedula);
+						btnEditCedula.setEnabled(false);
+					} else {
+						btnEditCedula.setEnabled(true);
+					}
+				txtTelefono.requestFocus();
+				}
+			}
+		});
 		txtCedula.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -154,7 +181,7 @@ public class ClientRegistration extends JDialog {
 				validation.setFocusBackground(txtCedula, false);
 			}
 		});
-		txtCedula.setBounds(205, 63, 160, 20);
+		txtCedula.setBounds(205, 63, 101, 20);
 		panel.add(txtCedula);
 		txtCedula.setColumns(10);
 		
@@ -182,6 +209,12 @@ public class ClientRegistration extends JDialog {
 		txtTelefono.setColumns(10);
 		
 		txtDireccion = new JTextField();
+		txtDireccion.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				validation.toUpperCase(e);
+			}
+		});
 		txtDireccion.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -242,6 +275,7 @@ public class ClientRegistration extends JDialog {
 		txtApellidos.setColumns(10);
 		
 		lblImagen = new JLabel("<Imagen>");
+		lblImagen.setEnabled(false);
 		lblImagen.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -310,6 +344,21 @@ public class ClientRegistration extends JDialog {
 		txtFechaRegistro.setText((new SimpleDateFormat("yyyy/MM/dd")).format(new Date()));
 		panel.add(txtFechaRegistro);
 		txtFechaRegistro.setColumns(10);
+		
+		btnEditCedula = new JButton("");
+		btnEditCedula.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				txtCedula.setEditable(true);
+				btnEditCedula.setEnabled(false);
+				stateOfCampos(false);
+				btnGuardar.setEnabled(false);
+				txtCedula.requestFocus();
+			}
+		});
+		btnEditCedula.setEnabled(false);
+		btnEditCedula.setIcon(new ImageIcon(ClientRegistration.class.getResource("/Imgs/iconfinder_Modify_132685.png")));
+		btnEditCedula.setBounds(316, 62, 49, 23);
+		panel.add(btnEditCedula);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
@@ -317,6 +366,46 @@ public class ClientRegistration extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				btnGuardar = new JButton("Guardar");
+				btnGuardar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						if (checkCampos()) {
+							boolean registrado = false;
+							String codigo = txtCodigo.getText();
+							String cedula = txtCedula.getText();
+							String telefono = txtTelefono.getText();
+							String nombre = txtNombres.getText();
+							String apellidos = txtApellidos.getText();
+							String direccion = txtDireccion.getText();
+							String correo = txtCorreo.getText();
+							
+							if (client == null) {
+								client = new Client(codigo, cedula, nombre, apellidos, direccion, telefono, correo);
+								storePicture();
+								SoftwareCompany.getInstance().insertClient(client);
+								registrado = true;
+							} else {
+								client.setName(nombre);
+								client.setLast_name(apellidos);
+								client.setMail(correo);
+								client.setPhone(telefono);
+								client.setAddress(direccion);
+								storePicture();
+								registrado = true;
+							}
+							
+							if (registrado) {
+								JOptionPane.showMessageDialog(null, "Operacion Exitosa", "Clientes", JOptionPane.INFORMATION_MESSAGE);
+								clear();
+							}
+						}
+					}
+
+					private void storePicture() {
+						if (lblImagen.getIcon() != (new ImageIcon(ClientRegistration.class.getResource("/com/sun/java/swing/plaf/windows/icons/UpFolder.gif")))) {
+							client.setPicture((ImageIcon) lblImagen.getIcon());
+						}
+					}
+				});
 				btnGuardar.setIcon(new ImageIcon(ClientRegistration.class.getResource("/Imgs/save.png")));
 				btnGuardar.setActionCommand("OK");
 				buttonPane.add(btnGuardar);
@@ -343,4 +432,43 @@ public class ClientRegistration extends JDialog {
         ImageIcon image = new ImageIcon(newImg);
         return image;
     }
+	
+	private void stateOfCampos(boolean b) {
+		txtTelefono.setEditable(b);
+		txtNombres.setEditable(b);
+		txtApellidos.setEditable(b);
+		txtCorreo.setEditable(b);
+		txtDireccion.setEditable(b);
+		lblImagen.setEnabled(b);
+	}
+	
+	private boolean checkCampos() {
+		boolean validos = false;
+		if (!txtCedula.getText().contains("_") && !txtNombres.getText().equalsIgnoreCase("") && !txtApellidos.getText().equalsIgnoreCase("") && !txtTelefono.getText().contains("_") && !txtDireccion.getText().equalsIgnoreCase("")) {
+			validos = true;
+		} else {
+			JOptionPane.showMessageDialog(null, "Revise los campos", "Clientes", JOptionPane.INFORMATION_MESSAGE);
+		}
+		return validos;
+	}
+	
+	private void clear() {
+		txtCodigo.setText("CL-" + (SoftwareCompany.codClients + 1));
+		txtCedula.setText("");
+		txtTelefono.setText("");
+		txtNombres.setText("");
+		txtApellidos.setText("");
+		txtDireccion.setText("");
+		txtCorreo.setText("");
+		txtCantProyectos.setText("0");
+		txtFechaRegistro.setText((new SimpleDateFormat("yyyy/MM/dd")).format(new Date()));
+		lblImagen.setIcon(new ImageIcon(ClientRegistration.class.getResource("/com/sun/java/swing/plaf/windows/icons/UpFolder.gif")));
+		lblImagen.setText("<Imagen>");
+		stateOfCampos(false);
+		btnGuardar.setText("Guardar");
+		setTitle("Registrar Clientes");
+		btnEditCedula.setEnabled(false);
+		txtCedula.setEditable(true);
+		txtCedula.requestFocus();
+	}
 }

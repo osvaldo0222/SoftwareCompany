@@ -1,5 +1,7 @@
 package logical;
 
+import java.util.Date;
+
 import javax.swing.ImageIcon;
 
 public class Client {
@@ -12,6 +14,7 @@ public class Client {
 	private String phone;
 	private String mail;
 	private int cant_projects;
+	private Date registration_date;
 	
 	public Client(String code, String id, String name, String last_name, String address, String phone, String mail) {
 		super();
@@ -23,6 +26,7 @@ public class Client {
 		this.phone = phone;
 		this.mail = mail;
 		this.cant_projects = 0;
+		this.registration_date = new Date();
 	}
 
 	public String getId() {
@@ -95,5 +99,13 @@ public class Client {
 
 	public void setPicture(ImageIcon picture) {
 		this.picture = picture;
+	}
+
+	public Date getRegistration_date() {
+		return registration_date;
+	}
+
+	public void setRegistration_date(Date registration_date) {
+		this.registration_date = registration_date;
 	}
 }

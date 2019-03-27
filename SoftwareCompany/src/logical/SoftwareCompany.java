@@ -61,6 +61,7 @@ public class SoftwareCompany {
 	
 	public void insertClient(Client C1) {
 		clients.add(C1);
+		codClients++;
 	}
 	
 	public void insertContract(Contract CNT1) {
@@ -140,5 +141,16 @@ public class SoftwareCompany {
 
 	public static void setCodProjects(int codProjects) {
 		SoftwareCompany.codProjects = codProjects;
+	}
+
+	public Client clientById(String id) {
+		Client aux = null;
+		for (Client client : clients) {
+			if (client.getId().equalsIgnoreCase(id)) {
+				aux = client;
+				break;
+			}
+		}
+		return aux;
 	}
 }

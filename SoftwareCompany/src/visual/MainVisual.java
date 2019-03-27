@@ -96,6 +96,13 @@ public class MainVisual {
 		menuBar.add(mnClientes);
 		
 		JMenuItem mntmNuevoCliente = new JMenuItem("Nuevo Cliente");
+		mntmNuevoCliente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ClientRegistration registration = new ClientRegistration();
+				registration.setModal(true);
+				registration.setVisible(true);
+			}
+		});
 		mntmNuevoCliente.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/user30px.png")));
 		mnClientes.add(mntmNuevoCliente);
 	}

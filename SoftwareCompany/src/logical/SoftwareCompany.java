@@ -153,4 +153,16 @@ public class SoftwareCompany {
 		}
 		return aux;
 	}
+	public Worker searchWorkerByCode(String id) {
+		Worker auxWorker=null;
+		
+		for (int i = 0; i < workers.size(); i++) {
+			if (workers.get(i).equals(id)) {
+				auxWorker=workers.get(i);
+				break;
+			}
+		}
+		return auxWorker;
+		
+	}
 }

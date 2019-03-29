@@ -12,6 +12,17 @@ import javax.swing.text.NumberFormatter;
 public class Validation {
 	private Character character;
 	
+	public void justInt(KeyEvent e) {
+		char a=e.getKeyChar();
+		
+		if(a<'0'|| a>'9' ) {
+			
+			e.consume();
+			
+		}
+		
+	}
+	
 	public void justLetters(KeyEvent e) {
 		character = e.getKeyChar();
 		if (!Character.isLetter(character) && character != KeyEvent.VK_SPACE) {

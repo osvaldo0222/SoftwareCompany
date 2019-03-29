@@ -161,17 +161,15 @@ public class SoftwareCompany {
 		}
 		return aux;
 	}
-	public Worker searchWorkerByCode(String id) {
+	public Worker searchWorkerByCode(String code) {
 		Worker auxWorker=null;
-		
 		for (int i = 0; i < workers.size(); i++) {
-			if (workers.get(i).equals(id)) {
+			if (workers.get(i).getCode().equalsIgnoreCase(code)) {
 				auxWorker=workers.get(i);
 				break;
 			}
 		}
 		return auxWorker;
-		
 	}
 
 	public ArrayList<User> getUsers() {

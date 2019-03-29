@@ -407,14 +407,15 @@ public class ProjectRegistration extends JDialog {
 		listWorkers.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				if (DLM.size()==0) {
+					return;
+				}
 				if (comboBoxTipoWorkers.getSelectedItem().equals("Jefe")) {
 					addBoss();
 					
 				}else {
 					addLanguaje();
-				}
-				
-					
+				}	
 			}
 		});
 		listWorkers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

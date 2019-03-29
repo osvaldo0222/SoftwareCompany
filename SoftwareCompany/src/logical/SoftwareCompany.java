@@ -3,6 +3,7 @@ package logical;
 import java.util.ArrayList;
 
 public class SoftwareCompany {
+	private ArrayList<User> users;
 	private ArrayList<Worker> workers;
 	private ArrayList<Project> projects;
 	private ArrayList<Client> clients;
@@ -11,9 +12,11 @@ public class SoftwareCompany {
 	public static int codWorkers = 0;
 	public static int codProjects = 0;
 	public static int codClients = 0;
+	public static int codUsers = 0;
 	
 	private SoftwareCompany() {
 		super();
+		this.users = new ArrayList<>();
 		this.workers = new ArrayList<>();
 		this.projects = new ArrayList<>();
 		this.clients = new ArrayList<>();
@@ -75,6 +78,11 @@ public class SoftwareCompany {
 	
 	public void insertProject(Project PRJ1) {
 		projects.add(PRJ1);
+	}
+	
+	public void insertUser(User user) {
+		users.add(user);
+		codUsers++;
 	}
 	
 	public String calification(String id) {
@@ -164,5 +172,13 @@ public class SoftwareCompany {
 		}
 		return auxWorker;
 		
+	}
+
+	public ArrayList<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(ArrayList<User> users) {
+		this.users = users;
 	}
 }

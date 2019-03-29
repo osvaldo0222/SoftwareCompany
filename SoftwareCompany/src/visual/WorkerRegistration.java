@@ -68,6 +68,7 @@ import java.awt.Color;
 import java.awt.SystemColor;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.Label;
 
 public class WorkerRegistration extends JDialog {
 
@@ -108,6 +109,8 @@ public class WorkerRegistration extends JDialog {
 	private Worker worker;
 	private JLabel lblImage;
 	private short selectedType = 0;
+	private Label label;
+	private JTextField txtCorreo;
 
 	public WorkerRegistration() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(WorkerRegistration.class.getResource("/Imgs/Workers.png")));
@@ -318,7 +321,7 @@ public class WorkerRegistration extends JDialog {
 						} else {
 							clearCamps();
 							enableCamps();
-							txtNombres.requestFocus();
+							txtCorreo.requestFocus();
 							return;
 						}
 					}
@@ -529,6 +532,35 @@ public class WorkerRegistration extends JDialog {
 			btnModificarCedula.setIcon(new ImageIcon(WorkerRegistration.class.getResource("/Imgs/iconfinder_Modify_132685.png")));
 			btnModificarCedula.setBounds(326, 60, 44, 20);
 			panel_1.add(btnModificarCedula);
+			{
+				label = new Label("Correo:");
+				label.setFont(new Font("SansSerif", Font.PLAIN, 14));
+				label.setBounds(138, 96, 62, 22);
+				panel_1.add(label);
+			}
+			{
+				txtCorreo = new JTextField();
+				txtCorreo.addKeyListener(new KeyAdapter() {
+					@Override
+					public void keyTyped(KeyEvent e) {
+						validation.justMailCharacter(e);
+					}
+				});
+				txtCorreo.addFocusListener(new FocusAdapter() {
+					@Override
+					public void focusGained(FocusEvent e) {
+						validation.setFocusBackground(txtCorreo, true);
+					}
+					@Override
+					public void focusLost(FocusEvent e) {
+						validation.setFocusBackground(txtCorreo, false);
+					}
+				});
+				txtCorreo.setEditable(false);
+				txtCorreo.setBounds(202, 98, 168, 20);
+				panel_1.add(txtCorreo);
+				txtCorreo.setColumns(10);
+			}
 		}
 		
 		tabbedPaneTipos = new JTabbedPane(JTabbedPane.TOP);
@@ -739,7 +771,7 @@ public class WorkerRegistration extends JDialog {
 								break;
 							}
 							aux.setPicture((ImageIcon) lblImage.getIcon());
-							
+							aux.setMail(txtCorreo.getText());
 							if (worker == null) {
 								SoftwareCompany.getInstance().insertWorker(aux);
 							} else {
@@ -748,6 +780,7 @@ public class WorkerRegistration extends JDialog {
 								worker.setPhone(aux.getPhone());
 								worker.setAge(aux.getAge());
 								worker.setSalary(aux.getSalary());
+								worker.setMail(aux.getMail());
 								
 								if (aux instanceof Boss) {
 									((Boss) worker).setExperience_years(((Boss) aux).getExperience_years());
@@ -820,6 +853,8 @@ public class WorkerRegistration extends JDialog {
 			lblImage.setIcon(worker.getPicture());
 		}
 		lblImage.setEnabled(true);
+		txtCorreo.setText(worker.getMail());
+		txtCorreo.setEditable(true);
 		txtNombres.setText(worker.getName());
 		txtApellidos.setText(worker.getLast_name());
 		txtDireccion.setText(worker.getAddress());
@@ -861,6 +896,7 @@ public class WorkerRegistration extends JDialog {
 	
 	private void disableAllCamps(){
 		txtCodigo.setEditable(false);
+		txtCorreo.setEditable(false);
 		lblImage.setEnabled(false);
 		txtNombres.setEditable(false);
 		txtApellidos.setEditable(false);
@@ -886,6 +922,7 @@ public class WorkerRegistration extends JDialog {
 	
 	private void enableCamps() {
 		txtCodigo.setEditable(false);
+		txtCorreo.setEditable(true);
 		lblImage.setEnabled(true);
 		txtNombres.setEditable(true);
 		txtApellidos.setEditable(true);
@@ -907,6 +944,7 @@ public class WorkerRegistration extends JDialog {
 		txtCodigo.setText("TRA-" + (SoftwareCompany.codWorkers + 1));
 		lblImage.setIcon(new ImageIcon(WorkerRegistration.class.getResource("/com/sun/java/swing/plaf/windows/icons/UpFolder.gif")));
 		lblImage.setText("<Imagen>");
+		txtCorreo.setText("");
 		txtNombres.setText("");
 		txtApellidos.setText("");
 		txtDireccion.setText("");

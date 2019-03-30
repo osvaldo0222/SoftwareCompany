@@ -81,6 +81,9 @@ public class MainVisual extends JFrame {
 		JMenu mnArchivo = new JMenu("Archivo");
 		menuBar.add(mnArchivo);
 		
+		JMenuItem mntmCerrar = new JMenuItem("Cerrar");
+		mnArchivo.add(mntmCerrar);
+		
 		JMenu mnTrabajadores = new JMenu("Trabajadores");
 		menuBar.add(mnTrabajadores);
 		

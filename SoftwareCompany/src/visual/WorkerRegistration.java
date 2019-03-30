@@ -720,6 +720,7 @@ public class WorkerRegistration extends JDialog {
 				btnGuardar = new JButton("Guardar");
 				btnGuardar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
+						//System.out.println("osvaldo"+txtCedula.getText());
 						if (validateCamps()) {
 							String cod = txtCodigo.getText(), cedula = txtCedula.getText(), nombres = txtNombres.getText(), apellidos = txtApellidos.getText(), direccion = txtDireccion.getText(), genero = cbxGenero.getSelectedItem().toString(), telefono = txtTelefono.getText(); 
 							int edad = Integer.parseInt(spnEdad.getValue().toString());

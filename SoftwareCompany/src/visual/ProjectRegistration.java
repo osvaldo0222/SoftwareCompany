@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.Window.Type;
@@ -12,6 +13,7 @@ import java.awt.Dialog.ModalityType;
 import java.awt.Dialog.ModalExclusionType;
 import java.awt.Toolkit;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.MaskFormatter;
 
 import logical.Boss;
 import logical.Designer;
@@ -29,6 +31,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Calendar;
+
 import javax.swing.border.LineBorder;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -51,6 +55,8 @@ import javax.swing.SwingConstants;
 import javax.swing.ListSelectionModel;
 import javax.swing.JTabbedPane;
 import java.awt.Label;
+import com.toedter.calendar.JDateChooser;
+import javax.swing.JTextPane;
 
 public class ProjectRegistration extends JDialog {
 
@@ -74,6 +80,7 @@ public class ProjectRegistration extends JDialog {
 	private JPanel panelContractClient;
 	private JPanel panelTermsContract;
 	private JButton btnAtras;
+	public static int cont=0;
 
 	/**
 	 * Launch the application.
@@ -96,7 +103,7 @@ public class ProjectRegistration extends JDialog {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ProjectRegistration.class.getResource("/Imgs/newProject.png")));
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setTitle("Nuevo Proyecto");
-		setBounds(100, 100, 674, 631);
+		setBounds(100, 100, 1200, 747);
 		getContentPane().setLayout(new BorderLayout());
 		FirstPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(FirstPanel, BorderLayout.CENTER);
@@ -119,6 +126,45 @@ public class ProjectRegistration extends JDialog {
 		DLMWorkersSelected=new DefaultListModel();
 		
 	    listWorkersSelected = new JList();
+		panelTermsContract = new JPanel();
+		panelTermsContract.setBounds(10, 366, 572, 201);
+		FirstPanel.add(panelTermsContract);
+		panelTermsContract.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "T\u00E9rminos y Condiciones ", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelTermsContract.setLayout(null);
+		
+		Label label_5 = new Label("Fecha Inicio:");
+		label_5.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		label_5.setBounds(12, 29, 94, 20);
+		panelTermsContract.add(label_5);
+		
+		JDateChooser dateBegin = new JDateChooser();
+		dateBegin.setBounds(112, 29, 90, 20);
+		panelTermsContract.add(dateBegin);
+		
+		Label label_6 = new Label("Fecha Entrega:");
+		label_6.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		label_6.setBounds(208, 29, 112, 20);
+		panelTermsContract.add(label_6);
+		
+		JDateChooser dateEnd = new JDateChooser();
+		dateEnd.setBounds(326, 29, 90, 20);
+		panelTermsContract.add(dateEnd);
+		
+		JTextPane BigTxtContract = new JTextPane();
+		BigTxtContract.setEditable(false);
+		BigTxtContract.setBounds(10, 73, 552, 117);
+		//BigTxtContract.setText("Hola");
+		panelTermsContract.add(BigTxtContract);
+		
+		JButton btnGenerar = new JButton("Generar Contrato");
+		btnGenerar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				calcDays(dateBegin, dateEnd);
+			}
+		});
+		btnGenerar.setBounds(426, 29, 132, 20);
+		panelTermsContract.add(btnGenerar);
+		panelTermsContract.setVisible(false);
 	    
 		
 		JPanel InformacionGeneralPanel = new JPanel();
@@ -130,9 +176,6 @@ public class ProjectRegistration extends JDialog {
 
 		FirstPanel.add(InformacionGeneralPanel);
 		InformacionGeneralPanel.setLayout(null);
-		
-	    panelContractClient = new JPanel();
-	    panelContractClient.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "informaci\u00F3n Cliente", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 	    btnAtras = new JButton("Atras");
 	    btnAtras.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
@@ -142,101 +185,14 @@ public class ProjectRegistration extends JDialog {
 	    	}
 	    });
 	    btnAtras.setVisible(false);
-	    panelContractClient.setVisible(false);
-		panelContractClient.setBounds(0, 0, 572, 132);
-		InformacionGeneralPanel.add(panelContractClient);
-		panelContractClient.setLayout(null);
 		
-		Label label = new Label("Cliente: ");
-		label.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		label.setBounds(23, 15, 82, 20);
-		panelContractClient.add(label);
-		
-		txtQueryCodClient = new JTextField();
-		txtQueryCodClient.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				VD.justInt(e);
+		 MaskFormatter formatCedula = null;
+			try {
+				formatCedula = new MaskFormatter("###-#######-#");
+				formatCedula.setPlaceholderCharacter('_');
+			} catch (Exception e) {
+				txtQueryCodClient = new JTextField();
 			}
-		});
-		txtQueryCodClient.setHorizontalAlignment(SwingConstants.LEFT);
-		txtQueryCodClient.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		txtQueryCodClient.setBounds(115, 15, 185, 20);
-		panelContractClient.add(txtQueryCodClient);
-		txtQueryCodClient.setColumns(10);
-		
-		Label label_1 = new Label("Nombre:");
-		label_1.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		label_1.setBounds(23, 45, 82, 20);
-		panelContractClient.add(label_1);
-		
-		txtQueryNameClient = new JTextField();
-		txtQueryNameClient.setHorizontalAlignment(SwingConstants.LEFT);
-		txtQueryNameClient.setEditable(false);
-		txtQueryNameClient.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		txtQueryNameClient.setColumns(10);
-		txtQueryNameClient.setBounds(115, 45, 279, 20);
-		panelContractClient.add(txtQueryNameClient);
-		
-		Label label_2 = new Label("Direcci\u00F3n :");
-		label_2.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		label_2.setBounds(23, 75, 82, 20);
-		panelContractClient.add(label_2);
-		
-		txtQueryAddress = new JTextField();
-		txtQueryAddress.setHorizontalAlignment(SwingConstants.LEFT);
-		txtQueryAddress.setEditable(false);
-		txtQueryAddress.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		txtQueryAddress.setColumns(10);
-		txtQueryAddress.setBounds(115, 75, 279, 20);
-		panelContractClient.add(txtQueryAddress);
-		
-		Label label_3 = new Label("tel\u00E9fono:");
-		label_3.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		label_3.setBounds(23, 105, 82, 20);
-		panelContractClient.add(label_3);
-		
-		txtQueryTel = new JTextField();
-		txtQueryTel.setHorizontalAlignment(SwingConstants.LEFT);
-		txtQueryTel.setEditable(false);
-		txtQueryTel.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		txtQueryTel.setColumns(10);
-		txtQueryTel.setBounds(115, 105, 279, 20);
-		panelContractClient.add(txtQueryTel);
-		
-		Label label_4 = new Label("New label");
-		label_4.setBounds(420, 19, 118, 97);
-		panelContractClient.add(label_4);
-		
-		JButton button = new JButton("");
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int auxClient=-1;
-				if (!txtQueryCodClient.getText().equals("")) {
-					for (int i = 0; i < SoftwareCompany.getInstance().getClients().size(); i++) {
-						if (SoftwareCompany.getInstance().getClients().get(i).getCode().equalsIgnoreCase(txtQueryCodClient.getText())) {
-							auxClient=i;
-							break;
-						}	
-					}	
-				}
-				if (auxClient!=-1) {
-					txtQueryNameClient.setText(SoftwareCompany.getInstance().getClients().get(auxClient).getName());
-					txtQueryAddress.setText(SoftwareCompany.getInstance().getClients().get(auxClient).getAddress());
-					txtQueryTel.setText(SoftwareCompany.getInstance().getClients().get(auxClient).getPhone());
-					
-				}else {
-					JOptionPane.showMessageDialog(null, "Cliente no existe", "Buscar Cliente", JOptionPane.ERROR_MESSAGE);
-
-					
-				}
-				
-				
-			}
-		});
-		button.setIcon(new ImageIcon(ProjectRegistration.class.getResource("/Imgs/search.png")));
-		button.setBounds(306, 15, 88, 20);
-		panelContractClient.add(button);
 		
 		JLabel lblCodigo = new JLabel("Codigo:");
 		lblCodigo.setFont(new Font("SansSerif", Font.PLAIN, 14));
@@ -430,11 +386,110 @@ public class ProjectRegistration extends JDialog {
 		listWorkersSelected.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane_1.setViewportView(listWorkersSelected);
 		listWorkersSelected.setModel(DLMWorkersSelected);
-		panelTermsContract = new JPanel();
-		panelTermsContract.setBounds(20, 350, 572, 201);
-		FirstPanel.add(panelTermsContract);
-		panelTermsContract.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "T\u00E9rminos y Condiciones ", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelTermsContract.setVisible(false);
+		
+	    panelContractClient = new JPanel();
+	    panelContractClient.setBounds(590, 66, 572, 132);
+	    FirstPanel.add(panelContractClient);
+	    panelContractClient.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "informaci\u00F3n Cliente", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+	    panelContractClient.setVisible(false);
+	    panelContractClient.setLayout(null);
+	    
+	    Label label = new Label("Cliente: ");
+	    label.setFont(new Font("SansSerif", Font.PLAIN, 14));
+	    label.setBounds(23, 15, 82, 20);
+	    panelContractClient.add(label);
+	    txtQueryCodClient = new JFormattedTextField(formatCedula);				
+	    
+	    txtQueryCodClient.setHorizontalAlignment(SwingConstants.LEFT);
+	    txtQueryCodClient.setFont(new Font("SansSerif", Font.PLAIN, 14));
+	    txtQueryCodClient.setBounds(115, 15, 185, 20);
+	    panelContractClient.add(txtQueryCodClient);
+	    txtQueryCodClient.setColumns(10);
+	    
+	    
+		
+		//txtQueryCodClient = new JTextField();
+		txtQueryCodClient.addKeyListener(new KeyAdapter() {
+	    @Override
+	    public void keyTyped(KeyEvent e) {
+	    	VD.justInt(e);
+	    }
+		});
+		
+		
+		
+		
+		 
+		
+		Label label_1 = new Label("Nombre:");
+		label_1.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		label_1.setBounds(23, 45, 82, 20);
+		panelContractClient.add(label_1);
+		
+		txtQueryNameClient = new JTextField();
+		txtQueryNameClient.setHorizontalAlignment(SwingConstants.LEFT);
+		txtQueryNameClient.setEditable(false);
+		txtQueryNameClient.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		txtQueryNameClient.setColumns(10);
+		txtQueryNameClient.setBounds(115, 45, 279, 20);
+		panelContractClient.add(txtQueryNameClient);
+		
+		Label label_2 = new Label("Direcci\u00F3n :");
+		label_2.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		label_2.setBounds(23, 75, 82, 20);
+		panelContractClient.add(label_2);
+		
+		txtQueryAddress = new JTextField();
+		txtQueryAddress.setHorizontalAlignment(SwingConstants.LEFT);
+		txtQueryAddress.setEditable(false);
+		txtQueryAddress.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		txtQueryAddress.setColumns(10);
+		txtQueryAddress.setBounds(115, 75, 279, 20);
+		panelContractClient.add(txtQueryAddress);
+		
+		Label label_3 = new Label("tel\u00E9fono:");
+		label_3.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		label_3.setBounds(23, 105, 82, 20);
+		panelContractClient.add(label_3);
+		
+		txtQueryTel = new JTextField();
+		txtQueryTel.setHorizontalAlignment(SwingConstants.LEFT);
+		txtQueryTel.setEditable(false);
+		txtQueryTel.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		txtQueryTel.setColumns(10);
+		txtQueryTel.setBounds(115, 105, 279, 20);
+		panelContractClient.add(txtQueryTel);
+		
+		Label label_4 = new Label("New label");
+		label_4.setBounds(420, 19, 118, 97);
+		panelContractClient.add(label_4);
+		
+		JButton button = new JButton("");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int auxClient=-1;
+				String auxCodQuery=txtQueryCodClient.getText();
+				if (SoftwareCompany.getInstance().clientById(auxCodQuery)!=null) {
+					txtQueryNameClient.setText(SoftwareCompany.getInstance().clientById(auxCodQuery).getName()+" "+SoftwareCompany.getInstance().clientById(auxCodQuery).getLast_name());
+					//txt.setText(SoftwareCompany.getInstance().clientById(auxCodQuery).getLast_name());
+					txtQueryAddress.setText(SoftwareCompany.getInstance().clientById(auxCodQuery).getAddress());
+					txtQueryTel.setText(SoftwareCompany.getInstance().clientById(auxCodQuery).getPhone());
+					
+					
+					
+					BigTxtContract.setText("Yo "+SoftwareCompany.getInstance().clientById(auxCodQuery).getName()+" "+SoftwareCompany.getInstance().clientById(auxCodQuery).getLast_name()+" en virtud de esta prueba"+SoftwareCompany.getInstance().clientById(auxCodQuery).getId());
+					
+					
+				}else {
+					JOptionPane.showMessageDialog(null, "Cliente no existe", "Buscar Cliente", JOptionPane.ERROR_MESSAGE);
+				}
+				
+				
+			}
+		});
+		button.setIcon(new ImageIcon(ProjectRegistration.class.getResource("/Imgs/search.png")));
+		button.setBounds(306, 15, 88, 20);
+		panelContractClient.add(button);
 		listWorkersSelected.addMouseListener(new MouseAdapter() {
 	    	@Override
 	    	public void mouseClicked(MouseEvent e) {
@@ -451,7 +506,12 @@ public class ProjectRegistration extends JDialog {
 				JButton okButton = new JButton("Siguiente");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						validateData();
+						if (validateData()==true && validateLits()==true) {
+							panelContractClient.setVisible(true);
+							panelTermsContract.setVisible(true);
+							btnAtras.setVisible(true);
+						
+						}
 						
 						
 					}
@@ -476,38 +536,56 @@ public class ProjectRegistration extends JDialog {
 			}
 		}
 	}
+	
+	public void calcDays(JDateChooser dateBegin, JDateChooser dateEnd ) {
+		int days=-1;
+		if (dateBegin.getDate()!=null && dateEnd.getDate()!=null) {
+			Calendar init=dateBegin.getCalendar();
+			Calendar end=dateEnd.getCalendar();
+		
+			while(init.before(end) || init.equals(end)) {
+				days++;
+				init.add(Calendar.DATE, 1);
+				
+			}
+			
+		}else {
+			JOptionPane.showMessageDialog(null, "Selecciona fecha inicio y fecha final", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		System.out.println(days);
+		
+	}
+	
+	
 	public void addBoss() {
 		int aux=-1;
-		int cont=0;
-		
-		System.out.println(DLMWorkersSelected.size());
-		
-		if (comboBoxTipoWorkers.getSelectedItem().equals("Jefe")) {
-			if(DLMWorkersSelected.size()!=0){
-			
-			for (int i = 0; i < DLMWorkersSelected.size(); i++) {
-				String[] codSplit=DLMWorkersSelected.getElementAt(i).toString().split(" ");
-				if (SoftwareCompany.getInstance().searchWorkerByCode(codSplit[0]) instanceof Boss && cont==0) {
-					cont++;
-					DLMWorkersSelected.addElement(listWorkers.getSelectedValue());
-					DLM.remove(listWorkers.getSelectedIndex());
-					
-					
-				}else if(SoftwareCompany.getInstance().searchWorkerByCode(codSplit[0]) instanceof Boss && cont>=1) {
-					JOptionPane.showMessageDialog(null, "No puede tener mas de un jefe por proyecto", "Registro Proyecto", JOptionPane.ERROR_MESSAGE);
 	
-				}
+		
+		System.out.println(DLMWorkersSelected.size()+"---->"+cont);
+		
+			if (cont>=1) {
+					
+					JOptionPane.showMessageDialog(null, "No puede tener mas de un jefe por proyecto", "Registro Proyecto", JOptionPane.ERROR_MESSAGE);
+			}else{
+					for (int i = 0; i < DLMWorkersSelected.size(); i++) {
+						String[] codSplit=DLMWorkersSelected.getElementAt(i).toString().split(" ");
+							if (SoftwareCompany.getInstance().searchWorkerByCode(codSplit[0]) instanceof Boss && cont==0) {
+								cont++;
+								System.out.println("Entrada1");
+								DLMWorkersSelected.addElement(listWorkers.getSelectedValue());
+								DLM.remove(listWorkers.getSelectedIndex());
+								break;
+							}else if (cont==0) {
+								System.out.println("Entrada22");
+								cont++;
+								DLMWorkersSelected.addElement(listWorkers.getSelectedValue());
+								DLM.remove(listWorkers.getSelectedIndex());
+								break;
+							}
 			
-		}}else {
-			DLMWorkersSelected.addElement(listWorkers.getSelectedValue());
-			DLM.remove(listWorkers.getSelectedIndex());
-		}
+					}
+			}	
 		
-		
-		}else {
-			DLMWorkersSelected.addElement(listWorkers.getSelectedValue());
-			DLM.remove(listWorkers.getSelectedIndex());
-		}
 		
 	}
 	private void addLanguaje() {
@@ -521,8 +599,17 @@ public class ProjectRegistration extends JDialog {
 		if (DLMWorkersSelected.size()==0) {
 			return;
 		}else {
-			DLM.addElement(listWorkersSelected.getSelectedValue());
-			DLMWorkersSelected.remove(listWorkersSelected.getSelectedIndex());
+			
+			String[] auxSlip=listWorkersSelected.getSelectedValue().toString().split(" ");
+			if (SoftwareCompany.getInstance().searchWorkerByCode(auxSlip[0]) instanceof Boss && cont>0) {
+				cont=0;
+				DLM.addElement(listWorkersSelected.getSelectedValue());
+				DLMWorkersSelected.remove(listWorkersSelected.getSelectedIndex());
+			}else {
+				DLM.addElement(listWorkersSelected.getSelectedValue());
+				DLMWorkersSelected.remove(listWorkersSelected.getSelectedIndex());
+			}
+			
 
 		}
 		
@@ -532,6 +619,34 @@ public class ProjectRegistration extends JDialog {
 		boolean validate=false;
 		
 		return validate;
+	}
+	private boolean validateLits() {
+		boolean aux=false;
+		int contBoss=-1;
+		int contDesigner=-1;
+			for (int i = 0; i < DLMWorkersSelected.size(); i++) {
+				String[] codSplit=DLMWorkersSelected.getElementAt(i).toString().split(" ");
+				if (SoftwareCompany.getInstance().searchWorkerByCode(codSplit[0]) instanceof Boss) {
+					contBoss++;
+				}else if(SoftwareCompany.getInstance().searchWorkerByCode(codSplit[0]) instanceof Designer) {
+					contDesigner++;
+				}
+
+			}
+			
+			if (contBoss==-1 || contDesigner==-1) {
+				JOptionPane.showMessageDialog(null, "Debe existir 1 Jefe por proyecto y al menos un diseñador, Revise sus datos", "Registro Proyecto", JOptionPane.ERROR_MESSAGE);
+
+				
+				aux=false;
+				
+			}else {
+				aux=true;
+			}
+		
+		
+		
+		return aux;
 	}
 	private boolean validateData() {
 		boolean validate = false;
@@ -558,11 +673,6 @@ public class ProjectRegistration extends JDialog {
 			
 		}else {
 			validate=true;
-			panelContractClient.setVisible(true);
-			panelTermsContract.setVisible(true);
-			btnAtras.setVisible(true);
-		
-		
 			
 		}
 		

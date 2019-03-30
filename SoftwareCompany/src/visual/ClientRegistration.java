@@ -378,6 +378,8 @@ public class ClientRegistration extends JDialog {
 							String direccion = txtDireccion.getText();
 							String correo = txtCorreo.getText();
 							
+							System.out.println("Osvaldo"+cedula);
+							
 							if (client == null) {
 								client = new Client(codigo, cedula, nombre, apellidos, direccion, telefono, correo);
 								storePicture();

@@ -59,19 +59,19 @@ public class Validation {
 	public void setFocusBackground(Object object, boolean focus) { //focus = true (GainedFocus), focus = false (LostFocus)
 		if (object instanceof JTextField) {
 			if (focus) {
-				((JTextField) object).setBackground(Color.yellow);
+				((JTextField) object).setBackground(new Color(255, 255, 204));
 			} else {
 				((JTextField) object).setBackground(Color.white);
 			}
 		} else if (object instanceof JComboBox) {
 			if (focus) {
-				((JComboBox) object).setBackground(Color.yellow);
+				((JComboBox) object).setBackground(new Color(255, 255, 204));
 			} else {
 				((JComboBox) object).setBackground(Color.white);
 			}
 		} else if (object instanceof JSpinner) {
 			if (focus) {
-				((JSpinner) object).setBackground(Color.yellow);
+				((JSpinner) object).setBackground(new Color(255, 255, 204));
 			} else {
 				((JSpinner) object).setBackground(Color.white);
 			}

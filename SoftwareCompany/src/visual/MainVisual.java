@@ -9,6 +9,9 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+
+import logical.User;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
@@ -16,22 +19,17 @@ import javax.swing.ImageIcon;
 public class MainVisual {
 
 	private JFrame frame;
+	private User user;
 
 	/**
 	 * Launch the application.
-	 */
+	 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					MainVisual window = new MainVisual();
-					Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-				    int height = screenSize.height;
-				    int width = screenSize.width;
-				    window.frame.setSize(width, height-43);
-				    window.frame.setLocationRelativeTo(null);
-				    
-					window.frame.setVisible(true);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -42,7 +40,8 @@ public class MainVisual {
 	/**
 	 * Create the application.
 	 */
-	public MainVisual() {
+	public MainVisual(User user) {
+		this.user = user;
 		initialize();
 	}
 
@@ -52,6 +51,12 @@ public class MainVisual {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	    int height = screenSize.height;
+	    int width = screenSize.width;
+	    frame.setSize(width, height-43);
+	    frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JMenuBar menuBar = new JMenuBar();

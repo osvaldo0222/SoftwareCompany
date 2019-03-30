@@ -538,7 +538,7 @@ public class ProjectRegistration extends JDialog {
 	}
 	
 	public void calcDays(JDateChooser dateBegin, JDateChooser dateEnd ) {
-		int days=-1;
+		int days=0;
 		if (dateBegin.getDate()!=null && dateEnd.getDate()!=null) {
 			Calendar init=dateBegin.getCalendar();
 			Calendar end=dateEnd.getCalendar();
@@ -546,7 +546,6 @@ public class ProjectRegistration extends JDialog {
 			while(init.before(end) || init.equals(end)) {
 				days++;
 				init.add(Calendar.DATE, 1);
-				
 			}
 			
 		}else {

@@ -179,4 +179,15 @@ public class SoftwareCompany {
 	public void setUsers(ArrayList<User> users) {
 		this.users = users;
 	}
+	public User searchUserByUsername(String username,String password) {
+		User auxUser = null;
+		
+		for (User userForEach : users) {
+			if (userForEach.getUsername().equalsIgnoreCase(username) && userForEach.getPassword().equalsIgnoreCase(password)) {
+				auxUser=userForEach;
+			}
+			
+		}
+		return auxUser;
+	}
 }

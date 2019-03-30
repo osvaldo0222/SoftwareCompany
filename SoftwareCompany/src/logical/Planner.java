@@ -1,6 +1,10 @@
 package logical;
 
 public class Planner extends Worker {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int cant_days;
 
 	public Planner(String code, String id, String name, String last_name, String address, String gender, int age, String phone, float salary, int cant_days) {

@@ -1,10 +1,15 @@
 package logical;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.swing.ImageIcon;
 
-public class Client {
+public class Client implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -682238514559973065L;
 	private ImageIcon picture;
 	private String code;
 	private String id;

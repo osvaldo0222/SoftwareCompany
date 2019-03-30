@@ -1,6 +1,10 @@
 package logical;
 
 public class Boss extends Worker {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int cant_workers;
 	private int experience_years;
 

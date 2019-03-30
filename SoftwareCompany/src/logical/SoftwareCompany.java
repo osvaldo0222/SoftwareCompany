@@ -1,8 +1,13 @@
 package logical;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class SoftwareCompany {
+public class SoftwareCompany implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2058297959693156912L;
 	private ArrayList<User> users;
 	private ArrayList<Worker> workers;
 	private ArrayList<Project> projects;

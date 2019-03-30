@@ -1,30 +1,31 @@
 package visual;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Toolkit;
 
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 import logical.SoftwareCompany;
 import logical.User;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.ImageIcon;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class MainVisual {
+public class MainVisual extends JFrame {
 
-	private JFrame frame;
+	private JPanel contentPane;
 	private User user;
+	private Dimension dimension;
 
 	/**
 	 * Launch the application.
@@ -33,8 +34,8 @@ public class MainVisual {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainVisual window = new MainVisual();
-					
+					MainVisual frame = new MainVisual();
+					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -43,21 +44,14 @@ public class MainVisual {
 	}
 
 	/**
-	 * Create the application.
+	 * Create the frame.
 	 */
 	public MainVisual(User user) {
-		this.user = user;
-		initialize();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.addWindowListener(new WindowAdapter() {
+		setTitle("Software Company");
+		setResizable(false);
+		addWindowListener(new WindowAdapter() {
 			@Override
-			public void windowClosing(WindowEvent e) {
+			public void windowClosing(WindowEvent arg0) {
 				FileOutputStream company;
 				ObjectOutputStream writer;
 				try {
@@ -70,50 +64,27 @@ public class MainVisual {
 					writer.writeInt(SoftwareCompany.codUsers);
 					writer.close();
 					company.close();
-				} catch (Exception e2) {
+				} catch (Exception e) {
 					System.out.println("Error al guardar los datos" + e.toString());
 				}
 			}
 		});
-		frame.setBounds(100, 100, 450, 300);
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	    int height = screenSize.height;
-	    int width = screenSize.width;
-	    frame.setSize(width, height-43);
-	    frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		dimension = super.getToolkit().getScreenSize();
+		super.setSize(dimension.width, (dimension.height - 40));
+		setLocationRelativeTo(null);
 		
 		JMenuBar menuBar = new JMenuBar();
-		frame.setJMenuBar(menuBar);
+		setJMenuBar(menuBar);
 		
-		JMenu mnNewMenu = new JMenu("Archivo");
-		menuBar.add(mnNewMenu);
-		
-		JMenu mnProyectos = new JMenu("Proyectos");
-		menuBar.add(mnProyectos);
-		
-		JMenuItem mntmNuevoProyecto = new JMenuItem("Nuevo Proyecto");
-		mntmNuevoProyecto.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/newProject30.png")));
-		mntmNuevoProyecto.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ProjectRegistration dialog = new ProjectRegistration();
-				
-			   //dialog.setSize(598, 434);
-				dialog.setSize(1250, 700);
-			   dialog.setResizable(false);
-			   dialog.setLocationRelativeTo(null);
-				
-				dialog.setVisible(true);
-			}
-		});
-		mnProyectos.add(mntmNuevoProyecto);
+		JMenu mnArchivo = new JMenu("Archivo");
+		menuBar.add(mnArchivo);
 		
 		JMenu mnTrabajadores = new JMenu("Trabajadores");
 		menuBar.add(mnTrabajadores);
 		
-		JMenuItem mntmRegistrar = new JMenuItem("Nuevo Trabajador");
-		mntmRegistrar.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/worker30px.png")));
+		JMenuItem mntmRegistrar = new JMenuItem("Registrar");
 		mntmRegistrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				WorkerRegistration registration = new WorkerRegistration();
@@ -126,16 +97,36 @@ public class MainVisual {
 		JMenu mnClientes = new JMenu("Clientes");
 		menuBar.add(mnClientes);
 		
-		JMenuItem mntmNuevoCliente = new JMenuItem("Nuevo Cliente");
-		mntmNuevoCliente.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		JMenuItem mntmRegistrar_1 = new JMenuItem("Registrar");
+		mntmRegistrar_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				ClientRegistration registration = new ClientRegistration();
 				registration.setModal(true);
 				registration.setVisible(true);
 			}
 		});
-		mntmNuevoCliente.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/user30px.png")));
-		mnClientes.add(mntmNuevoCliente);
+		mnClientes.add(mntmRegistrar_1);
+		
+		JMenu mnProyectos = new JMenu("Proyectos");
+		menuBar.add(mnProyectos);
+		
+		JMenuItem mntmRegistrar_2 = new JMenuItem("Registrar");
+		mntmRegistrar_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ProjectRegistration registration = new ProjectRegistration();
+				registration.setModal(true);
+				registration.setSize(1250, 700);
+				registration.setResizable(false);
+				registration.setLocationRelativeTo(null);
+				registration.setVisible(true);
+			}
+		});
+		mnProyectos.add(mntmRegistrar_2);
+		
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
+		setContentPane(contentPane);
 	}
 
 }

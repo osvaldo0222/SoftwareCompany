@@ -1,8 +1,14 @@
 package logical;
 
+import java.io.Serializable;
+
 import javax.swing.ImageIcon;
 
-public abstract class Person {
+public abstract class Person implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1875933389069760567L;
 	protected String code;
 	protected String id;
 	protected ImageIcon picture;

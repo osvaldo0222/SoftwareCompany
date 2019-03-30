@@ -1,6 +1,10 @@
 package logical;
 
 public class Designer extends Worker {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String master;
 
 	public Designer(String code, String id, String name, String last_name, String address, String gender, int age, String phone, float salary, String master) {

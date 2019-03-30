@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
@@ -14,6 +15,7 @@ import logical.SoftwareCompany;
 import logical.User;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Label;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
@@ -31,7 +33,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
-public class Login extends JDialog {
+public class Login extends JFrame {
 
 	private Validation validation = new Validation();
 	private final JPanel contentPanel = new JPanel();
@@ -42,38 +44,42 @@ public class Login extends JDialog {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		FileInputStream company;
-		FileOutputStream outputStream;
-		ObjectInputStream reader;
-		try {
-			company = new FileInputStream("SoftwareCompany.dat");
-			reader = new ObjectInputStream(company);
-			SoftwareCompany.setSoftwareCompany((SoftwareCompany) reader.readObject());
-			SoftwareCompany.codWorkers = reader.readInt();
-			SoftwareCompany.codProjects = reader.readInt();
-			SoftwareCompany.codClients = reader.readInt();
-			SoftwareCompany.codUsers = reader.readInt();
-			reader.close();
-			company.close();
-		} catch (Exception e) {
-			try {
-				outputStream = new FileOutputStream("SoftwareCompany.dat");
-				User user = new User("USER-1", "ADMIN", "ADMIN", "", "", "", 0, "", "admin", "admin");
-				SoftwareCompany.getInstance().insertUser(user);
-				outputStream.close();
-			} catch (Exception e2) {
-				System.out.println("Error al crear fichero!");
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				FileInputStream company;
+				FileOutputStream outputStream;
+				ObjectInputStream reader;
+				try {
+					company = new FileInputStream("SoftwareCompany.dat");
+					reader = new ObjectInputStream(company);
+					SoftwareCompany.setSoftwareCompany((SoftwareCompany) reader.readObject());
+					SoftwareCompany.codWorkers = reader.readInt();
+					SoftwareCompany.codProjects = reader.readInt();
+					SoftwareCompany.codClients = reader.readInt();
+					SoftwareCompany.codUsers = reader.readInt();
+					reader.close();
+					company.close();
+				} catch (Exception e) {
+					try {
+						outputStream = new FileOutputStream("SoftwareCompany.dat");
+						User user = new User("USER-1", "ADMIN", "ADMIN", "", "", "", 0, "", "admin", "admin");
+						SoftwareCompany.getInstance().insertUser(user);
+						outputStream.close();
+					} catch (Exception e2) {
+						System.out.println("Error al crear fichero!");
+					}
+				}
+				try {
+					Login dialog = new Login();
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setSize(300,330);
+					dialog.setLocationRelativeTo(null);
+					dialog.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
-		}
-		try {
-			Login dialog = new Login();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setSize(300,330);
-			dialog.setLocationRelativeTo(null);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		});
 	}
 
 	/**
@@ -161,8 +167,9 @@ public class Login extends JDialog {
 				if (!username.equalsIgnoreCase("") && !password.equalsIgnoreCase("")) {
 					userAux=SoftwareCompany.getInstance().searchUserByUsername(username, password);
 					if (userAux!=null) {
-						dispose();
 						MainVisual mainVisual = new MainVisual(userAux);
+						dispose();
+						mainVisual.setVisible(true);
 					}
 					
 				}

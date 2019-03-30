@@ -1,9 +1,14 @@
 package logical;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class Worker extends Person {
+public abstract class Worker extends Person implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected float salary_per_hour;
 	protected ArrayList<String> projects;
 	

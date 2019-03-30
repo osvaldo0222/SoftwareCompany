@@ -1,8 +1,13 @@
 package logical;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class User extends Person {
+public class User extends Person implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7082630249243275893L;
 	private String username;
 	private String password;
 	private Date last_enter;

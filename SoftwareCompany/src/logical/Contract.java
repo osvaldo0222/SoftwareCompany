@@ -1,8 +1,13 @@
 package logical;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Contract {
+public class Contract implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6545106401838653375L;
 	private String id;
 	private Date dateBegin;
 	private Date dueDate;

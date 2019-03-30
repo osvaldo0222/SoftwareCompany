@@ -18,6 +18,7 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Label;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -32,6 +33,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.Toolkit;
+import java.awt.Window.Type;
 
 public class Login extends JFrame {
 
@@ -86,12 +89,14 @@ public class Login extends JFrame {
 	 * Create the dialog.
 	 */
 	public Login() {
+		setAlwaysOnTop(true);
+		setTitle("Login");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/Imgs/login48icon.png")));
 		setResizable(false);
 		setUndecorated(true);
 		setBounds(100, 100, 301, 329);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(new Color(245, 245, 245));
-		contentPanel.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
@@ -115,6 +120,7 @@ public class Login extends JFrame {
 		panel.add(lblLogin_1);
 		
 		txtUsername = new JTextField();
+		txtUsername.setToolTipText("Nombre de usuario");
 		txtUsername.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -130,6 +136,7 @@ public class Login extends JFrame {
 		txtUsername.setColumns(10);
 		
 		txtPassword = new JTextField();
+		txtPassword.setToolTipText("Contrase\u00F1a");
 		txtPassword.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -157,21 +164,24 @@ public class Login extends JFrame {
 		contentPanel.add(label_1);
 		
 		JButton btnEntrar = new JButton("Entrar");
+		btnEntrar.setToolTipText("Entrar al sistema");
 		btnEntrar.setIcon(new ImageIcon(Login.class.getResource("/Imgs/login16_Enter.png")));
 		btnEntrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String username=txtUsername.getText();
 				String password=txtPassword.getText();
-				User userAux=null;
 				
 				if (!username.equalsIgnoreCase("") && !password.equalsIgnoreCase("")) {
-					userAux=SoftwareCompany.getInstance().searchUserByUsername(username, password);
+					User userAux = SoftwareCompany.getInstance().searchUserByUsername(username, password);
 					if (userAux!=null) {
 						MainVisual mainVisual = new MainVisual(userAux);
 						dispose();
 						mainVisual.setVisible(true);
+					} else {
+						JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos", "Login", JOptionPane.ERROR_MESSAGE);
 					}
-					
+				} else {
+					JOptionPane.showMessageDialog(null, "Complete los campos", "Login", JOptionPane.ERROR_MESSAGE);
 				}
 				
 			}
@@ -180,6 +190,7 @@ public class Login extends JFrame {
 		contentPanel.add(btnEntrar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setToolTipText("Salir");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();

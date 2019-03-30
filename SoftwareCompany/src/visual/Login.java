@@ -23,6 +23,9 @@ import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
@@ -39,10 +42,31 @@ public class Login extends JDialog {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		FileInputStream company;
+		FileOutputStream outputStream;
+		ObjectInputStream reader;
+		try {
+			company = new FileInputStream("SoftwareCompany.dat");
+			reader = new ObjectInputStream(company);
+			SoftwareCompany.setSoftwareCompany((SoftwareCompany) reader.readObject());
+			SoftwareCompany.codWorkers = reader.readInt();
+			SoftwareCompany.codProjects = reader.readInt();
+			SoftwareCompany.codClients = reader.readInt();
+			SoftwareCompany.codUsers = reader.readInt();
+			reader.close();
+			company.close();
+		} catch (Exception e) {
+			try {
+				outputStream = new FileOutputStream("SoftwareCompany.dat");
+				User user = new User("USER-1", "ADMIN", "ADMIN", "", "", "", 0, "", "admin", "admin");
+				SoftwareCompany.getInstance().insertUser(user);
+				outputStream.close();
+			} catch (Exception e2) {
+				System.out.println("Error al crear fichero!");
+			}
+		}
 		try {
 			Login dialog = new Login();
-			User user = new User("", "", "", "", "", "", 1, "", "admin", "admin");
-			SoftwareCompany.getInstance().insertUser(user);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setSize(300,330);
 			dialog.setLocationRelativeTo(null);

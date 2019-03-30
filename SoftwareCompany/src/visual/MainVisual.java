@@ -10,11 +10,16 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
+import logical.SoftwareCompany;
 import logical.User;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 
 public class MainVisual {
 
@@ -50,6 +55,26 @@ public class MainVisual {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				FileOutputStream company;
+				ObjectOutputStream writer;
+				try {
+					company = new FileOutputStream("SoftwareCompany.dat");
+					writer = new ObjectOutputStream(company);
+					writer.writeObject(SoftwareCompany.getInstance());
+					writer.writeInt(SoftwareCompany.codWorkers);
+					writer.writeInt(SoftwareCompany.codProjects);
+					writer.writeInt(SoftwareCompany.codClients);
+					writer.writeInt(SoftwareCompany.codUsers);
+					writer.close();
+					company.close();
+				} catch (Exception e2) {
+					System.out.println("Error al guardar los datos" + e.toString());
+				}
+			}
+		});
 		frame.setBounds(100, 100, 450, 300);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	    int height = screenSize.height;

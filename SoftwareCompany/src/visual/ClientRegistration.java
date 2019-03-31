@@ -377,6 +377,8 @@ public class ClientRegistration extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				btnGuardar = new JButton("Guardar");
+				btnGuardar.setEnabled(false);
+				btnGuardar.setToolTipText("Guardar");
 				btnGuardar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						if (checkCampos()) {
@@ -426,6 +428,7 @@ public class ClientRegistration extends JDialog {
 			}
 			{
 				btnSalir = new JButton("Salir");
+				btnSalir.setToolTipText("Salir");
 				btnSalir.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						dispose();
@@ -479,6 +482,7 @@ public class ClientRegistration extends JDialog {
 		lblImagen.setText("<Imagen>");
 		stateOfCampos(false);
 		btnGuardar.setText("Guardar");
+		btnGuardar.setEnabled(false);
 		setTitle("Registrar Clientes");
 		btnEditCedula.setEnabled(false);
 		txtCedula.setEditable(true);

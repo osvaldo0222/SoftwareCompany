@@ -822,6 +822,7 @@ public class WorkerRegistration extends JDialog {
 							disableAllCamps();
 							disableTipos();
 							btnModificarCedula.setEnabled(false);
+							btnGuardar.setEnabled(false);
 							txtCedula.setText("");
 							txtCedula.setEditable(true);
 							txtCedula.requestFocus();

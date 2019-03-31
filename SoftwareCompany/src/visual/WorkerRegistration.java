@@ -130,6 +130,7 @@ public class WorkerRegistration extends JDialog {
 			contentPanel.add(panel);
 			{
 				btnProgramador = new JButton("Programador");
+				btnProgramador.setToolTipText("Tipo Programador");
 				btnProgramador.setEnabled(false);
 				btnProgramador.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -148,6 +149,7 @@ public class WorkerRegistration extends JDialog {
 			panel.setLayout(new GridLayout(0, 1, 0, 0));
 			{
 				btnJefe = new JButton("Jefe Proyecto");
+				btnJefe.setToolTipText("Tipo Jefe de Proyecto");
 				btnJefe.setEnabled(false);
 				btnJefe.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
@@ -167,6 +169,7 @@ public class WorkerRegistration extends JDialog {
 			panel.add(btnProgramador);
 			{
 				btnDisenador = new JButton("Dise\u00F1ador");
+				btnDisenador.setToolTipText("Tipo Dise\u00F1ador");
 				btnDisenador.setEnabled(false);
 				btnDisenador.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -185,6 +188,7 @@ public class WorkerRegistration extends JDialog {
 			}
 			{
 				btnPlanificador = new JButton("Planificador");
+				btnPlanificador.setToolTipText("Tipo Planificador");
 				btnPlanificador.setEnabled(false);
 				btnPlanificador.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -228,6 +232,7 @@ public class WorkerRegistration extends JDialog {
 			panel_1.setLayout(null);
 			
 			lblImage = new JLabel("<Imagen>");
+			lblImage.setToolTipText("Doble click para seleccionar imagen...");
 			lblImage.setIcon(new ImageIcon(WorkerRegistration.class.getResource("/com/sun/java/swing/plaf/windows/icons/UpFolder.gif")));
 			lblImage.setEnabled(false);
 			lblImage.setBackground(Color.WHITE);
@@ -265,6 +270,7 @@ public class WorkerRegistration extends JDialog {
 			panel_1.add(lblNewLabel_1);
 			
 			txtCodigo = new JTextField();
+			txtCodigo.setToolTipText("C\u00F3digo");
 			txtCodigo.setHorizontalAlignment(SwingConstants.RIGHT);
 			txtCodigo.setEditable(false);
 			txtCodigo.setBounds(202, 21, 118, 20);
@@ -287,6 +293,7 @@ public class WorkerRegistration extends JDialog {
 				formatCedula = new MaskFormatter("###-#######-#");
 				formatCedula.setPlaceholderCharacter('_');
 				txtCedula = new JFormattedTextField(formatCedula);				
+				txtCedula.setToolTipText("Cedula");
 			} catch (Exception e) {
 				txtCedula = new JTextField();
 			}
@@ -332,6 +339,7 @@ public class WorkerRegistration extends JDialog {
 			txtCedula.setColumns(10);
 			
 			txtNombres = new JTextField();
+			txtNombres.setToolTipText("Nombres");
 			txtNombres.addFocusListener(new FocusAdapter() {
 				@Override
 				public void focusGained(FocusEvent e) {
@@ -366,6 +374,7 @@ public class WorkerRegistration extends JDialog {
 			}
 			{
 				txtApellidos = new JTextField();
+				txtApellidos.setToolTipText("Apellidos");
 				txtApellidos.addFocusListener(new FocusAdapter() {
 					@Override
 					public void focusGained(FocusEvent e) {
@@ -389,6 +398,7 @@ public class WorkerRegistration extends JDialog {
 			}
 			{
 				txtDireccion = new JTextField();
+				txtDireccion.setToolTipText("Direcci\u00F3n");
 				txtDireccion.addFocusListener(new FocusAdapter() {
 					@Override
 					public void focusGained(FocusEvent e) {
@@ -411,13 +421,14 @@ public class WorkerRegistration extends JDialog {
 				txtDireccion.setColumns(10);
 			}
 			{
-				JLabel lblGenero = new JLabel("Genero:");
+				JLabel lblGenero = new JLabel("G\u00E9nero:");
 				lblGenero.setFont(new Font("SansSerif", Font.PLAIN, 14));
 				lblGenero.setBounds(10, 251, 65, 19);
 				panel_1.add(lblGenero);
 			}
 			
 			cbxGenero = new JComboBox();
+			cbxGenero.setToolTipText("G\u00E9nero");
 			cbxGenero.addFocusListener(new FocusAdapter() {
 				@Override
 				public void focusGained(FocusEvent e) {
@@ -439,6 +450,7 @@ public class WorkerRegistration extends JDialog {
 			panel_1.add(lblEdad);
 			
 			spnEdad = new JSpinner();
+			spnEdad.setToolTipText("Edad");
 			spnEdad.setBackground(Color.WHITE);
 			spnEdad.addFocusListener(new FocusAdapter() {
 				@Override
@@ -469,6 +481,7 @@ public class WorkerRegistration extends JDialog {
 					formatTelefono = new MaskFormatter("(###) ###-####");
 					formatTelefono.setPlaceholderCharacter('_');
 					txtTelefono = new JFormattedTextField(formatTelefono);
+					txtTelefono.setToolTipText("Tel\u00E9fono o Celular");
 				} catch (Exception e) {
 					txtTelefono = new JTextField();
 				}
@@ -495,6 +508,7 @@ public class WorkerRegistration extends JDialog {
 			}
 			{
 				txtSalario = new JTextField();
+				txtSalario.setToolTipText("Salario por hora");
 				txtSalario.addFocusListener(new FocusAdapter() {
 					@Override
 					public void focusGained(FocusEvent e) {
@@ -519,6 +533,7 @@ public class WorkerRegistration extends JDialog {
 			}
 			
 			btnModificarCedula = new JButton("");
+			btnModificarCedula.setToolTipText("Editar Cedula");
 			btnModificarCedula.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					disableAllCamps();
@@ -540,6 +555,7 @@ public class WorkerRegistration extends JDialog {
 			}
 			{
 				txtCorreo = new JTextField();
+				txtCorreo.setToolTipText("Correo Electr\u00F3nico");
 				txtCorreo.addKeyListener(new KeyAdapter() {
 					@Override
 					public void keyTyped(KeyEvent e) {
@@ -577,6 +593,7 @@ public class WorkerRegistration extends JDialog {
 		panelJefe.add(lblAsociados);
 		
 		txtAsociados = new JTextField();
+		txtAsociados.setToolTipText("Trabajadores asociados a sus proyectos");
 		txtAsociados.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtAsociados.setText("0");
 		txtAsociados.setEditable(false);
@@ -590,6 +607,7 @@ public class WorkerRegistration extends JDialog {
 		panelJefe.add(lblAosDeExperencia);
 		
 		spnExperencia = new JSpinner();
+		spnExperencia.setToolTipText("Experencia");
 		spnExperencia.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -624,6 +642,7 @@ public class WorkerRegistration extends JDialog {
 		}
 		listLengDisponibles = new JList();
 		listLengDisponibles.setEnabled(false);
+		listLengDisponibles.setToolTipText("Click sobre el lenguaje para añadir...");
 		listLengDisponibles.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -650,6 +669,7 @@ public class WorkerRegistration extends JDialog {
 		}
 		listLengDominados = new JList();
 		listLengDominados.setEnabled(false);
+		listLengDominados.setToolTipText("Click sobre el lenguaje para remover...");
 		listLengDominados.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -671,6 +691,7 @@ public class WorkerRegistration extends JDialog {
 		panelDisenador.add(lblEspecialidad);
 		
 		cbxEspecialidad = new JComboBox();
+		cbxEspecialidad.setToolTipText("Especialidad del diseñador...");
 		cbxEspecialidad.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -695,6 +716,7 @@ public class WorkerRegistration extends JDialog {
 		panelPlanificador.add(lblFrecuenciaDePlanificacin);
 		
 		spnFrecPlani = new JSpinner();
+		spnFrecPlani.setToolTipText("Frecuencia con que planifica las tareas...");
 		spnFrecPlani.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -718,6 +740,7 @@ public class WorkerRegistration extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.NORTH);
 			{
 				btnGuardar = new JButton("Guardar");
+				btnGuardar.setToolTipText("Guardar");
 				btnGuardar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						//System.out.println("osvaldo"+txtCedula.getText());
@@ -814,6 +837,7 @@ public class WorkerRegistration extends JDialog {
 			}
 			{
 				btnSalir = new JButton("Salir");
+				btnSalir.setToolTipText("Salir");
 				btnSalir.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						dispose();

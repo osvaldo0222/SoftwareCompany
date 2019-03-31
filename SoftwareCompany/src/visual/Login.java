@@ -102,7 +102,6 @@ public class Login extends JFrame {
 				Exit(e);
 			}
 		});
-		setAlwaysOnTop(true);
 		setTitle("Login");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/Imgs/login48icon.png")));
 		setResizable(false);

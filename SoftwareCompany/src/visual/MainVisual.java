@@ -20,6 +20,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.ImageIcon;
 
 public class MainVisual extends JFrame {
 
@@ -88,6 +89,7 @@ public class MainVisual extends JFrame {
 		menuBar.add(mnTrabajadores);
 		
 		JMenuItem mntmRegistrar = new JMenuItem("Registrar");
+		mntmRegistrar.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/worker30px.png")));
 		mntmRegistrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				WorkerRegistration registration = new WorkerRegistration();
@@ -101,6 +103,7 @@ public class MainVisual extends JFrame {
 		menuBar.add(mnClientes);
 		
 		JMenuItem mntmRegistrar_1 = new JMenuItem("Registrar");
+		mntmRegistrar_1.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/user30px.png")));
 		mntmRegistrar_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ClientRegistration registration = new ClientRegistration();

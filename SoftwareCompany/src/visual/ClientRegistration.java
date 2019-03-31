@@ -114,6 +114,7 @@ public class ClientRegistration extends JDialog {
 		panel.add(lblCorreo);
 		
 		txtCodigo = new JTextField();
+		txtCodigo.setToolTipText("C\u00F3digo");
 		txtCodigo.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtCodigo.setEditable(false);
 		txtCodigo.setBounds(205, 24, 101, 20);
@@ -131,6 +132,7 @@ public class ClientRegistration extends JDialog {
 			formatCedula = new MaskFormatter("###-#######-#");
 			formatCedula.setPlaceholderCharacter('_');
 			txtCedula = new JFormattedTextField(formatCedula);				
+			txtCedula.setToolTipText("Cedula");
 		} catch (Exception e) {
 			txtCedula = new JTextField();
 		}
@@ -190,6 +192,7 @@ public class ClientRegistration extends JDialog {
 			formatTelefono = new MaskFormatter("(###) ###-####");
 			formatTelefono.setPlaceholderCharacter('_');
 			txtTelefono = new JFormattedTextField(formatTelefono);
+			txtTelefono.setToolTipText("Tel\u00E9fono o Celular");
 		} catch (Exception e) {
 			txtTelefono = new JTextField();
 		}
@@ -209,6 +212,7 @@ public class ClientRegistration extends JDialog {
 		txtTelefono.setColumns(10);
 		
 		txtDireccion = new JTextField();
+		txtDireccion.setToolTipText("Direcci\u00F3n");
 		txtDireccion.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -231,6 +235,7 @@ public class ClientRegistration extends JDialog {
 		txtDireccion.setColumns(10);
 		
 		txtNombres = new JTextField();
+		txtNombres.setToolTipText("Nombres");
 		txtNombres.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -253,6 +258,7 @@ public class ClientRegistration extends JDialog {
 		txtNombres.setColumns(10);
 		
 		txtApellidos = new JTextField();
+		txtApellidos.setToolTipText("Apellidos");
 		txtApellidos.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -275,6 +281,7 @@ public class ClientRegistration extends JDialog {
 		txtApellidos.setColumns(10);
 		
 		lblImagen = new JLabel("<Imagen>");
+		lblImagen.setToolTipText("Doble click para seleccionar imagen...");
 		lblImagen.setEnabled(false);
 		lblImagen.addMouseListener(new MouseAdapter() {
 			@Override
@@ -303,6 +310,7 @@ public class ClientRegistration extends JDialog {
 		panel.add(lblImagen);
 		
 		txtCorreo = new JTextField();
+		txtCorreo.setToolTipText("Correo Electr\u00F3nico");
 		txtCorreo.setEditable(false);
 		txtCorreo.addKeyListener(new KeyAdapter() {
 			@Override
@@ -325,6 +333,7 @@ public class ClientRegistration extends JDialog {
 		txtCorreo.setColumns(10);
 		
 		txtCantProyectos = new JTextField();
+		txtCantProyectos.setToolTipText("Proyectos Activos");
 		txtCantProyectos.setText("0");
 		txtCantProyectos.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtCantProyectos.setEditable(false);
@@ -338,6 +347,7 @@ public class ClientRegistration extends JDialog {
 		panel.add(lblRegistro);
 		
 		txtFechaRegistro = new JTextField();
+		txtFechaRegistro.setToolTipText("Fecha de Registro");
 		txtFechaRegistro.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtFechaRegistro.setEditable(false);
 		txtFechaRegistro.setBounds(245, 295, 120, 20);
@@ -346,6 +356,7 @@ public class ClientRegistration extends JDialog {
 		txtFechaRegistro.setColumns(10);
 		
 		btnEditCedula = new JButton("");
+		btnEditCedula.setToolTipText("Editar Cedula");
 		btnEditCedula.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				txtCedula.setEditable(true);

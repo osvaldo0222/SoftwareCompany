@@ -166,6 +166,8 @@ public class Login extends JFrame {
 		JButton btnEntrar = new JButton("Entrar");
 		btnEntrar.setToolTipText("Entrar al sistema");
 		btnEntrar.setIcon(new ImageIcon(Login.class.getResource("/Imgs/login16_Enter.png")));
+		btnEntrar.setActionCommand("OK");
+		getRootPane().setDefaultButton(btnEntrar);
 		btnEntrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String username=txtUsername.getText();

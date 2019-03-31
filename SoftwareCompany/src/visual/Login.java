@@ -35,6 +35,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.Toolkit;
 import java.awt.Window.Type;
+import java.awt.Frame;
 
 public class Login extends JFrame {
 
@@ -89,6 +90,18 @@ public class Login extends JFrame {
 	 * Create the dialog.
 	 */
 	public Login() {
+		getContentPane().addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				Exit(e);
+			}
+		});
+		addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				Exit(e);
+			}
+		});
 		setAlwaysOnTop(true);
 		setTitle("Login");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/Imgs/login48icon.png")));
@@ -96,11 +109,23 @@ public class Login extends JFrame {
 		setUndecorated(true);
 		setBounds(100, 100, 301, 329);
 		getContentPane().setLayout(new BorderLayout());
+		contentPanel.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				Exit(e);
+			}
+		});
 		contentPanel.setBackground(new Color(245, 245, 245));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
 		JPanel panel = new JPanel();
+		panel.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				Exit(e);
+			}
+		});
 		panel.setBackground(new Color(255, 255, 204));
 		panel.setBounds(0, 0, 360, 96);
 		contentPanel.add(panel);
@@ -120,6 +145,12 @@ public class Login extends JFrame {
 		panel.add(lblLogin_1);
 		
 		txtUsername = new JTextField();
+		txtUsername.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				Exit(e);
+			}
+		});
 		txtUsername.setToolTipText("Nombre de usuario");
 		txtUsername.addFocusListener(new FocusAdapter() {
 			@Override
@@ -136,6 +167,12 @@ public class Login extends JFrame {
 		txtUsername.setColumns(10);
 		
 		txtPassword = new JTextField();
+		txtPassword.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				Exit(e);
+			}
+		});
 		txtPassword.setToolTipText("Contrase\u00F1a");
 		txtPassword.addFocusListener(new FocusAdapter() {
 			@Override
@@ -164,6 +201,12 @@ public class Login extends JFrame {
 		contentPanel.add(label_1);
 		
 		JButton btnEntrar = new JButton("Entrar");
+		btnEntrar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				Exit(e);
+			}
+		});
 		btnEntrar.setToolTipText("Entrar al sistema");
 		btnEntrar.setIcon(new ImageIcon(Login.class.getResource("/Imgs/login16_Enter.png")));
 		btnEntrar.setActionCommand("OK");
@@ -192,6 +235,12 @@ public class Login extends JFrame {
 		contentPanel.add(btnEntrar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				Exit(e);
+			}
+		});
 		btnCancelar.setToolTipText("Salir");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -200,6 +249,13 @@ public class Login extends JFrame {
 		});
 		btnCancelar.setIcon(new ImageIcon(Login.class.getResource("/Imgs/exit.png")));
 		btnCancelar.setBounds(29, 246, 113, 23);
+		btnCancelar.setActionCommand("Cancel");
 		contentPanel.add(btnCancelar);
+	}
+	
+	private void Exit(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			dispose();
+		}
 	}
 }

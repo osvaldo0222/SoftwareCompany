@@ -18,6 +18,7 @@ public class SoftwareCompany implements Serializable {
 	public static int codProjects = 0;
 	public static int codClients = 0;
 	public static int codUsers = 0;
+	public static int codContract=0;
 	
 	private SoftwareCompany() {
 		super();

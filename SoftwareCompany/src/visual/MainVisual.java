@@ -140,6 +140,20 @@ public class MainVisual extends JFrame {
 		});
 		mnProyectos.add(mntmRegistrar_2);
 		
+		JMenuItem mntmListarProyectos = new JMenuItem("Listar Proyectos");
+		mntmListarProyectos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ListProjects listPro=new ListProjects();
+				listPro.setModal(true);
+				listPro.setSize(1250, 700);
+				listPro.setResizable(false);
+				listPro.setLocationRelativeTo(null);
+				listPro.setVisible(true);
+				
+			}
+		});
+		mnProyectos.add(mntmListarProyectos);
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));

@@ -15,8 +15,9 @@ public class Contract implements Serializable {
 	private String idClient;
 	private Project project;
 	private float price;
+	private String SignoutDay;
 	
-	public Contract(String id, Date dateBegin, Date dueDate, Date finalDate, String idClient, Project project, float price) {
+	public Contract(String id, Date dateBegin, Date dueDate,String idClient, Project project, float price,String SignoutDay) {
 		super();
 		this.id = id;
 		this.dateBegin = dateBegin;
@@ -25,6 +26,7 @@ public class Contract implements Serializable {
 		this.idClient = idClient;
 		this.project = project;
 		this.price = price;
+		this.SignoutDay=SignoutDay;
 	}
 
 	public String getId() {
@@ -81,5 +83,13 @@ public class Contract implements Serializable {
 
 	public void setFinalDate(Date finalDate) {
 		this.finalDate = finalDate;
+	}
+
+	public String getSignoutDay() {
+		return SignoutDay;
+	}
+
+	public void setSignoutDay(String signoutDay) {
+		SignoutDay = signoutDay;
 	}
 }

@@ -16,10 +16,13 @@ import javax.swing.border.TitledBorder;
 import javax.swing.text.MaskFormatter;
 
 import logical.Boss;
+import logical.Contract;
 import logical.Designer;
 import logical.Planner;
 import logical.Programmer;
+import logical.Project;
 import logical.SoftwareCompany;
+import logical.Worker;
 
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -31,6 +34,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -126,6 +133,16 @@ public class ProjectRegistration extends JDialog {
 		comboBoxTipoProyecto.setFont(new Font("SansSerif", Font.PLAIN, 12));
 	    comboBoxLenguaje = new JComboBox();
 	    JButton btnFinalizar = new JButton("Finalizar");
+	  
+	    
+	    addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				DLMWorkersSelected.removeAllElements();
+				listWorkersSelected.removeAll();
+				
+			}
+		});
 		
 		
 		comboBoxLenguaje.setFont(new Font("SansSerif", Font.PLAIN, 12));
@@ -139,7 +156,7 @@ public class ProjectRegistration extends JDialog {
 		
 	    listWorkersSelected = new JList();
 	    panelTermsContract = new JPanel();
-	    panelTermsContract.setBounds(10, 154, 572, 201);
+	    panelTermsContract.setBounds(602, 154, 572, 201);
 	    FirstPanel.add(panelTermsContract);
 	    panelTermsContract.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "T\u00E9rminos y Condiciones ", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 	    panelTermsContract.setLayout(null);
@@ -184,7 +201,7 @@ public class ProjectRegistration extends JDialog {
 	     panelTermsContract.setVisible(false);
 		
 	    panelContractClient = new JPanel();
-	    panelContractClient.setBounds(10, 11, 572, 132);
+	    panelContractClient.setBounds(602, 11, 572, 132);
 	    FirstPanel.add(panelContractClient);
 	    panelContractClient.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "informaci\u00F3n Cliente", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 	    panelContractClient.setVisible(false);
@@ -276,7 +293,7 @@ public class ProjectRegistration extends JDialog {
 		JButton button = new JButton("");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int auxClient=-1;
+				
 				String auxCodQuery=txtQueryCodClient.getText();
 				if (SoftwareCompany.getInstance().clientById(auxCodQuery)!=null) {
 					txtQueryNameClient.setText(SoftwareCompany.getInstance().clientById(auxCodQuery).getName()+" "+SoftwareCompany.getInstance().clientById(auxCodQuery).getLast_name());
@@ -523,10 +540,28 @@ public class ProjectRegistration extends JDialog {
 					return;
 				}
 				if (comboBoxTipoWorkers.getSelectedItem().equals("Jefe")) {
+					
 					addBoss();
 					
 				}else if(comboBoxTipoWorkers.getSelectedItem().equals("<Selecciona>")) {
-					return;
+					
+					String[] codSplit=listWorkers.getSelectedValue().toString().split(" ");
+					
+						if (SoftwareCompany.getInstance().searchWorkerByCode(codSplit[0]) instanceof Boss) {
+							addBoss();
+					}
+						
+						
+						else {
+						addLanguaje();
+					}
+					
+					/*for (int i = 0; i < DLMWorkersSelected.size(); i++) {
+				String[] codSplit=DLMWorkersSelected.getElementAt(i).toString().split(" ");
+				if (SoftwareCompany.getInstance().searchWorkerByCode(codSplit[0]) instanceof Boss) {
+					contBoss++;
+				}*/
+					
 				}else {
 					addLanguaje();
 				}	
@@ -594,6 +629,46 @@ public class ProjectRegistration extends JDialog {
 			btnFinalizar.setFont(new Font("SansSerif", Font.PLAIN, 14));
 			btnFinalizar.setVisible(false);
 			buttonPane.add(btnFinalizar);
+			  btnFinalizar.addActionListener(new ActionListener() {
+			    	public void actionPerformed(ActionEvent e) {
+			    		if (!txtQueryNameClient.getText().equalsIgnoreCase("") && days>0) {
+			    			String codPro=txtCodigoProyecto.getText();
+			    			String dateSigContract=txtDateOriginContract.getText();
+			    			String namePRo=txtNombreProyecto.getText();
+			    			String tipoPro=comboBoxTipoProyecto.getSelectedItem().toString();
+			    			String langujae=comboBoxLenguaje.getSelectedItem().toString();
+			    			String clientId=txtQueryCodClient.getText();
+			    			//String beginD=dateBegin.getDateFormatString();
+			    			//String dateFinish=dateEnd.getDateFormatString();
+			    			String CodContra=("CONT-"+SoftwareCompany.codContract+1);
+			    			Date beginD=dateBegin.getDate();
+			    			Date dateFinish=dateEnd.getDate();
+			    			String sigDate=txtDateOriginContract.getText();
+			    			
+			    			Project pro1=new Project(codPro, namePRo,tipoPro, langujae, "Nuevo");
+			    			Worker worker=null;
+			    			float price=calcAmountOfMoney(days);
+			    			for (int i = 0; i < DLMWorkersSelected.size(); i++) {
+			    				String[] split=DLMWorkersSelected.getElementAt(i).toString().split(" ");
+			    				System.out.println("Split"+split[0]);
+			    				
+			    				pro1.inserWorker(SoftwareCompany.getInstance().searchWorkerByCode(split[0]));
+			    			
+							}
+			    			Contract c1=new Contract(CodContra, beginD, dateFinish, clientId, pro1, price,sigDate);
+							JOptionPane.showMessageDialog(null, "Contrato Registrado", "Exito", JOptionPane.INFORMATION_MESSAGE);
+							SoftwareCompany.getInstance().insertProject(pro1);
+							SoftwareCompany.getInstance().insertContract(c1);
+							
+							SoftwareCompany.codProjects++;
+						}else {
+							JOptionPane.showMessageDialog(null, "Revise sus datos", "Error", JOptionPane.ERROR_MESSAGE);
+
+						}
+			    		
+			    		
+			    	}
+			    });
 			{
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
@@ -644,6 +719,7 @@ public class ProjectRegistration extends JDialog {
 	}
 	
 	public void calcDays(JDateChooser dateBegin, JDateChooser dateEnd ) {
+		days=0;
 		
 		if (dateBegin.getDate()!=null && dateEnd.getDate()!=null) {
 			Calendar init=dateBegin.getCalendar();
@@ -683,7 +759,7 @@ public class ProjectRegistration extends JDialog {
 					
 					JOptionPane.showMessageDialog(null, "No puede tener mas de un jefe por proyecto", "Registro Proyecto", JOptionPane.ERROR_MESSAGE);
 			}else{
-					for (int i = 0; i < DLMWorkersSelected.size(); i++) {
+					for (int i = 0; i < DLMWorkersSelected.size();i++) {
 						String[] codSplit=DLMWorkersSelected.getElementAt(i).toString().split(" ");
 							if (SoftwareCompany.getInstance().searchWorkerByCode(codSplit[0]) instanceof Boss && cont==0) {
 								cont++;
@@ -691,23 +767,46 @@ public class ProjectRegistration extends JDialog {
 								DLMWorkersSelected.addElement(listWorkers.getSelectedValue());
 								DLM.remove(listWorkers.getSelectedIndex());
 								break;
-							}else if (cont==0) {
-								System.out.println("Entrada22");
-								cont++;
-								DLMWorkersSelected.addElement(listWorkers.getSelectedValue());
-								DLM.remove(listWorkers.getSelectedIndex());
-								break;
 							}
 			
+					}
+					
+					if (DLMWorkersSelected.size()==0) {
+						String[] codSplit=listWorkers.getSelectedValue().toString().split(" ");
+						if (SoftwareCompany.getInstance().searchWorkerByCode(codSplit[0]) instanceof Boss) {
+							cont++;
+							DLMWorkersSelected.addElement(listWorkers.getSelectedValue());
+							DLM.remove(listWorkers.getSelectedIndex());
+						}
+						
+					}
+					if (cont==0) {
+						cont++;
+						DLMWorkersSelected.addElement(listWorkers.getSelectedValue());
+						DLM.remove(listWorkers.getSelectedIndex());
+						
 					}
 			}	
 		
 		
 	}
 	private void addLanguaje() {
-		
+		int contadorlang=0;
+		String[] code=listWorkers.getSelectedValue().toString().split(" ");
+		for (int i = 0; i < DLMWorkersSelected.size(); i++) {
+			String[] codSplit=DLMWorkersSelected.getElementAt(i).toString().split(" ");
+			if (code[0].equals(codSplit[0])) {
+				contadorlang++;
+			}
+			
+		}
+		if (contadorlang==0) {
 			DLMWorkersSelected.addElement(listWorkers.getSelectedValue());
 			DLM.remove(listWorkers.getSelectedIndex());
+			
+		}
+		
+			
 		
 	}
 	private void removeLanguaje() {

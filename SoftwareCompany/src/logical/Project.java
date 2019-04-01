@@ -16,11 +16,11 @@ public class Project implements Serializable {
 	private String state; // Nuevo/En Proceso/Prorrogado/Atrasado/Terminado.
 	private boolean ended;
 
-	public Project(String id, String name, ArrayList<Worker> workers, String type, String language, String state) {
+	public Project(String id, String name,String type, String language, String state) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.workers = workers;
+		this.workers = new ArrayList<>();
 		this.type = type;
 		this.language = language;
 		this.state = state;
@@ -89,5 +89,9 @@ public class Project implements Serializable {
 
 	public void setEnded(boolean ended) {
 		this.ended = ended;
+	}
+	public void inserWorker(Worker w1) {
+		workers.add(w1);
+		
 	}
 }

@@ -74,7 +74,6 @@ public class WorkerRegistration extends JDialog {
 
 	private String[] languajesDisponibles = {"<Lenguajes Disponibles>", "C", "C++", "C#", "Java", "JavaScript", "Python", "Visual Basic", "Go", "Angular JS", "PHP", "HTML", "CSS", "Verilog"};
 	private String[] lenguajesDominados = {"<Lenguajes Dominados>"};
-	private DecimalFormat format = new DecimalFormat("###,###.##");
 	private final JPanel contentPanel = new JPanel();
 	private Validation validation = new Validation();
 	private JTextField txtCodigo;
@@ -111,10 +110,17 @@ public class WorkerRegistration extends JDialog {
 	private short selectedType = 0;
 	private Label label;
 	private JTextField txtCorreo;
+	private boolean flagModifying = false;
 
-	public WorkerRegistration() {
+	public WorkerRegistration(Worker aux) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(WorkerRegistration.class.getResource("/Imgs/Workers.png")));
-		setTitle("Registro de Trabajadores");
+		if (aux != null) {
+			setTitle("Modificar Trabajador: " + aux.getId());
+			worker = aux;
+			flagModifying = true;
+		} else {
+			setTitle("Registro de Trabajadores");
+		}
 		setFont(new Font("SansSerif", Font.PLAIN, 14));
 		setResizable(false);
 		setBounds(100, 100, 591, 604);
@@ -253,9 +259,7 @@ public class WorkerRegistration extends JDialog {
 			        	File selectedFile = file.getSelectedFile();
 			            String path = selectedFile.getAbsolutePath();
 			            lblImage.setIcon(ResizeImage(path));
-			        } /*else if(result == JFileChooser.CANCEL_OPTION){
-			        	System.out.println("No File Select");
-			        }*/
+			        }
 				}
 			});
 			lblImage.setHorizontalAlignment(SwingConstants.CENTER);
@@ -739,11 +743,14 @@ public class WorkerRegistration extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.LEFT));
 			getContentPane().add(buttonPane, BorderLayout.NORTH);
 			{
-				btnGuardar = new JButton("Guardar");
+				if (aux != null) {
+					btnGuardar = new JButton("Modificar");
+				} else {
+					btnGuardar = new JButton("Guardar");
+				}
 				btnGuardar.setToolTipText("Guardar");
 				btnGuardar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						//System.out.println("osvaldo"+txtCedula.getText());
 						if (validateCamps()) {
 							String cod = txtCodigo.getText(), cedula = txtCedula.getText(), nombres = txtNombres.getText(), apellidos = txtApellidos.getText(), direccion = txtDireccion.getText(), genero = cbxGenero.getSelectedItem().toString(), telefono = txtTelefono.getText(); 
 							int edad = Integer.parseInt(spnEdad.getValue().toString());
@@ -816,16 +823,19 @@ public class WorkerRegistration extends JDialog {
 									((Planner) worker).setCant_days(((Planner) aux).getCant_days());
 								}
 							}
-							
-							JOptionPane.showMessageDialog(null, "Operación Exitosa", "Trabajadores", JOptionPane.INFORMATION_MESSAGE);
-							clearCamps();
-							disableAllCamps();
-							disableTipos();
-							btnModificarCedula.setEnabled(false);
-							btnGuardar.setEnabled(false);
-							txtCedula.setText("");
-							txtCedula.setEditable(true);
-							txtCedula.requestFocus();
+							if (flagModifying) {
+								dispose();
+							} else {
+								JOptionPane.showMessageDialog(null, "Operación Exitosa", "Trabajadores", JOptionPane.INFORMATION_MESSAGE);
+								clearCamps();
+								disableAllCamps();
+								disableTipos();
+								btnModificarCedula.setEnabled(false);
+								btnGuardar.setEnabled(false);
+								txtCedula.setText("");
+								txtCedula.setEditable(true);
+								txtCedula.requestFocus();
+							}
 						}
 					}
 				});
@@ -848,6 +858,14 @@ public class WorkerRegistration extends JDialog {
 				btnSalir.setFont(new Font("SansSerif", Font.PLAIN, 14));
 				btnSalir.setActionCommand("Cancel");
 				buttonPane.add(btnSalir);
+			}
+			//Con estas lineas que estan aqui puedo modificar un trabajador pasado por el constructor
+			if (aux != null) {
+				completeInformation();
+				txtCedula.setText(aux.getId());
+				txtCedula.validate();
+				txtCedula.setEditable(false);
+				btnGuardar.setEnabled(true);
 			}
 		}
 	}

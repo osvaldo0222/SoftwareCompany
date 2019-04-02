@@ -92,12 +92,23 @@ public class MainVisual extends JFrame {
 		mntmRegistrar.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/worker30px.png")));
 		mntmRegistrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				WorkerRegistration registration = new WorkerRegistration();
+				WorkerRegistration registration = new WorkerRegistration(null);
 				registration.setModal(true);
 				registration.setVisible(true);
 			}
 		});
 		mnTrabajadores.add(mntmRegistrar);
+		
+		JMenuItem mntmListar = new JMenuItem("Listar");
+		mntmListar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ListWorker worker = new ListWorker();
+				worker.setModal(true);
+				worker.setVisible(true);
+			}
+		});
+		mntmListar.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/user30.png")));
+		mnTrabajadores.add(mntmListar);
 		
 		JMenu mnClientes = new JMenu("Clientes");
 		menuBar.add(mnClientes);

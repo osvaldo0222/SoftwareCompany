@@ -377,6 +377,7 @@ public class ClientRegistration extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				btnGuardar = new JButton("Guardar");
+				btnGuardar.setFont(new Font("SansSerif", Font.PLAIN, 14));
 				btnGuardar.setEnabled(false);
 				btnGuardar.setToolTipText("Guardar");
 				btnGuardar.addActionListener(new ActionListener() {
@@ -428,6 +429,7 @@ public class ClientRegistration extends JDialog {
 			}
 			{
 				btnSalir = new JButton("Salir");
+				btnSalir.setFont(new Font("SansSerif", Font.PLAIN, 14));
 				btnSalir.setToolTipText("Salir");
 				btnSalir.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {

@@ -91,7 +91,7 @@ public class SoftwareCompany implements Serializable {
 	}
 	
 	public String calification(String id) {
-		String calification = "";
+		String calification = "EXCELENTE";
 		int total = 0;
 		int good = 0;
 		Worker aux = workerById(id);
@@ -111,11 +111,11 @@ public class SoftwareCompany implements Serializable {
 		if (total > 0) {
 			float percentage = (float) good/total;
 			if (percentage >= 1) {
-				calification = "Excelente";
+				calification = "EXCELENTE";
 			} else if (percentage < 1 && percentage >= 0.8) {
-				calification = "Bueno";
+				calification = "BUENO";
 			} else {
-				calification = "Deficiente";
+				calification = "DEFICIENTE";
 			}
 		}
 		return calification;
@@ -167,10 +167,10 @@ public class SoftwareCompany implements Serializable {
 		return aux;
 	}
 	public Worker searchWorkerByCode(String code) {
-		Worker auxWorker=null;
+		Worker auxWorker = null;
 		for (int i = 0; i < workers.size(); i++) {
 			if (workers.get(i).getCode().equalsIgnoreCase(code)) {
-				auxWorker=workers.get(i);
+				auxWorker = workers.get(i);
 				break;
 			}
 		}
@@ -184,14 +184,13 @@ public class SoftwareCompany implements Serializable {
 	public void setUsers(ArrayList<User> users) {
 		this.users = users;
 	}
+	
 	public User searchUserByUsername(String username,String password) {
 		User auxUser = null;
-		
 		for (User userForEach : users) {
 			if (userForEach.getUsername().equalsIgnoreCase(username) && userForEach.getPassword().equalsIgnoreCase(password)) {
-				auxUser=userForEach;
+				auxUser = userForEach;
 			}
-			
 		}
 		return auxUser;
 	}

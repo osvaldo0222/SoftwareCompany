@@ -17,7 +17,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.awt.Font;
 
 import javax.swing.DefaultComboBoxModel;
@@ -28,6 +30,14 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+
+import logical.Boss;
+import logical.Client;
+import logical.Designer;
+import logical.Programmer;
+import logical.SoftwareCompany;
+import logical.Worker;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.Color;
@@ -43,29 +53,13 @@ public class ListClient extends JDialog {
 	private int index = -1;
 	private String code = "";
 	private JTable tableClients;
-	private String[] headers = {"Código", "Cedula", "Nombre", "Dirección", "Telefono", "P. Activos", "Registro"};
+	private String[] headers = {"Código", "Cedula", "Nombre", "Dirección", "Teléfono", "P. Activos", "Registro"};
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			ListClient dialog = new ListClient();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Create the dialog.
-	 */
 	public ListClient() {
 		setResizable(false);
 		setTitle("Lista de Clientes");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ListClient.class.getResource("/Imgs/listclient30.png")));
-		setBounds(100, 100, 649, 437);
+		setBounds(100, 100, 998, 437);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -74,7 +68,7 @@ public class ListClient extends JDialog {
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Filtrado", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel.setBounds(10, 11, 623, 57);
+		panel.setBounds(10, 11, 972, 57);
 		contentPanel.add(panel);
 		panel.setLayout(null);
 		
@@ -131,7 +125,7 @@ public class ListClient extends JDialog {
 		{
 			JPanel panel_1 = new JPanel();
 			panel_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Clientes", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-			panel_1.setBounds(10, 79, 623, 277);
+			panel_1.setBounds(10, 79, 972, 277);
 			contentPanel.add(panel_1);
 			panel_1.setLayout(new BorderLayout(0, 0));
 			
@@ -152,8 +146,14 @@ public class ListClient extends JDialog {
 			for (int i = 0; i < headers.length; i++) {
 				tableClients.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 			}
+			tableClients.getColumnModel().getColumn(0).setPreferredWidth(30);
+			tableClients.getColumnModel().getColumn(2).setPreferredWidth(250);
+			tableClients.getColumnModel().getColumn(3).setPreferredWidth(150);
+			tableClients.getColumnModel().getColumn(5).setPreferredWidth(15);
+			tableClients.getColumnModel().getColumn(6).setPreferredWidth(25);
 			tableClients.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			tableClients.setRowSorter(sorter);
+			loadtable();
 			scrollPane.setViewportView(tableClients);
 		}
 		
@@ -173,6 +173,11 @@ public class ListClient extends JDialog {
 			}
 			{
 				JButton cancelButton = new JButton("Salir");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						dispose();
+					}
+				});
 				cancelButton.setIcon(new ImageIcon(ListClient.class.getResource("/Imgs/exit.png")));
 				cancelButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
 				cancelButton.setActionCommand("Cancel");
@@ -189,5 +194,24 @@ public class ListClient extends JDialog {
 	        return;
 	    }
 	    sorter.setRowFilter(filter);
+	}
+	
+	private void loadtable() {
+		model.setRowCount(0);
+		rows = new Object[model.getColumnCount()];
+		for (Client aux : SoftwareCompany.getInstance().getClients()) {
+			addRow(aux);
+		}
+	}
+
+	private void addRow(Client aux) {
+		rows[0] = aux.getCode();
+		rows[1] = aux.getId();
+		rows[2] = aux.getName() + " " + aux.getLast_name();
+		rows[3] = aux.getAddress();
+		rows[4] = aux.getPhone();
+		rows[5] = aux.getCant_projects();
+		rows[6] = (new SimpleDateFormat("dd/MM/yyyy")).format(aux.getRegistration_date());
+		model.addRow(rows);
 	}
 }

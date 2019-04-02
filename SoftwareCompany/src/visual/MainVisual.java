@@ -124,6 +124,17 @@ public class MainVisual extends JFrame {
 		});
 		mnClientes.add(mntmRegistrar_1);
 		
+		JMenuItem mntmListar_1 = new JMenuItem("Listar");
+		mntmListar_1.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/listclient30.png")));
+		mntmListar_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ListClient listClient = new ListClient();
+				listClient.setModal(true);
+				listClient.setVisible(true);
+			}
+		});
+		mnClientes.add(mntmListar_1);
+		
 		JMenu mnProyectos = new JMenu("Proyectos");
 		menuBar.add(mnProyectos);
 		
@@ -153,6 +164,18 @@ public class MainVisual extends JFrame {
 			}
 		});
 		mnProyectos.add(mntmListarProyectos);
+		
+		JMenu mnUsuarios = new JMenu("Usuarios");
+		menuBar.add(mnUsuarios);
+		
+		JMenuItem mntmRegistrar_3 = new JMenuItem("Registrar");
+		mnUsuarios.add(mntmRegistrar_3);
+		
+		JMenuItem mntmListar_2 = new JMenuItem("Listar");
+		mnUsuarios.add(mntmListar_2);
+		
+		JMenuItem mntmCerrarSesion = new JMenuItem("Cerrar Sesi\u00F3n");
+		mnUsuarios.add(mntmCerrarSesion);
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

@@ -126,7 +126,7 @@ public class ListWorker extends JDialog {
 		txtFiltro.setColumns(10);
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
+		panel_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Trabajadores", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_1.setBounds(10, 79, 972, 312);
 		contentPanel.add(panel_1);
 		panel_1.setLayout(new BorderLayout(0, 0));

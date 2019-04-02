@@ -207,4 +207,19 @@ public class SoftwareCompany implements Serializable {
 		}
 		return auxUser;
 	}
+
+	public boolean clientIsRemovable(String id) {
+		boolean isRemovable = true;
+		for (Contract contract : contracts) {
+			if (contract.getIdClient().equalsIgnoreCase(id)) {
+				isRemovable = false;
+				break;
+			}
+		}
+		return isRemovable;
+	}
+
+	public void removeClient(Client client) {
+		clients.remove(client);
+	}
 }

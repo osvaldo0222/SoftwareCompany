@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
@@ -209,7 +210,16 @@ public class ListClient extends JDialog {
 				btnEliminar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						if (!code.equalsIgnoreCase("") && index >= 0) {
-							//Quede implementando la funcion eliminar
+							Client client = SoftwareCompany.getInstance().searchClientByCode(code);
+							boolean eliminar = SoftwareCompany.getInstance().clientIsRemovable(client.getId());
+							if (eliminar) {
+								if (JOptionPane.showConfirmDialog(null, "Seguro que desea eliminar el cliente " + code + "?", "Clientes", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+									SoftwareCompany.getInstance().removeClient(client);
+									loadtable();
+								}
+							} else {
+								JOptionPane.showMessageDialog(null, "Este cliente no puede ser eliminado", "Clientes", JOptionPane.ERROR_MESSAGE);
+							}
 						}
 					}
 				});

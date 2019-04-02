@@ -160,6 +160,7 @@ public class ClientRegistration extends JDialog {
 						completeInfo();
 					} else {
 						btnEditCedula.setEnabled(true);
+						btnGuardar.setEnabled(true);
 					}
 				txtTelefono.requestFocus();
 				}

@@ -91,7 +91,7 @@ public class ProjectRegistration extends JDialog {
 	private JPanel panelContractClient;
 	private JPanel panelTermsContract;
 	private JButton btnAtras;
-	public static int cont=0;
+	private int cont=0;
 	SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy ");
 	Date date=new Date();
 	private int days;
@@ -156,7 +156,7 @@ public class ProjectRegistration extends JDialog {
 		
 	    listWorkersSelected = new JList();
 	    panelTermsContract = new JPanel();
-	    panelTermsContract.setBounds(602, 154, 572, 201);
+	    panelTermsContract.setBounds(10, 154, 572, 201);
 	    FirstPanel.add(panelTermsContract);
 	    panelTermsContract.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "T\u00E9rminos y Condiciones ", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 	    panelTermsContract.setLayout(null);
@@ -201,7 +201,7 @@ public class ProjectRegistration extends JDialog {
 	     panelTermsContract.setVisible(false);
 		
 	    panelContractClient = new JPanel();
-	    panelContractClient.setBounds(602, 11, 572, 132);
+	    panelContractClient.setBounds(10, 11, 572, 132);
 	    FirstPanel.add(panelContractClient);
 	    panelContractClient.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "informaci\u00F3n Cliente", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 	    panelContractClient.setVisible(false);
@@ -594,7 +594,7 @@ public class ProjectRegistration extends JDialog {
 				
 				sigButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if (validateData()==true && validateLits()==true) {
+						if (validateData()==true && validateLits()==true && !comboBoxTipoProyecto.getSelectedItem().equals("<Selecciona un tipo de App>") && !comboBoxLenguaje.getSelectedItem().equals("<Selecciona un lenguaje>")) {
 							sigButton.setEnabled(false);
 							sigButton.setVisible(false);
 							comboBoxLenguaje.setEnabled(false);

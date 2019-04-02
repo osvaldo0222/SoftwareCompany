@@ -177,6 +177,7 @@ public class ListWorker extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				btnModificar = new JButton("Modificar");
+				btnModificar.setEnabled(false);
 				btnModificar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						if (!code.equalsIgnoreCase("") && index >= 0) {
@@ -195,7 +196,6 @@ public class ListWorker extends JDialog {
 						}
 					}
 				});
-				btnModificar.setEnabled(false);
 				btnModificar.setIcon(new ImageIcon(ListWorker.class.getResource("/Imgs/icons8-edit-file-16.png")));
 				btnModificar.setFont(new Font("SansSerif", Font.PLAIN, 14));
 				btnModificar.setActionCommand("OK");

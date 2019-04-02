@@ -40,6 +40,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 public class ClientRegistration extends JDialog {
 
@@ -59,13 +63,17 @@ public class ClientRegistration extends JDialog {
 	private JButton btnEditCedula;
 	private JLabel lblImagen;
 	private Client client;
+	private JLabel lblGenero;
+	private JLabel lblEdad;
+	private JComboBox cbxGenero;
+	private JSpinner spnEdad;
 	
 	public ClientRegistration() {
 		setFont(new Font("SansSerif", Font.PLAIN, 14));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ClientRegistration.class.getResource("/Imgs/user.png")));
 		setTitle("Registrar Cliente");
 		setResizable(false);
-		setBounds(100, 100, 401, 417);
+		setBounds(100, 100, 401, 472);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -74,7 +82,7 @@ public class ClientRegistration extends JDialog {
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Informaci\u00F3n General", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel.setBounds(10, 11, 375, 329);
+		panel.setBounds(10, 11, 375, 380);
 		contentPanel.add(panel);
 		panel.setLayout(null);
 		
@@ -124,7 +132,7 @@ public class ClientRegistration extends JDialog {
 		
 		JLabel lblProyectos = new JLabel("Proyectos:");
 		lblProyectos.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		lblProyectos.setBounds(10, 296, 68, 19);
+		lblProyectos.setBounds(10, 342, 68, 19);
 		panel.add(lblProyectos);
 		
 		MaskFormatter formatCedula = null;
@@ -159,8 +167,13 @@ public class ClientRegistration extends JDialog {
 						txtTelefono.setText(client.getPhone());
 						txtNombres.setText(client.getName());
 						txtApellidos.setText(client.getLast_name());
+						txtNombres.setEditable(false);
+						txtApellidos.setEditable(false);
 						txtDireccion.setText(client.getAddress());
 						txtCorreo.setText(client.getMail());
+						cbxGenero.setSelectedItem(client.getGender());
+						cbxGenero.setEnabled(false);
+						spnEdad.setValue(client.getAge());
 						txtCantProyectos.setText(client.getCant_projects() + "");
 						txtFechaRegistro.setText((new SimpleDateFormat("yyyy/MM/dd")).format(client.getRegistration_date()));
 						btnGuardar.setText("Modificar");
@@ -337,20 +350,20 @@ public class ClientRegistration extends JDialog {
 		txtCantProyectos.setText("0");
 		txtCantProyectos.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtCantProyectos.setEditable(false);
-		txtCantProyectos.setBounds(85, 295, 80, 20);
+		txtCantProyectos.setBounds(88, 343, 99, 20);
 		panel.add(txtCantProyectos);
 		txtCantProyectos.setColumns(10);
 		
 		JLabel lblRegistro = new JLabel("Registro:");
 		lblRegistro.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		lblRegistro.setBounds(175, 295, 68, 17);
+		lblRegistro.setBounds(194, 344, 68, 17);
 		panel.add(lblRegistro);
 		
 		txtFechaRegistro = new JTextField();
 		txtFechaRegistro.setToolTipText("Fecha de Registro");
 		txtFechaRegistro.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtFechaRegistro.setEditable(false);
-		txtFechaRegistro.setBounds(245, 295, 120, 20);
+		txtFechaRegistro.setBounds(266, 343, 99, 20);
 		txtFechaRegistro.setText((new SimpleDateFormat("yyyy/MM/dd")).format(new Date()));
 		panel.add(txtFechaRegistro);
 		txtFechaRegistro.setColumns(10);
@@ -370,6 +383,30 @@ public class ClientRegistration extends JDialog {
 		btnEditCedula.setIcon(new ImageIcon(ClientRegistration.class.getResource("/Imgs/iconfinder_Modify_132685.png")));
 		btnEditCedula.setBounds(316, 62, 49, 23);
 		panel.add(btnEditCedula);
+		
+		lblGenero = new JLabel("G\u00E9nero:");
+		lblGenero.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		lblGenero.setBounds(10, 301, 68, 19);
+		panel.add(lblGenero);
+		
+		lblEdad = new JLabel("Edad:");
+		lblEdad.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		lblEdad.setBounds(194, 302, 49, 17);
+		panel.add(lblEdad);
+		
+		cbxGenero = new JComboBox();
+		cbxGenero.setToolTipText("G\u00E9nero");
+		cbxGenero.setEnabled(false);
+		cbxGenero.setModel(new DefaultComboBoxModel(new String[] {"<Seleccione>", "Masculino", "Femenino"}));
+		cbxGenero.setBounds(85, 302, 99, 20);
+		panel.add(cbxGenero);
+		
+		spnEdad = new JSpinner();
+		spnEdad.setToolTipText("Edad");
+		spnEdad.setEnabled(false);
+		spnEdad.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
+		spnEdad.setBounds(264, 302, 99, 20);
+		panel.add(spnEdad);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
@@ -390,12 +427,13 @@ public class ClientRegistration extends JDialog {
 							String nombre = txtNombres.getText();
 							String apellidos = txtApellidos.getText();
 							String direccion = txtDireccion.getText();
+							String genero = cbxGenero.getSelectedItem().toString();
 							String correo = txtCorreo.getText();
-							
-							System.out.println("Osvaldo"+cedula);
+							int edad = Integer.parseInt(spnEdad.getValue().toString());
 							
 							if (client == null) {
-								client = new Client(codigo, cedula, nombre, apellidos, direccion, telefono, correo);
+								client = new Client(codigo, cedula, nombre, apellidos, direccion, genero, edad, telefono);
+								client.setMail(correo);
 								storePicture();
 								SoftwareCompany.getInstance().insertClient(client);
 								registrado = true;
@@ -405,6 +443,7 @@ public class ClientRegistration extends JDialog {
 								client.setMail(correo);
 								client.setPhone(telefono);
 								client.setAddress(direccion);
+								client.setAge(edad);
 								storePicture();
 								registrado = true;
 							}
@@ -458,11 +497,13 @@ public class ClientRegistration extends JDialog {
 		txtCorreo.setEditable(b);
 		txtDireccion.setEditable(b);
 		lblImagen.setEnabled(b);
+		cbxGenero.setEnabled(b);
+		spnEdad.setEnabled(b);
 	}
 	
 	private boolean checkCampos() {
 		boolean validos = false;
-		if (!txtCedula.getText().contains("_") && !txtNombres.getText().equalsIgnoreCase("") && !txtApellidos.getText().equalsIgnoreCase("") && !txtTelefono.getText().contains("_") && !txtDireccion.getText().equalsIgnoreCase("")) {
+		if (!txtCedula.getText().contains("_") && !txtNombres.getText().equalsIgnoreCase("") && !txtApellidos.getText().equalsIgnoreCase("") && !txtTelefono.getText().contains("_") && !txtDireccion.getText().equalsIgnoreCase("") && cbxGenero.getSelectedIndex() > 0 && Integer.parseInt(spnEdad.getValue().toString()) > 0) {
 			validos = true;
 		} else {
 			JOptionPane.showMessageDialog(null, "Revise los campos", "Clientes", JOptionPane.INFORMATION_MESSAGE);
@@ -478,6 +519,8 @@ public class ClientRegistration extends JDialog {
 		txtApellidos.setText("");
 		txtDireccion.setText("");
 		txtCorreo.setText("");
+		cbxGenero.setSelectedIndex(0);
+		spnEdad.setValue(1);
 		txtCantProyectos.setText("0");
 		txtFechaRegistro.setText((new SimpleDateFormat("yyyy/MM/dd")).format(new Date()));
 		lblImagen.setIcon(new ImageIcon(ClientRegistration.class.getResource("/com/sun/java/swing/plaf/windows/icons/UpFolder.gif")));

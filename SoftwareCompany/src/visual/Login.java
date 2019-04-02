@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
@@ -29,6 +30,7 @@ import java.awt.event.KeyEvent;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
+import java.util.Date;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
@@ -42,7 +44,7 @@ public class Login extends JFrame {
 	private Validation validation = new Validation();
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtUsername;
-	private JTextField txtPassword;
+	private JPasswordField txtPassword;
 
 	/**
 	 * Launch the application.
@@ -165,7 +167,7 @@ public class Login extends JFrame {
 		contentPanel.add(txtUsername);
 		txtUsername.setColumns(10);
 		
-		txtPassword = new JTextField();
+		txtPassword = new JPasswordField();
 		txtPassword.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -212,17 +214,23 @@ public class Login extends JFrame {
 		getRootPane().setDefaultButton(btnEntrar);
 		btnEntrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String username=txtUsername.getText();
-				String password=txtPassword.getText();
+				String username = txtUsername.getText();
+				char[] passwordChar = txtPassword.getPassword();
+				String password = "";
+				for (char c : passwordChar) {
+					password += c;
+				}
 				
 				if (!username.equalsIgnoreCase("") && !password.equalsIgnoreCase("")) {
 					User userAux = SoftwareCompany.getInstance().searchUserByUsername(username, password);
-					if (userAux!=null) {
+					if (userAux != null) {
+						userAux.setLast_enter(new Date());
 						MainVisual mainVisual = new MainVisual(userAux);
 						dispose();
 						mainVisual.setVisible(true);
 					} else {
 						JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos", "Login", JOptionPane.ERROR_MESSAGE);
+						txtPassword.selectAll();
 					}
 				} else {
 					JOptionPane.showMessageDialog(null, "Complete los campos", "Login", JOptionPane.ERROR_MESSAGE);

@@ -86,10 +86,11 @@ public class MainVisual extends JFrame {
 		mnArchivo.add(mntmCerrar);
 		
 		JMenu mnTrabajadores = new JMenu("Trabajadores");
+		mnTrabajadores.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/worker30px.png")));
 		menuBar.add(mnTrabajadores);
 		
-		JMenuItem mntmRegistrar = new JMenuItem("Registrar");
-		mntmRegistrar.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/worker30px.png")));
+		JMenuItem mntmRegistrar = new JMenuItem("Registrar Trabajadores");
+		mntmRegistrar.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/user30px.png")));
 		mntmRegistrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				WorkerRegistration registration = new WorkerRegistration(null);
@@ -99,7 +100,7 @@ public class MainVisual extends JFrame {
 		});
 		mnTrabajadores.add(mntmRegistrar);
 		
-		JMenuItem mntmListar = new JMenuItem("Listar");
+		JMenuItem mntmListar = new JMenuItem("Listar Trabajadores");
 		mntmListar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				ListWorker worker = new ListWorker();
@@ -107,25 +108,26 @@ public class MainVisual extends JFrame {
 				worker.setVisible(true);
 			}
 		});
-		mntmListar.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/user30.png")));
+		mntmListar.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/list30px.png")));
 		mnTrabajadores.add(mntmListar);
 		
 		JMenu mnClientes = new JMenu("Clientes");
+		mnClientes.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/user30.png")));
 		menuBar.add(mnClientes);
 		
-		JMenuItem mntmRegistrar_1 = new JMenuItem("Registrar");
+		JMenuItem mntmRegistrar_1 = new JMenuItem("Registrar Clientes");
 		mntmRegistrar_1.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/user30px.png")));
 		mntmRegistrar_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ClientRegistration registration = new ClientRegistration();
+				ClientRegistration registration = new ClientRegistration(null);
 				registration.setModal(true);
 				registration.setVisible(true);
 			}
 		});
 		mnClientes.add(mntmRegistrar_1);
 		
-		JMenuItem mntmListar_1 = new JMenuItem("Listar");
-		mntmListar_1.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/listclient30.png")));
+		JMenuItem mntmListar_1 = new JMenuItem("Listar Clientes");
+		mntmListar_1.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/list30px.png")));
 		mntmListar_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ListClient listClient = new ListClient();

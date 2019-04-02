@@ -167,6 +167,7 @@ public class SoftwareCompany implements Serializable {
 		}
 		return aux;
 	}
+	
 	public Worker searchWorkerByCode(String code) {
 		Worker auxWorker = null;
 		for (int i = 0; i < workers.size(); i++) {
@@ -176,6 +177,17 @@ public class SoftwareCompany implements Serializable {
 			}
 		}
 		return auxWorker;
+	}
+	
+	public Client searchClientByCode(String code) {
+		Client auxClient = null;
+		for (Client client : clients) {
+			if (client.getCode().equalsIgnoreCase(code)) {
+				auxClient = client;
+				break;
+			}
+		}
+		return auxClient;
 	}
 
 	public ArrayList<User> getUsers() {

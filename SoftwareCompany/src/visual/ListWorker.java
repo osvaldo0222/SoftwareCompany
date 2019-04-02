@@ -59,9 +59,9 @@ public class ListWorker extends JDialog {
 
 	public ListWorker() {
 		setResizable(false);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(ListWorker.class.getResource("/Imgs/user30.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ListWorker.class.getResource("/Imgs/list30px.png")));
 		setTitle("Lista de Trabajadores");
-		setBounds(100, 100, 998, 472);
+		setBounds(100, 100, 1038, 472);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -70,7 +70,7 @@ public class ListWorker extends JDialog {
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Filtrado", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel.setBounds(10, 11, 972, 57);
+		panel.setBounds(10, 11, 1012, 57);
 		contentPanel.add(panel);
 		panel.setLayout(null);
 		
@@ -127,7 +127,7 @@ public class ListWorker extends JDialog {
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Trabajadores", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.setBounds(10, 79, 972, 312);
+		panel_1.setBounds(10, 79, 1012, 312);
 		contentPanel.add(panel_1);
 		panel_1.setLayout(new BorderLayout(0, 0));
 		
@@ -164,6 +164,7 @@ public class ListWorker extends JDialog {
 		}
 		tableTrabajadores.getColumnModel().getColumn(0).setPreferredWidth(30);
 		tableTrabajadores.getColumnModel().getColumn(2).setPreferredWidth(250);
+		tableTrabajadores.getColumnModel().getColumn(3).setPreferredWidth(85);
 		tableTrabajadores.getColumnModel().getColumn(5).setPreferredWidth(150);
 		tableTrabajadores.getColumnModel().getColumn(6).setPreferredWidth(70);
 		tableTrabajadores.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -248,7 +249,7 @@ public class ListWorker extends JDialog {
 	private void tableFilter(String text, int column_index) {
 	    RowFilter<TableModel, Object> filter = null;
 	    try {
-	    	filter = RowFilter.regexFilter(text.toUpperCase(), column_index);
+	    	filter = RowFilter.regexFilter("(?i)" + text, column_index);
 	    } catch (java.util.regex.PatternSyntaxException e) {
 	        return;
 	    }

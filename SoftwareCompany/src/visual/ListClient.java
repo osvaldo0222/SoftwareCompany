@@ -41,6 +41,8 @@ import logical.Worker;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ListClient extends JDialog {
 
@@ -54,12 +56,14 @@ public class ListClient extends JDialog {
 	private String code = "";
 	private JTable tableClients;
 	private String[] headers = {"Código", "Cedula", "Nombre", "Dirección", "Teléfono", "P. Activos", "Registro"};
+	private JButton btnModificar;
+	private JButton btnEliminar;
 
 	public ListClient() {
 		setResizable(false);
 		setTitle("Lista de Clientes");
-		setIconImage(Toolkit.getDefaultToolkit().getImage(ListClient.class.getResource("/Imgs/listclient30.png")));
-		setBounds(100, 100, 998, 437);
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ListClient.class.getResource("/Imgs/list30px.png")));
+		setBounds(100, 100, 1038, 437);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -68,7 +72,7 @@ public class ListClient extends JDialog {
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Filtrado", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel.setBounds(10, 11, 972, 57);
+		panel.setBounds(10, 11, 1012, 57);
 		contentPanel.add(panel);
 		panel.setLayout(null);
 		
@@ -125,7 +129,7 @@ public class ListClient extends JDialog {
 		{
 			JPanel panel_1 = new JPanel();
 			panel_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Clientes", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-			panel_1.setBounds(10, 79, 972, 277);
+			panel_1.setBounds(10, 79, 1012, 277);
 			contentPanel.add(panel_1);
 			panel_1.setLayout(new BorderLayout(0, 0));
 			
@@ -138,6 +142,23 @@ public class ListClient extends JDialog {
 			model.setColumnCount(headers.length);
 			model.setColumnIdentifiers(headers);
 			tableClients = new JTable();
+			tableClients.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					if (tableClients.getSelectedRow() >= 0) {
+						index = tableClients.getSelectedRow();
+						code = tableClients.getValueAt(index, 0).toString();
+						btnModificar.setEnabled(true);
+						btnEliminar.setEnabled(true);
+						btnModificar.setText("Modificar " + code);
+						btnEliminar.setText("Eliminar " + code);
+					} else {
+						index = -1;
+						code = "";
+						btnModificar.setEnabled(false);
+					}
+				}
+			});
 			tableClients.setModel(model);
 			tableClients.setDefaultEditor(Object.class, null);
 			tableClients.setAutoCreateRowSorter(true);
@@ -163,13 +184,45 @@ public class ListClient extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("Modificar");
-				okButton.setEnabled(false);
-				okButton.setIcon(new ImageIcon(ListClient.class.getResource("/Imgs/icons8-edit-file-16.png")));
-				okButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
+				btnModificar = new JButton("Modificar");
+				btnModificar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						if (!code.equalsIgnoreCase("") && index >= 0) {
+							Client client = SoftwareCompany.getInstance().searchClientByCode(code);
+							if (client != null) {
+								ClientRegistration clientRegistration = new ClientRegistration(client);
+								clientRegistration.setModal(true);
+								clientRegistration.setVisible(true);
+								code = "";
+								index = -1;
+								btnModificar.setEnabled(false);
+								btnEliminar.setEnabled(false);
+								btnModificar.setText("Modificar");
+								tableClients.clearSelection();
+								loadtable();
+							}
+						}
+					}
+				});
+				
+				btnEliminar = new JButton("Eliminar");
+				btnEliminar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						if (!code.equalsIgnoreCase("") && index >= 0) {
+							//Quede implementando la funcion eliminar
+						}
+					}
+				});
+				btnEliminar.setEnabled(false);
+				btnEliminar.setFont(new Font("SansSerif", Font.PLAIN, 14));
+				btnEliminar.setIcon(new ImageIcon(ListClient.class.getResource("/Imgs/delete16.png")));
+				buttonPane.add(btnEliminar);
+				btnModificar.setEnabled(false);
+				btnModificar.setIcon(new ImageIcon(ListClient.class.getResource("/Imgs/icons8-edit-file-16.png")));
+				btnModificar.setFont(new Font("SansSerif", Font.PLAIN, 14));
+				btnModificar.setActionCommand("OK");
+				buttonPane.add(btnModificar);
+				getRootPane().setDefaultButton(btnModificar);
 			}
 			{
 				JButton cancelButton = new JButton("Salir");
@@ -189,7 +242,7 @@ public class ListClient extends JDialog {
 	private void tableFilter(String text, int column_index) {
 	    RowFilter<TableModel, Object> filter = null;
 	    try {
-	    	filter = RowFilter.regexFilter(text.toUpperCase(), column_index);
+	    	filter = RowFilter.regexFilter("(?i)" + text, column_index);
 	    } catch (java.util.regex.PatternSyntaxException e) {
 	        return;
 	    }

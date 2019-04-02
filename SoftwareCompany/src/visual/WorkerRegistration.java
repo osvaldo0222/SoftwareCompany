@@ -113,7 +113,7 @@ public class WorkerRegistration extends JDialog {
 	private boolean flagModifying = false;
 
 	public WorkerRegistration(Worker aux) {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(WorkerRegistration.class.getResource("/Imgs/Workers.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(WorkerRegistration.class.getResource("/Imgs/user.png")));
 		if (aux != null) {
 			setTitle("Modificar Trabajador: " + aux.getId());
 			worker = aux;

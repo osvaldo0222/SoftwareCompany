@@ -142,7 +142,8 @@ public class MainVisual extends JFrame {
 		mnProyectos.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/icons8-training-30.png")));
 		menuBar.add(mnProyectos);
 		
-		JMenuItem mntmRegistrar_2 = new JMenuItem("Registrar");
+		JMenuItem mntmRegistrar_2 = new JMenuItem("Registrar Proyectos");
+		mntmRegistrar_2.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/new_project30.png")));
 		mntmRegistrar_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ProjectRegistration registration = new ProjectRegistration();
@@ -156,6 +157,7 @@ public class MainVisual extends JFrame {
 		mnProyectos.add(mntmRegistrar_2);
 		
 		JMenuItem mntmListarProyectos = new JMenuItem("Listar Proyectos");
+		mntmListarProyectos.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/list30px.png")));
 		mntmListarProyectos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ListProjects listPro=new ListProjects();
@@ -170,15 +172,26 @@ public class MainVisual extends JFrame {
 		mnProyectos.add(mntmListarProyectos);
 		
 		JMenu mnUsuarios = new JMenu("Usuarios");
+		mnUsuarios.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/userssss30.png")));
 		menuBar.add(mnUsuarios);
 		
 		JMenuItem mntmRegistrar_3 = new JMenuItem("Registrar");
+		mntmRegistrar_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				UserRegistration registration = new UserRegistration();
+				registration.setModal(true);
+				registration.setVisible(true);
+			}
+		});
+		mntmRegistrar_3.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/user30px.png")));
 		mnUsuarios.add(mntmRegistrar_3);
 		
 		JMenuItem mntmListar_2 = new JMenuItem("Listar");
+		mntmListar_2.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/list30px.png")));
 		mnUsuarios.add(mntmListar_2);
 		
 		JMenuItem mntmCerrarSesion = new JMenuItem("Cerrar Sesi\u00F3n");
+		mntmCerrarSesion.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/log_out30.png")));
 		mnUsuarios.add(mntmCerrarSesion);
 		
 		contentPane = new JPanel();

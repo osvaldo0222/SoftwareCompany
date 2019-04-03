@@ -194,13 +194,7 @@ public class ListClient extends JDialog {
 								ClientRegistration clientRegistration = new ClientRegistration(client);
 								clientRegistration.setModal(true);
 								clientRegistration.setVisible(true);
-								code = "";
-								index = -1;
-								btnModificar.setEnabled(false);
-								btnEliminar.setEnabled(false);
-								btnModificar.setText("Modificar");
-								tableClients.clearSelection();
-								loadtable();
+								normalState();
 							}
 						}
 					}
@@ -215,7 +209,7 @@ public class ListClient extends JDialog {
 							if (eliminar) {
 								if (JOptionPane.showConfirmDialog(null, "Seguro que desea eliminar el cliente " + code + "?", "Clientes", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 									SoftwareCompany.getInstance().removeClient(client);
-									loadtable();
+									normalState();
 								}
 							} else {
 								JOptionPane.showMessageDialog(null, "Este cliente no puede ser eliminado", "Clientes", JOptionPane.ERROR_MESSAGE);
@@ -276,5 +270,16 @@ public class ListClient extends JDialog {
 		rows[5] = aux.getCant_projects();
 		rows[6] = (new SimpleDateFormat("dd/MM/yyyy")).format(aux.getRegistration_date());
 		model.addRow(rows);
+	}
+	
+	private void normalState() {
+		code = "";
+		index = -1;
+		btnModificar.setEnabled(false);
+		btnEliminar.setEnabled(false);
+		btnModificar.setText("Modificar");
+		btnEliminar.setText("Eliminar");
+		tableClients.clearSelection();
+		loadtable();
 	}
 }

@@ -138,6 +138,7 @@ public class MainVisual extends JFrame {
 		mnClientes.add(mntmListar_1);
 		
 		JMenu mnProyectos = new JMenu("Proyectos");
+		mnProyectos.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/icons8-training-30.png")));
 		menuBar.add(mnProyectos);
 		
 		JMenuItem mntmRegistrar_2 = new JMenuItem("Registrar");

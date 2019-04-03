@@ -63,6 +63,7 @@ public class MainVisual extends JFrame {
 					writer.writeInt(SoftwareCompany.codProjects);
 					writer.writeInt(SoftwareCompany.codClients);
 					writer.writeInt(SoftwareCompany.codUsers);
+					writer.writeInt(SoftwareCompany.codContract);
 					writer.close();
 					company.close();
 				} catch (Exception e) {
@@ -146,7 +147,7 @@ public class MainVisual extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				ProjectRegistration registration = new ProjectRegistration();
 				registration.setModal(true);
-				registration.setSize(600, 430);
+				registration.setSize(625, 450);
 				registration.setResizable(false);
 				registration.setLocationRelativeTo(null);
 				registration.setVisible(true);

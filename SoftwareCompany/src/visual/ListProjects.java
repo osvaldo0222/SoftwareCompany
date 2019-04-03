@@ -59,7 +59,7 @@ public class ListProjects extends JDialog {
 		panel.add(scrollPane);
 		
 		tableProjects = new JTable();
-		String [] header = {"ID Contrato", "ID Cliente", "Nombre Cliente", "ID Proyecto", "Tipo Proyecto","Fecha Firma Contrato", "Fecha Inicio", "Fecha de entrega", "Total a pagar"};
+		String [] header = {"ID Contrato", "ID Cliente", "Nombre Cliente", "ID Proyecto", "Tipo Proyecto","Fecha Firma Contrato", "Fecha Inicio", "Fecha de entrega", "Total a pagar","Estado"};
 		model = new DefaultTableModel();
 		model.setColumnIdentifiers(header);
 		tableProjects.setModel(model);
@@ -101,6 +101,7 @@ public class ListProjects extends JDialog {
 			fila[6]=SoftwareCompany.getInstance().getContracts().get(i).getDateBegin();
 			fila[7]=SoftwareCompany.getInstance().getContracts().get(i).getDueDate();
 			fila[8]=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+			fila[9]=SoftwareCompany.getInstance().getContracts().get(i).getProject().getState();
 			model.addRow(fila);
 		}
 		

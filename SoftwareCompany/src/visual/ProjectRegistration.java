@@ -16,6 +16,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.text.MaskFormatter;
 
 import logical.Boss;
+import logical.Client;
 import logical.Contract;
 import logical.Designer;
 import logical.Planner;
@@ -68,6 +69,7 @@ import javax.swing.JTabbedPane;
 import java.awt.Label;
 import com.toedter.calendar.JDateChooser;
 import javax.swing.JTextPane;
+import javax.swing.JCheckBox;
 
 public class ProjectRegistration extends JDialog {
 
@@ -92,11 +94,12 @@ public class ProjectRegistration extends JDialog {
 	private JPanel panelTermsContract;
 	private JButton btnAtras;
 	private int cont=0;
-	SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy ");
+	SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy");
 	Date date=new Date();
-	private int days;
+
 	private JTextPane BigTxtContract;
 	private Object formatCedula;
+	private JTextField txtpreciototal;
 	
 
 	/**
@@ -121,13 +124,14 @@ public class ProjectRegistration extends JDialog {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ProjectRegistration.class.getResource("/Imgs/newProject.png")));
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setTitle("Nuevo Proyecto");
-		setBounds(100, 100, 1200, 747);
+		setBounds(100, 100, 1259, 747);
 		getContentPane().setLayout(new BorderLayout());
 		FirstPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(FirstPanel, BorderLayout.CENTER);
 		FirstPanel.setLayout(null);
 		
 		comboBoxTipoProyecto = new JComboBox();
+		txtpreciototal = new JTextField();
 		 TrabajadoresPanel = new JPanel();
 		
 		comboBoxTipoProyecto.setFont(new Font("SansSerif", Font.PLAIN, 12));
@@ -156,7 +160,7 @@ public class ProjectRegistration extends JDialog {
 		
 	    listWorkersSelected = new JList();
 	    panelTermsContract = new JPanel();
-	    panelTermsContract.setBounds(10, 154, 572, 201);
+	    panelTermsContract.setBounds(10, 154, 600, 215);
 	    FirstPanel.add(panelTermsContract);
 	    panelTermsContract.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "T\u00E9rminos y Condiciones ", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 	    panelTermsContract.setLayout(null);
@@ -167,41 +171,74 @@ public class ProjectRegistration extends JDialog {
 	    panelTermsContract.add(label_5);
 	    
 	    JDateChooser dateBegin = new JDateChooser();
-	    dateBegin.setBounds(112, 29, 90, 20);
+	    dateBegin.setBounds(130, 29, 171, 20);
 	    panelTermsContract.add(dateBegin);
 	    
 	    Label label_6 = new Label("Fecha Entrega:");
 	    label_6.setFont(new Font("SansSerif", Font.PLAIN, 14));
-	    label_6.setBounds(208, 29, 112, 20);
+	    label_6.setBounds(12, 60, 112, 20);
 	    panelTermsContract.add(label_6);
 	    
 	    JDateChooser dateEnd = new JDateChooser();
-	    dateEnd.setBounds(326, 29, 90, 20);
+	    dateEnd.setBounds(130, 60, 171, 20);
 	    panelTermsContract.add(dateEnd);
 	    
 	    JButton btnGenerar = new JButton("Generar Contrato");
+	    btnGenerar.setFont(new Font("SansSerif", Font.PLAIN, 13));
 	    btnGenerar.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
-	    		btnFinalizar.setEnabled(true);
-	    		btnFinalizar.setVisible(true);
-	    		calcDays(dateBegin, dateEnd);
+	    		
+	    		int daysCalculated=SoftwareCompany.getInstance().calcDays(dateBegin, dateEnd);
+	    		System.out.println("el dia calculado cono "+daysCalculated);
+	    		txtpreciototal.setText(Float.toString(calcAmountOfMoney(daysCalculated)));
+	    		BigTxtContract.setText("Señores, "+txtQueryNameClient.getText()+" dominicano, mayor de edad, soltero,"
+	    				+ " portador  de la Cédula de Identidad y Electoral No."+SoftwareCompany.getInstance().clientById(txtQueryCodClient.getText()).getId()+" "
+	    				+ "domiciliado y residente en "+txtQueryAddress.getText()+" quien en lo adelante y para todos los fines y consecuencias legales del presente "
+	    				+ "acto se denominará   EL REPRESENTANTE,  LA PRIMERA PARTE o por su propio nombres y apellidos.\n\n"
+	    				+ "-----------------------SE HA CONVENIDO Y PACTADO LO SIGUIENTE-----------------------"
+	    				+ "PRIMERO: los señores "+txtQueryNameClient.getText()+ ", por medio del presente acto autorizan y contratan a Empresa “La empresa” para el diseño"
+	    				+ " y creación de "+ "que lleva por nombre "+txtNombreProyecto.getText()+ "por un total de "+calcAmountOfMoney(daysCalculated)
+	    						+ "\n");
+	    	
 	    	}
 	    });
-	    btnGenerar.setBounds(426, 29, 132, 20);
+	    btnGenerar.setBounds(458, 60, 132, 20);
 	    panelTermsContract.add(btnGenerar);
 	    
 	    JScrollPane scrollPane_2 = new JScrollPane();
-	    scrollPane_2.setBounds(12, 73, 546, 117);
+	    scrollPane_2.setBounds(12, 91, 578, 81);
 	    panelTermsContract.add(scrollPane_2);
 	    
 	     BigTxtContract = new JTextPane();
 	     scrollPane_2.setViewportView(BigTxtContract);
 	     BigTxtContract.setFont(new Font("SansSerif", Font.PLAIN, 13));
 	     BigTxtContract.setEditable(false);
+	     
+	     JCheckBox chckbxProrrogarProyecto = new JCheckBox("Prorrogar proyecto");
+	     chckbxProrrogarProyecto.setFont(new Font("SansSerif", Font.PLAIN, 14));
+	     chckbxProrrogarProyecto.setBounds(307, 29, 145, 23);
+	     panelTermsContract.add(chckbxProrrogarProyecto);
+	     chckbxProrrogarProyecto.setEnabled(false);
+	     
+	     JDateChooser dateProrroga = new JDateChooser();
+	     dateProrroga.setBounds(458, 32, 132, 20);
+	     panelTermsContract.add(dateProrroga);
+	     dateProrroga.setEnabled(false);
+	     
+	     Label label_7 = new Label("Total:");
+	     label_7.setFont(new Font("SansSerif", Font.PLAIN, 14));
+	     label_7.setBounds(390, 183, 62, 22);
+	     panelTermsContract.add(label_7);
+	     
+	     
+	     txtpreciototal.setFont(new Font("SansSerif", Font.PLAIN, 14));
+	     txtpreciototal.setBounds(458, 185, 132, 20);
+	     panelTermsContract.add(txtpreciototal);
+	     txtpreciototal.setColumns(10);
 	     panelTermsContract.setVisible(false);
 		
 	    panelContractClient = new JPanel();
-	    panelContractClient.setBounds(10, 11, 572, 132);
+	    panelContractClient.setBounds(10, 11, 600, 132);
 	    FirstPanel.add(panelContractClient);
 	    panelContractClient.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "informaci\u00F3n Cliente", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 	    panelContractClient.setVisible(false);
@@ -323,7 +360,7 @@ public class ProjectRegistration extends JDialog {
 		//InformacionGeneralPanel.setBounds(10, 11, 601, 221);
 		InformacionGeneralPanel.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		//InformacionGeneralPanel.setBorder(new TitledBorder(null, "Informaci\u00F3n General", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		InformacionGeneralPanel.setBounds(10, 11, 572, 132);
+		InformacionGeneralPanel.setBounds(10, 11, 600, 132);
 
 		FirstPanel.add(InformacionGeneralPanel);
 		InformacionGeneralPanel.setLayout(null);
@@ -363,7 +400,7 @@ public class ProjectRegistration extends JDialog {
 		{
 			JLabel lblLenguaje = new JLabel("Lenguaje:");
 			lblLenguaje.setFont(new Font("SansSerif", Font.PLAIN, 14));
-			lblLenguaje.setBounds(310, 89, 72, 20);
+			lblLenguaje.setBounds(323, 89, 72, 20);
 			InformacionGeneralPanel.add(lblLenguaje);
 		}
 		{
@@ -399,7 +436,7 @@ public class ProjectRegistration extends JDialog {
 		
 		
 		comboBoxTipoProyecto.setModel(new DefaultComboBoxModel(new String[] {"<Selecciona un tipo de App>", "App. Escritorio", "Movil", "Paginas WEB"}));
-		comboBoxTipoProyecto.setBounds(115, 89, 185, 20);
+		comboBoxTipoProyecto.setBounds(115, 89, 198, 20);
 		InformacionGeneralPanel.add(comboBoxTipoProyecto);
 		comboBoxTipoProyecto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -434,7 +471,7 @@ public class ProjectRegistration extends JDialog {
 			}
 		});
 		
-		txtNombreProyecto.setBounds(115, 59, 447, 20);
+		txtNombreProyecto.setBounds(115, 59, 475, 20);
 		InformacionGeneralPanel.add(txtNombreProyecto);
 		txtNombreProyecto.setColumns(10);
 		
@@ -465,7 +502,7 @@ public class ProjectRegistration extends JDialog {
 		
 		
 		comboBoxLenguaje.setModel(new DefaultComboBoxModel(new String[] {"<Selecciona un lenguaje>", "PHP", "Python", "Java", "RubyOnRails", "Swift", "C#", "VisualBasic", "Delphi", "C", "C++"}));
-		comboBoxLenguaje.setBounds(392, 89, 170, 20);
+		comboBoxLenguaje.setBounds(405, 89, 185, 20);
 		InformacionGeneralPanel.add(comboBoxLenguaje);
 		
 		JLabel lblFecha = new JLabel("Fecha:");
@@ -476,20 +513,20 @@ public class ProjectRegistration extends JDialog {
 		txtDateOriginContract = new JTextField();
 		txtDateOriginContract.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtDateOriginContract.setEditable(false);
-		txtDateOriginContract.setBounds(392, 29, 170, 20);
+		txtDateOriginContract.setBounds(392, 29, 198, 20);
 		InformacionGeneralPanel.add(txtDateOriginContract);
 		txtDateOriginContract.setColumns(10);
 		txtDateOriginContract.setText(dateFormat.format(date));
 		
 		
 		TrabajadoresPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Trabajadores", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		TrabajadoresPanel.setBounds(10, 154, 572, 201);
+		TrabajadoresPanel.setBounds(10, 154, 600, 215);
 		FirstPanel.add(TrabajadoresPanel);
 		TrabajadoresPanel.setLayout(null);
 		
 		JLabel lblBuscarPor = new JLabel("Filtro:");
 		lblBuscarPor.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		lblBuscarPor.setBounds(27, 22, 71, 20);
+		lblBuscarPor.setBounds(10, 21, 71, 20);
 		TrabajadoresPanel.add(lblBuscarPor);
 		
 		
@@ -514,18 +551,18 @@ public class ProjectRegistration extends JDialog {
 		});
 		
 		comboBoxTipoWorkers.setModel(new DefaultComboBoxModel(new String[] {"<Selecciona>", "Dise\u00F1ador", "Jefe", "Planeador", "Programador"}));
-		comboBoxTipoWorkers.setBounds(108, 23, 163, 20);
+		comboBoxTipoWorkers.setBounds(91, 22, 203, 20);
 		TrabajadoresPanel.add(comboBoxTipoWorkers);
 		comboBoxTipoWorkers.setSelectedIndex(0);
 		comboBoxTipoWorkers.setEnabled(false);
 		
 		JLabel lblSeleccionado = new JLabel("Seleccionados:");
 		lblSeleccionado.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		lblSeleccionado.setBounds(299, 22, 132, 20);
+		lblSeleccionado.setBounds(304, 21, 132, 20);
 		TrabajadoresPanel.add(lblSeleccionado);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(28, 53, 243, 137);
+		scrollPane.setBounds(10, 53, 284, 137);
 		TrabajadoresPanel.add(scrollPane);
 		
 		listWorkers = new JList();
@@ -571,7 +608,7 @@ public class ProjectRegistration extends JDialog {
 		
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(299, 53, 243, 137);
+		scrollPane_1.setBounds(304, 53, 286, 137);
 		TrabajadoresPanel.add(scrollPane_1);
 		
 		
@@ -605,6 +642,8 @@ public class ProjectRegistration extends JDialog {
 							panelContractClient.setVisible(true);
 							panelTermsContract.setVisible(true);
 							btnAtras.setVisible(true);
+							btnFinalizar.setEnabled(true);
+				    		btnFinalizar.setVisible(true);
 						
 						}
 						
@@ -631,7 +670,7 @@ public class ProjectRegistration extends JDialog {
 			buttonPane.add(btnFinalizar);
 			  btnFinalizar.addActionListener(new ActionListener() {
 			    	public void actionPerformed(ActionEvent e) {
-			    		if (!txtQueryNameClient.getText().equalsIgnoreCase("") && days>0) {
+			    		if (!txtQueryNameClient.getText().equalsIgnoreCase("") && SoftwareCompany.getInstance().calcDays(dateBegin, dateEnd)>0) {
 			    			String codPro=txtCodigoProyecto.getText();
 			    			String dateSigContract=txtDateOriginContract.getText();
 			    			String namePRo=txtNombreProyecto.getText();
@@ -640,25 +679,54 @@ public class ProjectRegistration extends JDialog {
 			    			String clientId=txtQueryCodClient.getText();
 			    			//String beginD=dateBegin.getDateFormatString();
 			    			//String dateFinish=dateEnd.getDateFormatString();
+			    			
 			    			String CodContra=("CONT-"+SoftwareCompany.codContract+1);
+			    			
 			    			Date beginD=dateBegin.getDate();
 			    			Date dateFinish=dateEnd.getDate();
 			    			String sigDate=txtDateOriginContract.getText();
+			    			String state;
+			    			if (dateBegin.equals(txtDateOriginContract)) {
+			    				 state="Nuevo";
+								
+							}else {
+								 state="En Proceso";
+							}
 			    			
-			    			Project pro1=new Project(codPro, namePRo,tipoPro, langujae, "Nuevo");
+			    			
+			    			
+			    			Project pro1=new Project(codPro, namePRo,tipoPro, langujae,state);
 			    			Worker worker=null;
-			    			float price=calcAmountOfMoney(days);
+			    			float price=calcAmountOfMoney(SoftwareCompany.getInstance().calcDays(dateBegin, dateEnd));
 			    			for (int i = 0; i < DLMWorkersSelected.size(); i++) {
 			    				String[] split=DLMWorkersSelected.getElementAt(i).toString().split(" ");
 			    				System.out.println("Split"+split[0]);
+			    				worker=SoftwareCompany.getInstance().searchWorkerByCode(split[0]);
+			    				pro1.inserWorker(worker);
+			    				worker.insertProject(txtCodigoProyecto.getText());
 			    				
-			    				pro1.inserWorker(SoftwareCompany.getInstance().searchWorkerByCode(split[0]));
-			    			
 							}
 			    			Contract c1=new Contract(CodContra, beginD, dateFinish, clientId, pro1, price,sigDate);
-							JOptionPane.showMessageDialog(null, "Contrato Registrado", "Exito", JOptionPane.INFORMATION_MESSAGE);
+			    			Client aux=SoftwareCompany.getInstance().clientById(clientId);
+			    			int cantProClient=aux.getCant_projects()+1;
+			    			aux.setCant_projects(cantProClient);
+			    			
+							
+			    			JOptionPane.showMessageDialog(null, "Contrato Registrado", "Exito", JOptionPane.INFORMATION_MESSAGE);
 							SoftwareCompany.getInstance().insertProject(pro1);
 							SoftwareCompany.getInstance().insertContract(c1);
+							
+							clear();
+							dispose();
+							ProjectRegistration registration = new ProjectRegistration();
+							registration.setModal(true);
+							registration.setSize(625, 450);
+							registration.setResizable(false);
+							registration.setLocationRelativeTo(null);
+							registration.setVisible(true);
+							
+							
+							
 							
 							SoftwareCompany.codProjects++;
 						}else {
@@ -679,6 +747,19 @@ public class ProjectRegistration extends JDialog {
 				
 			}
 		}
+	}
+	
+	public void clear() {
+		txtNombreProyecto.setText("");
+		txtQueryAddress.setText("");
+		txtQueryCodClient.setText("");
+		txtQueryNameClient.setText("");
+		txtQueryTel.setText("");
+		BigTxtContract.setText("");
+		comboBoxLenguaje.setSelectedIndex(0);
+		comboBoxTipoProyecto.setSelectedIndex(0);
+		comboBoxTipoWorkers.setSelectedIndex(0);
+		
 	}
 	
 	public float calcAmountOfMoney(int days) {
@@ -717,37 +798,6 @@ public class ProjectRegistration extends JDialog {
 		}
 		
 	}
-	
-	public void calcDays(JDateChooser dateBegin, JDateChooser dateEnd ) {
-		days=0;
-		
-		if (dateBegin.getDate()!=null && dateEnd.getDate()!=null) {
-			Calendar init=dateBegin.getCalendar();
-			Calendar end=dateEnd.getCalendar();
-		
-			while(init.before(end) || init.equals(end)) {
-				days++;
-				init.add(Calendar.DATE, 1);
-			}
-			
-			System.out.println(calcAmountOfMoney(days));
-			
-		}else {
-			JOptionPane.showMessageDialog(null, "Selecciona fecha inicio y fecha final", "Error", JOptionPane.ERROR_MESSAGE);
-		}
-		System.out.println(days);
-		BigTxtContract.setText("Señores, "+txtQueryNameClient.getText()+" dominicano, mayor de edad, soltero,"
-				+ " portador  de la Cédula de Identidad y Electoral No."+SoftwareCompany.getInstance().clientById(txtQueryCodClient.getText()).getId()+" "
-				+ "domiciliado y residente en "+txtQueryAddress.getText()+" quien en lo adelante y para todos los fines y consecuencias legales del presente "
-				+ "acto se denominará   EL REPRESENTANTE,  LA PRIMERA PARTE o por su propio nombres y apellidos.\n\n"
-				+ "-----------------------SE HA CONVENIDO Y PACTADO LO SIGUIENTE-----------------------"
-				+ "PRIMERO: los señores "+txtQueryNameClient.getText()+ ", por medio del presente acto autorizan y contratan a Empresa “La empresa” para el diseño"
-				+ " y creación de "+ "que lleva por nombre "+txtNombreProyecto.getText()+ "por un total de "+calcAmountOfMoney(days)
-						+ "\n");
-		
-		
-	}
-	
 	
 	public void addBoss() {
 		int aux=-1;

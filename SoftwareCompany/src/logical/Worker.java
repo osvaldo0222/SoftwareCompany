@@ -35,6 +35,7 @@ public abstract class Worker extends Person implements Serializable {
 	}
 	
 	public void insertProject(String nameProject) {
-		this.projects.add(nameProject);
+		projects.add(nameProject);
 	}
+	
 }

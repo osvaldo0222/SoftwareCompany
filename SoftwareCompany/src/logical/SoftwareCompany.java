@@ -2,6 +2,9 @@ package logical;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+
+import com.toedter.calendar.JDateChooser;
 
 public class SoftwareCompany implements Serializable {
 	/**
@@ -19,6 +22,7 @@ public class SoftwareCompany implements Serializable {
 	public static int codClients = 0;
 	public static int codUsers = 0;
 	public static int codContract=0;
+	public int days;
 	
 	private SoftwareCompany() {
 		super();
@@ -27,6 +31,7 @@ public class SoftwareCompany implements Serializable {
 		this.projects = new ArrayList<>();
 		this.clients = new ArrayList<>();
 		this.contracts = new ArrayList<>();
+		this.days=days;
 	}
 	
 	public static SoftwareCompany getInstance() {
@@ -75,6 +80,7 @@ public class SoftwareCompany implements Serializable {
 	
 	public void insertContract(Contract CNT1) {
 		contracts.add(CNT1);
+		codContract++;
 	}
 	
 	public void insertWorker(Worker worker) {
@@ -221,5 +227,37 @@ public class SoftwareCompany implements Serializable {
 
 	public void removeClient(Client client) {
 		clients.remove(client);
+	}
+
+	public static int getCodContract() {
+		return codContract;
+	}
+
+	public static void setCodContract(int codContract) {
+		SoftwareCompany.codContract = codContract;
+	}
+	
+	public int calcDays(JDateChooser dateBegin, JDateChooser dateEnd ) {
+		days=0;
+		
+		if (dateBegin.getDate()!=null && dateEnd.getDate()!=null) {
+			Calendar init=dateBegin.getCalendar();
+			Calendar end=dateEnd.getCalendar();
+		
+			while(init.before(end) || init.equals(end)) {
+				days++;
+				init.add(Calendar.DATE, 1);
+			}
+			
+		}
+	return days;	
+	}
+
+	public int getDays() {
+		return days;
+	}
+
+	public void setDays(int days) {
+		this.days = days;
 	}
 }

@@ -22,6 +22,7 @@ public class SoftwareCompany implements Serializable {
 	public static int codClients = 0;
 	public static int codUsers = 0;
 	public static int codContract=0;
+	private int variablequesevaaborrar=1111;
 	public int days;
 	
 	private SoftwareCompany() {

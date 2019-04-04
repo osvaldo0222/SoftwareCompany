@@ -187,7 +187,8 @@ public class ProjectRegistration extends JDialog {
 	    btnGenerar.setFont(new Font("SansSerif", Font.PLAIN, 13));
 	    btnGenerar.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
-	    		
+	    		String strDateBegin=dateFormat.format(dateBegin);
+	    		System.out.println("_Fehca"+strDateBegin);
 	    		int daysCalculated=SoftwareCompany.getInstance().calcDays(dateBegin, dateEnd);
 	    		System.out.println("el dia calculado cono "+daysCalculated);
 	    		txtpreciototal.setText(Float.toString(calcAmountOfMoney(daysCalculated)));
@@ -680,17 +681,21 @@ public class ProjectRegistration extends JDialog {
 			    			//String beginD=dateBegin.getDateFormatString();
 			    			//String dateFinish=dateEnd.getDateFormatString();
 			    			
-			    			String CodContra=("CONT-"+SoftwareCompany.codContract+1);
+			    			String CodContra=("CONT-"+SoftwareCompany.codContract);
+			    			System.out.println("cont"+CodContra);
 			    			
 			    			Date beginD=dateBegin.getDate();
+			    			String strDateBegin=dateBegin.getDate().toString();
+			    			
 			    			Date dateFinish=dateEnd.getDate();
 			    			String sigDate=txtDateOriginContract.getText();
 			    			String state;
-			    			if (dateBegin.equals(txtDateOriginContract)) {
-			    				 state="Nuevo";
+			    			System.out.println("Begin"+dateBegin.toString() +" ->otro"+sigDate);
+			    			if (dateBegin.toString().equalsIgnoreCase(sigDate)) {
+			    				 state="En Proceso";
 								
 							}else {
-								 state="En Proceso";
+								 state="Nuevo";
 							}
 			    			
 			    			
@@ -707,6 +712,8 @@ public class ProjectRegistration extends JDialog {
 			    				
 							}
 			    			Contract c1=new Contract(CodContra, beginD, dateFinish, clientId, pro1, price,sigDate);
+			    			c1.setId(CodContra);
+			    			
 			    			Client aux=SoftwareCompany.getInstance().clientById(clientId);
 			    			int cantProClient=aux.getCant_projects()+1;
 			    			aux.setCant_projects(cantProClient);
@@ -720,7 +727,7 @@ public class ProjectRegistration extends JDialog {
 							dispose();
 							ProjectRegistration registration = new ProjectRegistration();
 							registration.setModal(true);
-							registration.setSize(625, 450);
+							registration.setSize(630, 450);
 							registration.setResizable(false);
 							registration.setLocationRelativeTo(null);
 							registration.setVisible(true);

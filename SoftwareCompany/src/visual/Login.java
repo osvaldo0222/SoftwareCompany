@@ -68,7 +68,7 @@ public class Login extends JFrame {
 				} catch (Exception e) {
 					try {
 						outputStream = new FileOutputStream("SoftwareCompany.dat");
-						User user = new User("USER-1", "ADMIN", "ADMIN", "", "", "", 0, "", "admin", "admin");
+						User user = new User("USER-" + (SoftwareCompany.codUsers + 1), "ADMIN", "ADMIN", "", "", "", 0, "", "admin", "admin", "ADMINISTRADOR");
 						SoftwareCompany.getInstance().insertUser(user);
 						outputStream.close();
 					} catch (Exception e2) {

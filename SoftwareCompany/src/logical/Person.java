@@ -21,8 +21,7 @@ public abstract class Person implements Serializable {
 	protected String mail;
 	
 
-	public Person(String code, String id, String name, String last_name, String address,
-			String gender, int age, String phone) {
+	public Person(String code, String id, String name, String last_name, String address, String gender, int age, String phone) {
 		super();
 		this.code = code;
 		this.id = id;

@@ -375,6 +375,16 @@ public class ClientRegistration extends JDialog {
 		panel.add(lblEdad);
 		
 		cbxGenero = new JComboBox();
+		cbxGenero.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				validation.setFocusBackground(cbxGenero, true);
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				validation.setFocusBackground(cbxGenero, false);
+			}
+		});
 		cbxGenero.setToolTipText("G\u00E9nero");
 		cbxGenero.setEnabled(false);
 		cbxGenero.setModel(new DefaultComboBoxModel(new String[] {"<Seleccione>", "Masculino", "Femenino"}));

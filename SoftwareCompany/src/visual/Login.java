@@ -63,6 +63,7 @@ public class Login extends JFrame {
 					SoftwareCompany.codProjects = reader.readInt();
 					SoftwareCompany.codClients = reader.readInt();
 					SoftwareCompany.codUsers = reader.readInt();
+					SoftwareCompany.codContract=reader.readInt();
 					reader.close();
 					company.close();
 				} catch (Exception e) {

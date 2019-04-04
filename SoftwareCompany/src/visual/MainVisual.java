@@ -44,6 +44,7 @@ public class MainVisual extends JFrame {
 					writer.writeInt(SoftwareCompany.codProjects);
 					writer.writeInt(SoftwareCompany.codClients);
 					writer.writeInt(SoftwareCompany.codUsers);
+					writer.writeInt(SoftwareCompany.codContract);
 					writer.close();
 					company.close();
 				} catch (Exception e) {

@@ -880,11 +880,7 @@ public class ProjectRegistration extends JDialog {
 		
 			}
 	
-	private boolean validateWorkerPanel() {
-		boolean validate=false;
-		
-		return validate;
-	}
+
 	private boolean validateLits() {
 		boolean aux=false;
 		int contBoss=-1;

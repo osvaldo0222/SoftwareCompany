@@ -20,9 +20,6 @@ public class SoftwareCompany implements Serializable {
 	public static int codClients = 0;
 	public static int codUsers = 0;
 	public static int codContract=0;
-	private int variablequesevaaborrar=1111;
-	public int days;
-	
 	
 	private SoftwareCompany() {
 		super();
@@ -31,7 +28,6 @@ public class SoftwareCompany implements Serializable {
 		this.projects = new ArrayList<>();
 		this.clients = new ArrayList<>();
 		this.contracts = new ArrayList<>();
-		this.days=days;
 	}
 	
 	public static SoftwareCompany getInstance() {
@@ -238,7 +234,7 @@ public class SoftwareCompany implements Serializable {
 	}
 	
 	public int calcDays(JDateChooser dateBegin, JDateChooser dateEnd ) {
-		days=0;
+		int days = 0;
 		
 		if (dateBegin.getDate()!=null && dateEnd.getDate()!=null) {
 			Calendar init=dateBegin.getCalendar();

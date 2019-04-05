@@ -23,7 +23,6 @@ public class SoftwareCompany implements Serializable {
 	private int variablequesevaaborrar=1111;
 	public int days;
 	
-	public int days;
 	
 	private SoftwareCompany() {
 		super();
@@ -252,45 +251,5 @@ public class SoftwareCompany implements Serializable {
 			
 		}
 	return days;	
-	}
-
-	public int getDays() {
-		return days;
-	}
-
-	public void setDays(int days) {
-		this.days = days;
-	}
-
-	public static int getCodContract() {
-		return codContract;
-	}
-
-	public static void setCodContract(int codContract) {
-		SoftwareCompany.codContract = codContract;
-	}
-	
-	public int calcDays(JDateChooser dateBegin, JDateChooser dateEnd ) {
-		days=0;
-		
-		if (dateBegin.getDate()!=null && dateEnd.getDate()!=null) {
-			Calendar init=dateBegin.getCalendar();
-			Calendar end=dateEnd.getCalendar();
-		
-			while(init.before(end) || init.equals(end)) {
-				days++;
-				init.add(Calendar.DATE, 1);
-			}
-			
-		}
-		return days;	
-	}
-
-	public int getDays() {
-		return days;
-	}
-
-	public void setDays(int days) {
-		this.days = days;
 	}
 }

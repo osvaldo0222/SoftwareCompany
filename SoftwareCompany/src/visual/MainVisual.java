@@ -28,25 +28,6 @@ public class MainVisual extends JFrame {
 	private User user;
 	private Dimension dimension;
 
-	/**
-	 * Launch the application.
-	 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainVisual frame = new MainVisual();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public MainVisual(User user) {
 		setTitle("Software Company");
 		setResizable(false);
@@ -63,7 +44,6 @@ public class MainVisual extends JFrame {
 					writer.writeInt(SoftwareCompany.codProjects);
 					writer.writeInt(SoftwareCompany.codClients);
 					writer.writeInt(SoftwareCompany.codUsers);
-					writer.writeInt(SoftwareCompany.codContract);
 					writer.close();
 					company.close();
 				} catch (Exception e) {
@@ -148,7 +128,7 @@ public class MainVisual extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				ProjectRegistration registration = new ProjectRegistration();
 				registration.setModal(true);
-				registration.setSize(625, 450);
+				registration.setSize(600, 430);
 				registration.setResizable(false);
 				registration.setLocationRelativeTo(null);
 				registration.setVisible(true);
@@ -176,19 +156,21 @@ public class MainVisual extends JFrame {
 		menuBar.add(mnUsuarios);
 		
 		JMenuItem mntmRegistrar_3 = new JMenuItem("Registrar");
+		mntmRegistrar_3.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/user30px.png")));
 		mntmRegistrar_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				UserRegistration registration = new UserRegistration();
+				UserRegistration registration = new UserRegistration(user);
 				registration.setModal(true);
 				registration.setVisible(true);
 			}
 		});
-		mntmRegistrar_3.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/user30px.png")));
-		mnUsuarios.add(mntmRegistrar_3);
 		
 		JMenuItem mntmListar_2 = new JMenuItem("Listar");
 		mntmListar_2.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/list30px.png")));
-		mnUsuarios.add(mntmListar_2);
+		if (user.getType().equalsIgnoreCase("ADMINISTRADOR")) {
+			mnUsuarios.add(mntmRegistrar_3);
+			mnUsuarios.add(mntmListar_2);
+		}
 		
 		JMenuItem mntmCerrarSesion = new JMenuItem("Cerrar Sesi\u00F3n");
 		mntmCerrarSesion.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/log_out30.png")));

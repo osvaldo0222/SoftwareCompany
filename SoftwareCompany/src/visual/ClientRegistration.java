@@ -148,21 +148,27 @@ public class ClientRegistration extends JDialog {
 		txtCedula.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (!(e.getKeyChar() == 13 || (e.getKeyChar() >= 48 && e.getKeyChar()  <= 57))) {
-					return;
-				}
-				String cedula = txtCedula.getText();
-				if (!cedula.contains("_")) {
-					txtCedula.setEditable(false);
-					stateOfCampos(true);
-					client = SoftwareCompany.getInstance().clientById(cedula);
-					if (client != null) {
-						completeInfo();
-					} else {
-						btnEditCedula.setEnabled(true);
-						btnGuardar.setEnabled(true);
+				try {
+					if (!(e.getKeyChar() == 13 || (e.getKeyChar() >= 48 && e.getKeyChar()  <= 57))) {
+						return;
+					} else if (!txtCedula.isEditable()) {
+						return;
 					}
-				txtTelefono.requestFocus();
+					String cedula = txtCedula.getText();
+					if (!cedula.contains("_")) {
+						txtCedula.setEditable(false);
+						stateOfCampos(true);
+						client = SoftwareCompany.getInstance().clientById(cedula);
+						if (client != null) {
+							completeInfo();
+						} else {
+							btnEditCedula.setEnabled(true);
+							btnGuardar.setEnabled(true);
+						}
+					txtTelefono.requestFocus();
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
 				}
 			}
 		});
@@ -450,6 +456,8 @@ public class ClientRegistration extends JDialog {
 					private void storePicture() {
 						if (lblImagen.getIcon() != (new ImageIcon(ClientRegistration.class.getResource("/com/sun/java/swing/plaf/windows/icons/UpFolder.gif")))) {
 							client.setPicture((ImageIcon) lblImagen.getIcon());
+						} else {
+							client.setPicture(null);
 						}
 					}
 				});

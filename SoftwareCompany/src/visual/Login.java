@@ -63,13 +63,12 @@ public class Login extends JFrame {
 					SoftwareCompany.codProjects = reader.readInt();
 					SoftwareCompany.codClients = reader.readInt();
 					SoftwareCompany.codUsers = reader.readInt();
-					SoftwareCompany.codContract=reader.readInt();
 					reader.close();
 					company.close();
 				} catch (Exception e) {
 					try {
 						outputStream = new FileOutputStream("SoftwareCompany.dat");
-						User user = new User("USER-" + (SoftwareCompany.codUsers + 1), "ADMIN", "ADMIN", "", "", "", 0, "", "admin", "admin", "ADMINISTRADOR");
+						User user = new User("USER-" + (SoftwareCompany.codUsers + 1), "000-0000000-0", "ADMINISTRADOR", "N/A", "N/A", "N/A", 1, "", "admin", "admin", "ADMINISTRADOR", "USER-" + (SoftwareCompany.codUsers + 1));
 						SoftwareCompany.getInstance().insertUser(user);
 						outputStream.close();
 					} catch (Exception e2) {

@@ -250,6 +250,28 @@ public class SoftwareCompany implements Serializable {
 			}
 			
 		}
-	return days;	
+		return days;	
+	}
+	
+	public User userById(String id) {
+		User aux = null;
+		for (User user : users) {
+			if (user.getId().equalsIgnoreCase(id)) {
+				aux = user;
+				break;
+			}
+		}
+		return aux;
+	}
+
+	public boolean checkUsername(User user) {
+		boolean validated = true;
+		for (User aux : users) {
+			if (aux.getUsername().equals(user.getUsername()) && !aux.getCode().equalsIgnoreCase(user.getCode())) {
+				validated = false;
+				break;
+			}
+		}
+		return validated;
 	}
 }

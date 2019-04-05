@@ -5,17 +5,24 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.MaskFormatter;
 
 import logical.SoftwareCompany;
+import logical.User;
 
 import javax.swing.border.EtchedBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JFormattedTextField;
@@ -30,6 +37,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.Toolkit;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.SpinnerNumberModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
 
 public class UserRegistration extends JDialog {
 
@@ -48,11 +59,16 @@ public class UserRegistration extends JDialog {
 	private JButton btnSalir;
 	private JComboBox cbxGenero;
 	private JSpinner spnEdad;
+	private User user;
+	private JButton btnEditCedula;
+	private JComboBox cbxTipo;
+	private JLabel lblImagen;
 	
-	public UserRegistration() {
+	public UserRegistration(User activeUser) {
+		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(UserRegistration.class.getResource("/Imgs/user.png")));
 		setTitle("Registrar Usuarios");
-		setBounds(100, 100, 438, 519);
+		setBounds(100, 100, 438, 552);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -62,7 +78,7 @@ public class UserRegistration extends JDialog {
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Informaci\u00F3n General", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel.setBounds(10, 11, 402, 421);
+		panel.setBounds(10, 11, 412, 460);
 		contentPanel.add(panel);
 		
 		JLabel label = new JLabel("C\u00F3digo:");
@@ -125,7 +141,31 @@ public class UserRegistration extends JDialog {
 		}
 		txtCedula.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyReleased(KeyEvent arg0) {
+			public void keyReleased(KeyEvent e) {
+				try {
+					if (!(e.getKeyChar() == 13 || (e.getKeyChar() >= 48 && e.getKeyChar()  <= 57))) {
+						return;
+					} else if (!txtCedula.isEditable()) {
+						return;
+					}
+					String cedula = txtCedula.getText();
+					if (!cedula.contains("_")) {
+						txtCedula.setEditable(false);
+						btnGuardar.setEnabled(true);
+						user = SoftwareCompany.getInstance().userById(cedula);
+						stateOfCampos(true);
+						if (user != null) {
+							completeInfo();
+							setTitle("Modificar Usuario: " + user.getUsername());
+							btnGuardar.setText("Modificar");
+						} else {
+							btnEditCedula.setEnabled(true);
+						}
+					txtTelefono.requestFocus();
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
 			}
 		});
 		txtCedula.addFocusListener(new FocusAdapter() {
@@ -237,7 +277,27 @@ public class UserRegistration extends JDialog {
 		txtApellidos.setBounds(103, 182, 289, 20);
 		panel.add(txtApellidos);
 		
-		JLabel lblImagen = new JLabel("<Imagen>");
+		lblImagen = new JLabel("<Imagen>");
+		lblImagen.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if (!lblImagen.isEnabled()) {
+					return;
+				}
+				JFileChooser file = new JFileChooser();
+		        file.setCurrentDirectory(new File(System.getProperty("user.home")));
+		        FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Images", "jpeg", "jpg", "gif", "png");
+		        file.addChoosableFileFilter(filter);
+		        file.setFileFilter(filter);
+		        file.setAcceptAllFileFilterUsed(false);
+		        int result = file.showSaveDialog(null);
+		        if(result == JFileChooser.APPROVE_OPTION){
+		        	File selectedFile = file.getSelectedFile();
+		            String path = selectedFile.getAbsolutePath();
+		            lblImagen.setIcon(ResizeImage(path));
+		        }
+			}
+		});
 		lblImagen.setToolTipText("Doble click para seleccionar imagen...");
 		lblImagen.setHorizontalAlignment(SwingConstants.CENTER);
 		lblImagen.setEnabled(false);
@@ -281,17 +341,26 @@ public class UserRegistration extends JDialog {
 			}
 		});
 		txtUsuario.setToolTipText("Nombre de Usuario");
-		txtUsuario.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtUsuario.setHorizontalAlignment(SwingConstants.LEFT);
 		txtUsuario.setEditable(false);
 		txtUsuario.setColumns(10);
 		txtUsuario.setBounds(103, 343, 289, 20);
 		panel.add(txtUsuario);
 		
-		JButton btnEditCedula = new JButton("");
+		btnEditCedula = new JButton("");
+		btnEditCedula.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				stateOfCampos(false);
+				btnEditCedula.setEnabled(false);
+				btnGuardar.setEnabled(false);
+				txtCedula.setEditable(true);
+				txtCedula.requestFocus();
+			}
+		});
 		btnEditCedula.setIcon(new ImageIcon(UserRegistration.class.getResource("/Imgs/iconfinder_Modify_132685.png")));
 		btnEditCedula.setToolTipText("Editar Cedula");
 		btnEditCedula.setEnabled(false);
-		btnEditCedula.setBounds(343, 64, 49, 23);
+		btnEditCedula.setBounds(343, 64, 49, 20);
 		panel.add(btnEditCedula);
 		
 		JLabel label_10 = new JLabel("G\u00E9nero:");
@@ -322,6 +391,7 @@ public class UserRegistration extends JDialog {
 		panel.add(cbxGenero);
 		
 		spnEdad = new JSpinner();
+		spnEdad.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
 		spnEdad.setToolTipText("Edad");
 		spnEdad.setEnabled(false);
 		spnEdad.setBounds(292, 302, 100, 20);
@@ -344,11 +414,33 @@ public class UserRegistration extends JDialog {
 			}
 		});
 		txtPassword.setToolTipText("Contrase\u00F1a");
-		txtPassword.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtPassword.setHorizontalAlignment(SwingConstants.LEFT);
 		txtPassword.setEditable(false);
 		txtPassword.setColumns(10);
 		txtPassword.setBounds(103, 384, 289, 20);
 		panel.add(txtPassword);
+		
+		JLabel lblTipo = new JLabel("Tipo:");
+		lblTipo.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		lblTipo.setBounds(10, 424, 68, 19);
+		panel.add(lblTipo);
+		
+		cbxTipo = new JComboBox();
+		cbxTipo.setToolTipText("Tipo de Usuario");
+		cbxTipo.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				validation.setFocusBackground(cbxTipo, true);
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				validation.setFocusBackground(cbxTipo, false);
+			}
+		});
+		cbxTipo.setEnabled(false);
+		cbxTipo.setModel(new DefaultComboBoxModel(new String[] {"<Seleccione>", "ADMINISTRADOR", "INVITADO"}));
+		cbxTipo.setBounds(103, 425, 289, 20);
+		panel.add(cbxTipo);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
@@ -356,6 +448,68 @@ public class UserRegistration extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				btnGuardar = new JButton("Guardar");
+				btnGuardar.setEnabled(false);
+				btnGuardar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						if (checkCamps()) {
+							String code = txtCodigo.getText();
+							String id = txtCedula.getText();
+							String phone = txtTelefono.getText();
+							String name = txtNombres.getText();
+							String last_name = txtApellidos.getText();
+							String address = txtDireccion.getText();
+							String mail = txtCorreo.getText();
+							String gender = cbxGenero.getSelectedItem().toString();
+							int age = Integer.parseInt(spnEdad.getValue().toString());
+							String username = txtUsuario.getText();
+							char[] passwordChar = ((JPasswordField) txtPassword).getPassword();
+							String password = "";
+							for (char c : passwordChar) {
+								password += c;
+							}
+							String type = cbxTipo.getSelectedItem().toString();
+							
+							if (user == null) {
+								user = new User(code, id, name, last_name, address, gender, age, phone, username, password, type, activeUser.getCode());
+								user.setMail(mail);
+								storePicture();
+								if (checkUsername(user)) {
+									SoftwareCompany.getInstance().insertUser(user);
+								} else {
+									user = null;
+									return;
+								}
+							} else {
+								if (checkUsername(user)) {
+									storePicture();
+									user.setName(name);
+									user.setLast_name(last_name);
+									user.setAddress(address);
+									user.setPhone(phone);
+									user.setMail(mail);
+									user.setAge(age);
+									user.setGender(gender);
+									user.setPassword(password);
+									user.setUsername(username);
+									user.setType(type);
+								} else {
+									return;
+								}
+							}
+							
+							JOptionPane.showMessageDialog(null, "Operacion exitosa", "Usuarios", JOptionPane.INFORMATION_MESSAGE);
+							clear();
+						}
+					}
+
+					private void storePicture() {
+						if (lblImagen.getIcon() != (new ImageIcon(UserRegistration.class.getResource("/javax/swing/plaf/metal/icons/ocean/upFolder.gif")))) {
+							user.setPicture((ImageIcon) lblImagen.getIcon());
+						} else {
+							user.setPicture(null);
+						}
+					}
+				});
 				btnGuardar.setIcon(new ImageIcon(UserRegistration.class.getResource("/Imgs/save.png")));
 				btnGuardar.setFont(new Font("SansSerif", Font.PLAIN, 14));
 				btnGuardar.setActionCommand("OK");
@@ -375,5 +529,95 @@ public class UserRegistration extends JDialog {
 				buttonPane.add(btnSalir);
 			}
 		}
+	}
+	
+	private void completeInfo() {
+		if (user.getPicture() == null) {
+			lblImagen.setText("<Imagen>");
+			System.out.println("Aqui");
+			lblImagen.setIcon((new ImageIcon(UserRegistration.class.getResource("/javax/swing/plaf/metal/icons/ocean/upFolder.gif"))));
+		} else {
+			lblImagen.setIcon(user.getPicture());
+		}
+		txtCodigo.setText(user.getCode());
+		txtTelefono.setText(user.getPhone());
+		txtNombres.setText(user.getName());
+		txtApellidos.setText(user.getLast_name());
+		txtDireccion.setText(user.getAddress());
+		txtCorreo.setText(user.getMail());
+		txtUsuario.setText(user.getUsername());
+		((JPasswordField) txtPassword).setText(user.getPassword());;
+		spnEdad.setValue(user.getAge());
+		cbxTipo.setSelectedItem(user.getType());
+		cbxGenero.setSelectedItem(user.getGender());
+	}
+
+	private void stateOfCampos(boolean b) {
+		lblImagen.setEnabled(b);
+		txtNombres.setEditable(b);
+		txtApellidos.setEditable(b);
+		txtDireccion.setEditable(b);
+		txtCorreo.setEditable(b);
+		txtPassword.setEditable(b);
+		txtUsuario.setEditable(b);
+		txtTelefono.setEditable(b);
+		cbxGenero.setEnabled(b);
+		spnEdad.setEnabled(b);
+		cbxTipo.setEnabled(b);
+	}
+	
+	private ImageIcon ResizeImage(String ImagePath) {
+        ImageIcon MyImage = new ImageIcon(ImagePath);
+        Image img = MyImage.getImage();
+        Image newImg = img.getScaledInstance(lblImagen.getWidth(), lblImagen.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon image = new ImageIcon(newImg);
+        return image;
+    }
+	
+	private boolean checkCamps() {
+		boolean validated = false;
+		if (!txtCedula.getText().contains("_") && !txtCedula.getText().equalsIgnoreCase("") && !txtTelefono.getText().equalsIgnoreCase("") && !txtTelefono.getText().contains("_") && !txtNombres.getText().equalsIgnoreCase("") && !txtApellidos.getText().equalsIgnoreCase("") && !txtDireccion.getText().equalsIgnoreCase("") && !txtUsuario.getText().equalsIgnoreCase("") && !txtPassword.getText().equalsIgnoreCase("") && cbxGenero.getSelectedIndex() > 0 && cbxTipo.getSelectedIndex() > 0) {
+			validated = true;
+		} else {
+			JOptionPane.showMessageDialog(null, "Revise los campos", "Usuarios", JOptionPane.ERROR_MESSAGE);
+		}
+		return validated;
+	}
+	
+	private void clear() {
+		stateOfCampos(false);
+		lblImagen.setIcon((new ImageIcon(UserRegistration.class.getResource("/javax/swing/plaf/metal/icons/ocean/upFolder.gif"))));
+		lblImagen.setText("<Imagen>");
+		txtCodigo.setText("USER-" + (SoftwareCompany.codUsers + 1));
+		txtCedula.setText("");
+		txtTelefono.setText("");
+		txtNombres.setText("");
+		txtApellidos.setText("");
+		txtDireccion.setText("");
+		txtCorreo.setText("");
+		txtUsuario.setText("");
+		txtPassword.setText("");
+		spnEdad.setValue(1);
+		cbxGenero.setSelectedIndex(0);
+		cbxTipo.setSelectedIndex(0);
+		btnGuardar.setText("Guardar");
+		btnGuardar.setEnabled(false);
+		btnEditCedula.setEnabled(false);
+		setTitle("Registrar Usuarios");
+		txtCedula.setEditable(true);
+		txtCedula.requestFocus();
+		user = null;
+	}
+
+	private boolean checkUsername(User user) {
+		boolean validated = false;
+		if (SoftwareCompany.getInstance().checkUsername(user)) {
+			validated = true;
+		} else {
+			JOptionPane.showMessageDialog(null, "Este nombre de usuario ya esta en uso", "Usuarios", JOptionPane.ERROR_MESSAGE);
+			txtUsuario.requestFocus();
+			txtUsuario.selectAll();
+		}
+		return validated;
 	}
 }

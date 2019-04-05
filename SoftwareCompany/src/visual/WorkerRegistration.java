@@ -314,27 +314,33 @@ public class WorkerRegistration extends JDialog {
 			txtCedula.addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyReleased(KeyEvent e) {
-					if (!(e.getKeyChar() == 13 || (e.getKeyChar() >= 48 && e.getKeyChar()  <= 57))) {
-						return;
-					}
-					String cedula = txtCedula.getText();
-					if (!cedula.contains("_")) {
-						txtCedula.setEditable(false);
-						btnModificarCedula.setEnabled(true);
-						btnGuardar.setEnabled(true);
-						worker = SoftwareCompany.getInstance().workerById(cedula);
-						if (worker != null) {
-							completeInformation();
-							setTitle("Modificar Trabajador: " + worker.getId());
-							btnGuardar.setText("Modificar");
-							txtDireccion.requestFocus();
+					try {
+						if (!(e.getKeyChar() == 13 || (e.getKeyChar() >= 48 && e.getKeyChar()  <= 57))) {
 							return;
-						} else {
-							clearCamps();
-							enableCamps();
-							txtCorreo.requestFocus();
+						} else if (!txtCedula.isEditable()) {
 							return;
 						}
+						String cedula = txtCedula.getText();
+						if (!cedula.contains("_")) {
+							txtCedula.setEditable(false);
+							btnModificarCedula.setEnabled(true);
+							btnGuardar.setEnabled(true);
+							worker = SoftwareCompany.getInstance().workerById(cedula);
+							if (worker != null) {
+								completeInformation();
+								setTitle("Modificar Trabajador: " + worker.getId());
+								btnGuardar.setText("Modificar");
+								txtDireccion.requestFocus();
+								return;
+							} else {
+								clearCamps();
+								enableCamps();
+								txtCorreo.requestFocus();
+								return;
+							}
+						}
+					} catch (Exception e2) {
+						// TODO: handle exception
 					}
 				}
 			});

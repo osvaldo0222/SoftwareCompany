@@ -301,20 +301,10 @@ public class WorkerRegistration extends JDialog {
 			} catch (Exception e) {
 				txtCedula = new JTextField();
 			}
-			txtCedula.addFocusListener(new FocusAdapter() {
-				@Override
-				public void focusGained(FocusEvent arg0) {
-					validation.setFocusBackground(txtCedula, true);
-				}
-				@Override
-				public void focusLost(FocusEvent e) {
-					validation.setFocusBackground(txtCedula, false);
-				}
-			});
-			txtCedula.addKeyListener(new KeyAdapter() {
-				@Override
-				public void keyReleased(KeyEvent e) {
-					try {
+			try {
+				txtCedula.addKeyListener(new KeyAdapter() {
+					@Override
+					public void keyReleased(KeyEvent e) {
 						if (!(e.getKeyChar() == 13 || (e.getKeyChar() >= 48 && e.getKeyChar()  <= 57))) {
 							return;
 						} else if (!txtCedula.isEditable()) {
@@ -339,12 +329,22 @@ public class WorkerRegistration extends JDialog {
 								return;
 							}
 						}
-					} catch (Exception e2) {
-						// TODO: handle exception
 					}
+				});
+				txtCedula.setBounds(202, 61, 118, 20);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			txtCedula.addFocusListener(new FocusAdapter() {
+				@Override
+				public void focusGained(FocusEvent arg0) {
+					validation.setFocusBackground(txtCedula, true);
+				}
+				@Override
+				public void focusLost(FocusEvent e) {
+					validation.setFocusBackground(txtCedula, false);
 				}
 			});
-			txtCedula.setBounds(202, 61, 118, 20);
 			panel_1.add(txtCedula);
 			txtCedula.setColumns(10);
 			

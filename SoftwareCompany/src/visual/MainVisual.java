@@ -8,6 +8,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.sun.glass.ui.Application;
+
 import logical.SoftwareCompany;
 import logical.User;
 
@@ -18,6 +20,8 @@ import java.io.ObjectOutputStream;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
@@ -34,22 +38,7 @@ public class MainVisual extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
-				FileOutputStream company;
-				ObjectOutputStream writer;
-				try {
-					company = new FileOutputStream("SoftwareCompany.dat");
-					writer = new ObjectOutputStream(company);
-					writer.writeObject(SoftwareCompany.getInstance());
-					writer.writeInt(SoftwareCompany.codWorkers);
-					writer.writeInt(SoftwareCompany.codProjects);
-					writer.writeInt(SoftwareCompany.codClients);
-					writer.writeInt(SoftwareCompany.codUsers);
-					writer.writeInt(SoftwareCompany.codContract);
-					writer.close();
-					company.close();
-				} catch (Exception e) {
-					System.out.println("Error al guardar los datos" + e.toString());
-				}
+				saveData();
 			}
 		});
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -62,9 +51,17 @@ public class MainVisual extends JFrame {
 		setJMenuBar(menuBar);
 		
 		JMenu mnArchivo = new JMenu("Archivo");
+		mnArchivo.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/folder30pc.png")));
 		menuBar.add(mnArchivo);
 		
 		JMenuItem mntmCerrar = new JMenuItem("Cerrar");
+		mntmCerrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				saveData();
+				dispose();
+			}
+		});
+		mntmCerrar.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/exit30.png")));
 		mnArchivo.add(mntmCerrar);
 		
 		JMenu mnTrabajadores = new JMenu("Trabajadores");
@@ -156,7 +153,7 @@ public class MainVisual extends JFrame {
 		mnUsuarios.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/userssss30.png")));
 		menuBar.add(mnUsuarios);
 		
-		JMenuItem mntmRegistrar_3 = new JMenuItem("Registrar");
+		JMenuItem mntmRegistrar_3 = new JMenuItem("Registrar Usuarios");
 		mntmRegistrar_3.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/user30px.png")));
 		mntmRegistrar_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -166,7 +163,12 @@ public class MainVisual extends JFrame {
 			}
 		});
 		
-		JMenuItem mntmListar_2 = new JMenuItem("Listar");
+		JMenuItem mntmListar_2 = new JMenuItem("Listar Usuarios");
+		mntmListar_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			}
+		});
 		mntmListar_2.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/list30px.png")));
 		if (user.getType().equalsIgnoreCase("ADMINISTRADOR")) {
 			mnUsuarios.add(mntmRegistrar_3);
@@ -174,6 +176,16 @@ public class MainVisual extends JFrame {
 		}
 		
 		JMenuItem mntmCerrarSesion = new JMenuItem("Cerrar Sesi\u00F3n");
+		mntmCerrarSesion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (JOptionPane.showConfirmDialog(null, "Seguro que desea cerrar la sesión?", "Cerrar Sesión", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+					Login login = new Login();
+					dispose();
+					saveData();
+					login.setVisible(true);
+				}
+			}
+		});
 		mntmCerrarSesion.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/log_out30.png")));
 		mnUsuarios.add(mntmCerrarSesion);
 		
@@ -182,5 +194,23 @@ public class MainVisual extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 	}
-
+	
+	private void saveData() {
+		FileOutputStream company;
+		ObjectOutputStream writer;
+		try {
+			company = new FileOutputStream("SoftwareCompany.dat");
+			writer = new ObjectOutputStream(company);
+			writer.writeObject(SoftwareCompany.getInstance());
+			writer.writeInt(SoftwareCompany.codWorkers);
+			writer.writeInt(SoftwareCompany.codProjects);
+			writer.writeInt(SoftwareCompany.codClients);
+			writer.writeInt(SoftwareCompany.codUsers);
+			writer.writeInt(SoftwareCompany.codContract);
+			writer.close();
+			company.close();
+		} catch (Exception e) {
+			System.out.println("Error al guardar los datos" + e.toString());
+		}
+	}
 }

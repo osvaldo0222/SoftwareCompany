@@ -18,6 +18,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import logical.Boss;
+import logical.Client;
 import logical.Designer;
 import logical.Programmer;
 import logical.SoftwareCompany;
@@ -30,6 +31,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.KeyAdapter;
@@ -56,6 +58,7 @@ public class ListWorker extends JDialog {
 	private int index = -1;
 	private String code = "";
 	private JButton btnModificar;
+	private JButton btnEliminar;
 
 	public ListWorker() {
 		setResizable(false);
@@ -146,11 +149,11 @@ public class ListWorker extends JDialog {
 					index = tableTrabajadores.getSelectedRow();
 					code = tableTrabajadores.getValueAt(index, 0).toString();
 					btnModificar.setEnabled(true);
+					btnEliminar.setEnabled(true);
 					btnModificar.setText("Modificar " + code);
+					btnEliminar.setText("Eliminar " + code);
 				} else {
-					index = -1;
-					code = "";
-					btnModificar.setEnabled(false);
+					normalState();
 				}
 			}
 		});
@@ -187,16 +190,33 @@ public class ListWorker extends JDialog {
 								WorkerRegistration workerRegistration = new WorkerRegistration(worker);
 								workerRegistration.setModal(true);
 								workerRegistration.setVisible(true);
-								code = "";
-								index = -1;
-								btnModificar.setEnabled(false);
-								btnModificar.setText("Modificar");
-								tableTrabajadores.clearSelection();
-								loadtable();
+								normalState();
 							}
 						}
 					}
 				});
+				
+				btnEliminar = new JButton("Eliminar");
+				btnEliminar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						if (!code.equalsIgnoreCase("") && index >= 0) {
+							Worker worker = SoftwareCompany.getInstance().searchWorkerByCode(code);
+							boolean eliminar = SoftwareCompany.getInstance().workerIsRemovable(worker.getId());
+							if (eliminar) {
+								if (JOptionPane.showConfirmDialog(null, "Seguro que desea eliminar el trabajador " + code + "?", "Trabajadores", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+									SoftwareCompany.getInstance().removeWorker(worker);
+									normalState();
+								}
+							} else {
+								JOptionPane.showMessageDialog(null, "Este trabajador no puede ser eliminado", "Trabajadores", JOptionPane.ERROR_MESSAGE);
+							}
+						}
+					}
+				});
+				btnEliminar.setEnabled(false);
+				btnEliminar.setIcon(new ImageIcon(ListWorker.class.getResource("/Imgs/delete16.png")));
+				btnEliminar.setFont(new Font("SansSerif", Font.PLAIN, 14));
+				buttonPane.add(btnEliminar);
 				btnModificar.setIcon(new ImageIcon(ListWorker.class.getResource("/Imgs/icons8-edit-file-16.png")));
 				btnModificar.setFont(new Font("SansSerif", Font.PLAIN, 14));
 				btnModificar.setActionCommand("OK");
@@ -254,5 +274,16 @@ public class ListWorker extends JDialog {
 	        return;
 	    }
 	    sorter.setRowFilter(filter);
+	}
+	
+	private void normalState() {
+		code = "";
+		index = -1;
+		btnModificar.setEnabled(false);
+		btnEliminar.setEnabled(false);
+		btnModificar.setText("Modificar");
+		btnEliminar.setText("Eliminar");
+		tableTrabajadores.clearSelection();
+		loadtable();
 	}
 }

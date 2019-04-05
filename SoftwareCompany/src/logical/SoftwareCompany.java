@@ -274,4 +274,21 @@ public class SoftwareCompany implements Serializable {
 		}
 		return validated;
 	}
+
+	public boolean workerIsRemovable(String id) {
+		boolean isRemovable = true;
+		for (Project project : projects) {
+			for (Worker aux : project.getWorkers()) {
+				if (aux.getId().equalsIgnoreCase(id)) {
+					isRemovable = false;
+					break;
+				}
+			}
+		}
+		return isRemovable;
+	}
+
+	public void removeWorker(Worker worker) {
+		workers.remove(worker);
+	}
 }

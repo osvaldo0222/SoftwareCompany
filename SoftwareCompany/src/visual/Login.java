@@ -110,6 +110,7 @@ public class Login extends JFrame {
 		setResizable(false);
 		setUndecorated(true);
 		setBounds(100, 100, 301, 329);
+		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.addKeyListener(new KeyAdapter() {
 			@Override

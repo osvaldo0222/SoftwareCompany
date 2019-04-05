@@ -145,10 +145,10 @@ public class ClientRegistration extends JDialog {
 		} catch (Exception e) {
 			txtCedula = new JTextField();
 		}
-		txtCedula.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent e) {
-				try {
+		try {
+			txtCedula.addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyReleased(KeyEvent e) {
 					if (!(e.getKeyChar() == 13 || (e.getKeyChar() >= 48 && e.getKeyChar()  <= 57))) {
 						return;
 					} else if (!txtCedula.isEditable()) {
@@ -167,11 +167,11 @@ public class ClientRegistration extends JDialog {
 						}
 					txtTelefono.requestFocus();
 					}
-				} catch (Exception e2) {
-					// TODO: handle exception
 				}
-			}
-		});
+			});
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		txtCedula.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent arg0) {

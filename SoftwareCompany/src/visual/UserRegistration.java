@@ -139,10 +139,10 @@ public class UserRegistration extends JDialog {
 		} catch (Exception e) {
 			txtCedula = new JTextField();
 		}
-		txtCedula.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent e) {
-				try {
+		try {
+			txtCedula.addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyReleased(KeyEvent e) {
 					if (!(e.getKeyChar() == 13 || (e.getKeyChar() >= 48 && e.getKeyChar()  <= 57))) {
 						return;
 					} else if (!txtCedula.isEditable()) {
@@ -153,21 +153,21 @@ public class UserRegistration extends JDialog {
 						txtCedula.setEditable(false);
 						btnGuardar.setEnabled(true);
 						user = SoftwareCompany.getInstance().userById(cedula);
-						stateOfCampos(true);
 						if (user != null) {
 							completeInfo();
 							setTitle("Modificar Usuario: " + user.getUsername());
 							btnGuardar.setText("Modificar");
 						} else {
+							stateOfCampos(true);
 							btnEditCedula.setEnabled(true);
 						}
 					txtTelefono.requestFocus();
 					}
-				} catch (Exception e2) {
-					// TODO: handle exception
 				}
-			}
-		});
+			});
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		txtCedula.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -534,7 +534,6 @@ public class UserRegistration extends JDialog {
 	private void completeInfo() {
 		if (user.getPicture() == null) {
 			lblImagen.setText("<Imagen>");
-			System.out.println("Aqui");
 			lblImagen.setIcon((new ImageIcon(UserRegistration.class.getResource("/javax/swing/plaf/metal/icons/ocean/upFolder.gif"))));
 		} else {
 			lblImagen.setIcon(user.getPicture());
@@ -550,6 +549,15 @@ public class UserRegistration extends JDialog {
 		spnEdad.setValue(user.getAge());
 		cbxTipo.setSelectedItem(user.getType());
 		cbxGenero.setSelectedItem(user.getGender());
+		
+		lblImagen.setEnabled(true);
+		txtTelefono.setEditable(true);
+		txtDireccion.setEditable(true);
+		txtCorreo.setEditable(true);
+		txtUsuario.setEditable(true);
+		txtPassword.setEditable(true);
+		spnEdad.setEnabled(true);
+		cbxTipo.setEnabled(true);
 	}
 
 	private void stateOfCampos(boolean b) {

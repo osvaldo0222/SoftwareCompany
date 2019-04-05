@@ -31,6 +31,7 @@ public class MainVisual extends JFrame {
 	private JPanel contentPane;
 	private User user;
 	private Dimension dimension;
+	private String hola;
 
 	public MainVisual(User user) {
 		setTitle("Software Company");

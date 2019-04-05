@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
 import logical.Client;
 import logical.SoftwareCompany;
@@ -16,6 +17,8 @@ import logical.SoftwareCompany;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ListProjects extends JDialog {
 
@@ -49,6 +52,7 @@ public class ListProjects extends JDialog {
 		contentPanel.setLayout(null);
 		
 		JPanel panel = new JPanel();
+		model = new DefaultTableModel();
 		panel.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
 		panel.setBounds(10, 65, 1214, 293);
 		contentPanel.add(panel);
@@ -59,12 +63,48 @@ public class ListProjects extends JDialog {
 		panel.add(scrollPane);
 		
 		tableProjects = new JTable();
-		String [] header = {"ID Contrato", "ID Cliente", "Nombre Cliente", "ID Proyecto", "Tipo Proyecto","Fecha Firma Contrato", "Fecha Inicio", "Fecha de entrega", "Total a pagar","Estado"};
-		model = new DefaultTableModel();
+		tableProjects.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+					int cont=e.getClickCount();
+				int row=tableProjects.getSelectedRow();
+				String codContractTable= String.valueOf(model.getValueAt(row, 0));
+				
+				
+				ProjectRegistration registrations = new ProjectRegistration();
+				registrations.setModal(true);
+				registrations.setSize(1200, 700);
+				registrations.setResizable(false);
+				registrations.setLocationRelativeTo(null);
+				registrations.setVisible(true);
+				
+				registrations.createSameWindowDiferentSize(codContractTable);
+				
+				
+				
+				
+			}
+		});
+		
+		String [] header = {"ID Contrato", "ID Cliente", "Nombre Cliente", "ID Proyecto", "Tipo Proyecto","Firma Contrato", "Fecha Inicio", "Fecha de entrega", "Total a pagar","Estado","Fecha Prorrogado"};
+		
 		model.setColumnIdentifiers(header);
 		tableProjects.setModel(model);
 		tableProjects.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableProjects.setModel(model);
+		 TableColumnModel columnModel = tableProjects.getColumnModel();
+		 columnModel.getColumn(0).setPreferredWidth(50);
+		 columnModel.getColumn(3).setPreferredWidth(50);
+		 columnModel.getColumn(3).setPreferredWidth(75);
+		 columnModel.getColumn(9).setPreferredWidth(40);
+		
+		/*
+		 * 
+		 TableColumnModel columnModel = tabla.getColumnModel();
+columnModel.getColumn(2).setPreferredWidth(200);
+		 * */
+		
+		
 		loadUser();
 		scrollPane.setViewportView(tableProjects);
 		{
@@ -102,6 +142,7 @@ public class ListProjects extends JDialog {
 			fila[7]=SoftwareCompany.getInstance().getContracts().get(i).getDueDate();
 			fila[8]=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
 			fila[9]=SoftwareCompany.getInstance().getContracts().get(i).getProject().getState();
+			fila[10]="N/A";
 			model.addRow(fila);
 		}
 		

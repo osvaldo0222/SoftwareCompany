@@ -134,6 +134,9 @@ public class ProjectRegistration extends JDialog {
 		
 		comboBoxTipoProyecto = new JComboBox();
 		txtpreciototal = new JTextField();
+		txtpreciototal.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtpreciototal.setBackground(Color.WHITE);
+		txtpreciototal.setEditable(false);
 		 TrabajadoresPanel = new JPanel();
 		
 		comboBoxTipoProyecto.setFont(new Font("SansSerif", Font.PLAIN, 12));
@@ -176,6 +179,7 @@ public class ProjectRegistration extends JDialog {
 	    dateBegin.setBounds(130, 29, 171, 20);
 	    panelTermsContract.add(dateBegin);
 	    dateBegin.setMinSelectableDate(date);
+	    dateBegin.setEnabled(false);
 	    
 	    Label label_6 = new Label("Fecha Entrega:");
 	    label_6.setFont(new Font("SansSerif", Font.PLAIN, 14));
@@ -185,6 +189,7 @@ public class ProjectRegistration extends JDialog {
 	    JDateChooser dateEnd = new JDateChooser();
 	    dateEnd.setBounds(130, 60, 171, 20);
 	    panelTermsContract.add(dateEnd);
+	    dateEnd.setEnabled(false);
 	    
 	    JButton btnGenerar = new JButton("Generar Contrato");
 	    btnGenerar.setFont(new Font("SansSerif", Font.PLAIN, 12));
@@ -195,7 +200,9 @@ public class ProjectRegistration extends JDialog {
 	    		int daysCalculated=SoftwareCompany.getInstance().calcDays(dateBegin, dateEnd);
 	    		System.out.println("el dia calculado cono "+daysCalculated);
 	    		if (daysCalculated>0) {
+	    			
 	    			txtpreciototal.setText(Float.toString(calcAmountOfMoney(daysCalculated)));
+	    			txtpreciototal.setBackground(Color.RED);
 		    		BigTxtContract.setText("Señores, "+txtQueryNameClient.getText()+" dominicano, mayor de edad, soltero,"
 		    				+ " portador  de la Cédula de Identidad y Electoral No."+SoftwareCompany.getInstance().clientById(txtQueryCodClient.getText()).getId()+" "
 		    				+ "domiciliado y residente en "+txtQueryAddress.getText()+" quien en lo adelante y para todos los fines y consecuencias legales del presente "
@@ -215,6 +222,7 @@ public class ProjectRegistration extends JDialog {
 	    });
 	    btnGenerar.setBounds(458, 60, 132, 20);
 	    panelTermsContract.add(btnGenerar);
+	    btnGenerar.setEnabled(false);
 	    
 	    JScrollPane scrollPane_2 = new JScrollPane();
 	    scrollPane_2.setBounds(12, 91, 578, 81);
@@ -344,6 +352,9 @@ public class ProjectRegistration extends JDialog {
 				
 				String auxCodQuery=txtQueryCodClient.getText();
 				if (SoftwareCompany.getInstance().clientById(auxCodQuery)!=null) {
+					dateBegin.setEnabled(true);
+					dateEnd.setEnabled(true);
+					btnGenerar.setEnabled(true);
 					txtQueryNameClient.setText(SoftwareCompany.getInstance().clientById(auxCodQuery).getName()+" "+SoftwareCompany.getInstance().clientById(auxCodQuery).getLast_name());
 					//txt.setText(SoftwareCompany.getInstance().clientById(auxCodQuery).getLast_name());
 					txtQueryAddress.setText(SoftwareCompany.getInstance().clientById(auxCodQuery).getAddress());
@@ -364,6 +375,7 @@ public class ProjectRegistration extends JDialog {
 		button.setIcon(new ImageIcon(ProjectRegistration.class.getResource("/Imgs/search.png")));
 		button.setBounds(306, 15, 88, 20);
 		panelContractClient.add(button);
+		
 	    
 		
 		JPanel InformacionGeneralPanel = new JPanel();
@@ -642,7 +654,8 @@ public class ProjectRegistration extends JDialog {
 				
 				sigButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if (validateData()==true && validateLits()==true && !comboBoxTipoProyecto.getSelectedItem().equals("<Selecciona un tipo de App>") && !comboBoxLenguaje.getSelectedItem().equals("<Selecciona un lenguaje>")) {
+						
+						if (validateData()==true && !comboBoxTipoProyecto.getSelectedItem().equals("<Selecciona un tipo de App>") && !comboBoxLenguaje.getSelectedItem().equals("<Selecciona un lenguaje>") && validateProgrammer_AndLanguajes()==true && validateLits()==true) {
 							sigButton.setEnabled(false);
 							sigButton.setVisible(false);
 							comboBoxLenguaje.setEnabled(false);
@@ -681,6 +694,7 @@ public class ProjectRegistration extends JDialog {
 			buttonPane.add(btnFinalizar);
 			  btnFinalizar.addActionListener(new ActionListener() {
 			    	public void actionPerformed(ActionEvent e) {
+			    		
 			    		if (!txtQueryNameClient.getText().equalsIgnoreCase("") && SoftwareCompany.getInstance().calcDays(dateBegin, dateEnd)>0) {
 			    			String codPro=txtCodigoProyecto.getText();
 			    			String dateSigContract=txtDateOriginContract.getText();
@@ -752,7 +766,7 @@ public class ProjectRegistration extends JDialog {
 						}
 			    		
 			    		
-			    	}
+			    	}////aquiiii
 			    });
 			{
 				JButton cancelButton = new JButton("Cancel");
@@ -764,6 +778,33 @@ public class ProjectRegistration extends JDialog {
 				
 			}
 		}
+	}
+	
+	public boolean validateProgrammer_AndLanguajes() {
+		boolean validate=false;
+		int cont1=0;
+		int cont2=0;
+		
+		for (int i = 0; i < DLMWorkersSelected.size(); i++) {
+			String[] codSplit=DLMWorkersSelected.getElementAt(i).toString().split(" ");
+			if (SoftwareCompany.getInstance().searchWorkerByCode(codSplit[0]) instanceof Programmer ) {
+				cont1++;
+				for (int j = 0; j <((Programmer)SoftwareCompany.getInstance().searchWorkerByCode(codSplit[0])).getLanguages().size() ; j++) {
+					
+				if (((Programmer)SoftwareCompany.getInstance().searchWorkerByCode(codSplit[0])).getLanguages().get(j).equalsIgnoreCase(comboBoxLenguaje.getSelectedItem().toString())) {
+					cont2++;
+				}}
+				
+			}
+		}
+		if (cont1==cont2) {
+			validate=true;
+		}else {
+			JOptionPane.showMessageDialog(null, "Existen programadores en su lista sin esperiencia en "+comboBoxLenguaje.getSelectedItem().toString()+" Por favor elija otro", "Registro Proyecto", JOptionPane.ERROR_MESSAGE);
+	
+		}
+		
+		return validate;
 	}
 	
 	public void clear() {
@@ -920,12 +961,22 @@ public class ProjectRegistration extends JDialog {
 
 			}
 			
-			if (contBoss==-1 || contDesigner==-1 || contPlanner==-1 || contProgrammer==-1) {
-				JOptionPane.showMessageDialog(null, "Debe existir 1 Jefe por proyecto y al menos un diseñador, Revise sus datos", "Registro Proyecto", JOptionPane.ERROR_MESSAGE);
-
+			if (contBoss==-1 && contDesigner==-1 && contPlanner==-1 && contProgrammer==-1) {
+				JOptionPane.showMessageDialog(null, "Debe existir 1 Jefe, un diseñador, un programador y un planificador por proyecto.Revise sus datos", "Registro Proyecto", JOptionPane.ERROR_MESSAGE);
 				
-				aux=false;
+			}else if(contBoss==-1) {
+				JOptionPane.showMessageDialog(null, "Debe existir 1 Jefe por proyecto.Revise sus datos", "Registro Proyecto", JOptionPane.ERROR_MESSAGE);
+			
 				
+			}else if(contDesigner==-1) {
+				JOptionPane.showMessageDialog(null, "Debe existir 1 un diseñador por proyecto.Revise sus datos", "Registro Proyecto", JOptionPane.ERROR_MESSAGE);
+				
+				
+			}else if(contPlanner==-1) {
+				JOptionPane.showMessageDialog(null, "Debe existir al menos 1 un planificador por proyecto.Revise sus datos", "Registro Proyecto", JOptionPane.ERROR_MESSAGE);
+				
+			}else if(contProgrammer==-1) {
+				JOptionPane.showMessageDialog(null, "Debe existir al menos 1 un programador por proyecto.Revise sus datos", "Registro Proyecto", JOptionPane.ERROR_MESSAGE);
 			}else {
 				aux=true;
 			}
@@ -941,7 +992,7 @@ public class ProjectRegistration extends JDialog {
 		String getTxtFromComboBoxTipoPro=(String) comboBoxTipoProyecto.getSelectedItem();
 		System.out.println(getTxtFromComboBoxTipoPro);
 		String getTxtFromComboBoxLanguaje=comboBoxLenguaje.getSelectedItem().toString();
-		if (!getTxtFromTxtCodContract.equalsIgnoreCase("") && getTxtFromTxtNombreProjecto.equalsIgnoreCase("") && getTxtFromComboBoxTipoPro.equalsIgnoreCase("") && comboBoxTipoProyecto.getSelectedIndex()>0 && getTxtFromComboBoxLanguaje.equalsIgnoreCase("") && comboBoxLenguaje.getSelectedIndex()>0) {
+		if (getTxtFromTxtNombreProjecto.equalsIgnoreCase("") && getTxtFromComboBoxTipoPro.equalsIgnoreCase("") && comboBoxTipoProyecto.getSelectedIndex()>0 && getTxtFromComboBoxLanguaje.equalsIgnoreCase("") && comboBoxLenguaje.getSelectedIndex()>0) {
 			JOptionPane.showMessageDialog(null, "Rellena Todos los campos requeridos", "Registro Proyecto", JOptionPane.ERROR_MESSAGE);
 			
 		}
@@ -949,11 +1000,11 @@ public class ProjectRegistration extends JDialog {
 			JOptionPane.showMessageDialog(null, "Escribe el nombre del proyecto", "Registro Proyecto", JOptionPane.ERROR_MESSAGE);
 
 			
-		}else if(!getTxtFromTxtNombreProjecto.equalsIgnoreCase("") && getTxtFromComboBoxTipoPro.equalsIgnoreCase("") && !getTxtFromComboBoxLanguaje.equalsIgnoreCase("")) {
+		}else if(!getTxtFromTxtNombreProjecto.equalsIgnoreCase("") && getTxtFromComboBoxTipoPro.equalsIgnoreCase("<Selecciona un tipo de App>") && !getTxtFromComboBoxLanguaje.equalsIgnoreCase("")) {
 			JOptionPane.showMessageDialog(null, "Selecciona el tipo del proyecto", "Registro Proyecto", JOptionPane.ERROR_MESSAGE);
 
 			
-		}else if(!getTxtFromTxtNombreProjecto.equalsIgnoreCase("") && !getTxtFromComboBoxTipoPro.equalsIgnoreCase("") && getTxtFromComboBoxLanguaje.equalsIgnoreCase("")) {
+		}else if(!getTxtFromTxtNombreProjecto.equalsIgnoreCase("") && !getTxtFromComboBoxTipoPro.equalsIgnoreCase("") && getTxtFromComboBoxLanguaje.equalsIgnoreCase("<Selecciona un lenguaje>")) {
 			JOptionPane.showMessageDialog(null, "Selecciona el lenguaje a usar", "Registro Proyecto", JOptionPane.ERROR_MESSAGE);
 
 			
@@ -997,18 +1048,19 @@ public class ProjectRegistration extends JDialog {
 					}
 				}
 				
-			
-				
-				
 			}
-			
-			
 			
 		}
 		
-		
-		
-		
-		
+	}
+	
+	public void createSameWindowDiferentSize(String codeContract) {
+		SoftwareCompany.getInstance().searchContractByCode(codeContract);
+		txtCodigoProyecto.setText(SoftwareCompany.getInstance().searchContractByCode(codeContract).getProject().getId());
+		txtDateOriginContract.setText(SoftwareCompany.getInstance().searchContractByCode(codeContract).getSignoutDay());
+		txtNombreProyecto.setText(SoftwareCompany.getInstance().searchContractByCode(codeContract).getProject().getName());
+		comboBoxTipoProyecto.setSelectedItem(SoftwareCompany.getInstance().searchContractByCode(codeContract).getProject().getType().toString());
+		panelTermsContract.setVisible(true);
+		panelTermsContract.setBounds(620, 154, 600, 215);
 	}
 }

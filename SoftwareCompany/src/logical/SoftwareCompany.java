@@ -287,4 +287,16 @@ public class SoftwareCompany implements Serializable {
 	public void removeWorker(Worker worker) {
 		workers.remove(worker);
 	}
+	public Contract searchContractByCode(String codeContract) {
+		Contract aux=null;
+			for (int i = 0; i < contracts.size(); i++) {
+				if (contracts.get(i).getId().equalsIgnoreCase(codeContract)) {
+					aux=contracts.get(i);
+					break;
+				}
+				
+			}
+		
+		return aux;
+	}
 }

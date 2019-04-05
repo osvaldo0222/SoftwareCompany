@@ -67,6 +67,8 @@ import javax.swing.SwingConstants;
 import javax.swing.ListSelectionModel;
 import javax.swing.JTabbedPane;
 import java.awt.Label;
+
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 import com.toedter.calendar.JDateChooser;
 import javax.swing.JTextPane;
 import javax.swing.JCheckBox;
@@ -173,6 +175,7 @@ public class ProjectRegistration extends JDialog {
 	    JDateChooser dateBegin = new JDateChooser();
 	    dateBegin.setBounds(130, 29, 171, 20);
 	    panelTermsContract.add(dateBegin);
+	    dateBegin.setMinSelectableDate(date);
 	    
 	    Label label_6 = new Label("Fecha Entrega:");
 	    label_6.setFont(new Font("SansSerif", Font.PLAIN, 14));
@@ -184,22 +187,29 @@ public class ProjectRegistration extends JDialog {
 	    panelTermsContract.add(dateEnd);
 	    
 	    JButton btnGenerar = new JButton("Generar Contrato");
-	    btnGenerar.setFont(new Font("SansSerif", Font.PLAIN, 13));
+	    btnGenerar.setFont(new Font("SansSerif", Font.PLAIN, 12));
 	    btnGenerar.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
-	    		String strDateBegin=dateFormat.format(dateBegin);
-	    		System.out.println("_Fehca"+strDateBegin);
+	    		
+	    		
 	    		int daysCalculated=SoftwareCompany.getInstance().calcDays(dateBegin, dateEnd);
 	    		System.out.println("el dia calculado cono "+daysCalculated);
-	    		txtpreciototal.setText(Float.toString(calcAmountOfMoney(daysCalculated)));
-	    		BigTxtContract.setText("Señores, "+txtQueryNameClient.getText()+" dominicano, mayor de edad, soltero,"
-	    				+ " portador  de la Cédula de Identidad y Electoral No."+SoftwareCompany.getInstance().clientById(txtQueryCodClient.getText()).getId()+" "
-	    				+ "domiciliado y residente en "+txtQueryAddress.getText()+" quien en lo adelante y para todos los fines y consecuencias legales del presente "
-	    				+ "acto se denominará   EL REPRESENTANTE,  LA PRIMERA PARTE o por su propio nombres y apellidos.\n\n"
-	    				+ "-----------------------SE HA CONVENIDO Y PACTADO LO SIGUIENTE-----------------------"
-	    				+ "PRIMERO: los señores "+txtQueryNameClient.getText()+ ", por medio del presente acto autorizan y contratan a Empresa “La empresa” para el diseño"
-	    				+ " y creación de "+ "que lleva por nombre "+txtNombreProyecto.getText()+ "por un total de "+calcAmountOfMoney(daysCalculated)
-	    						+ "\n");
+	    		if (daysCalculated>0) {
+	    			txtpreciototal.setText(Float.toString(calcAmountOfMoney(daysCalculated)));
+		    		BigTxtContract.setText("Señores, "+txtQueryNameClient.getText()+" dominicano, mayor de edad, soltero,"
+		    				+ " portador  de la Cédula de Identidad y Electoral No."+SoftwareCompany.getInstance().clientById(txtQueryCodClient.getText()).getId()+" "
+		    				+ "domiciliado y residente en "+txtQueryAddress.getText()+" quien en lo adelante y para todos los fines y consecuencias legales del presente "
+		    				+ "acto se denominará   EL REPRESENTANTE,  LA PRIMERA PARTE o por su propio nombres y apellidos.\n\n"
+		    				+ "-----------------------SE HA CONVENIDO Y PACTADO LO SIGUIENTE-----------------------"
+		    				+ "PRIMERO: los señores "+txtQueryNameClient.getText()+ ", por medio del presente acto autorizan y contratan a Empresa “La empresa” para el diseño"
+		    				+ " y creación de "+ "que lleva por nombre "+txtNombreProyecto.getText()+ "por un total de "+calcAmountOfMoney(daysCalculated)
+		    						+ "\n");
+					
+				}else {
+					JOptionPane.showMessageDialog(null, "Elegir fecha de entrega posterior a la de inicio", "Registrar proyecto", JOptionPane.ERROR_MESSAGE);
+				
+				}
+	    		
 	    	
 	    	}
 	    });
@@ -684,14 +694,14 @@ public class ProjectRegistration extends JDialog {
 			    			String CodContra=("CONT-"+SoftwareCompany.codContract);
 			    			System.out.println("cont"+CodContra);
 			    			
-			    			Date beginD=dateBegin.getDate();
-			    			String strDateBegin=dateBegin.getDate().toString();
+			    			
+			    			String strDateBegin=dateFormat.format(dateBegin.getDate());
 			    			
 			    			Date dateFinish=dateEnd.getDate();
 			    			String sigDate=txtDateOriginContract.getText();
 			    			String state;
-			    			System.out.println("Begin"+dateBegin.toString() +" ->otro"+sigDate);
-			    			if (dateBegin.toString().equalsIgnoreCase(sigDate)) {
+			 
+			    			if (strDateBegin.equalsIgnoreCase(sigDate)) {
 			    				 state="En Proceso";
 								
 							}else {
@@ -711,7 +721,7 @@ public class ProjectRegistration extends JDialog {
 			    				worker.insertProject(txtCodigoProyecto.getText());
 			    				
 							}
-			    			Contract c1=new Contract(CodContra, beginD, dateFinish, clientId, pro1, price,sigDate);
+			    			Contract c1=new Contract(CodContra, dateBegin.getDate(), dateFinish, clientId, pro1, price,sigDate);
 			    			c1.setId(CodContra);
 			    			
 			    			Client aux=SoftwareCompany.getInstance().clientById(clientId);

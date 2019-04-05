@@ -127,7 +127,7 @@ public class MainVisual extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				ProjectRegistration registration = new ProjectRegistration();
 				registration.setModal(true);
-				registration.setSize(600, 430);
+				registration.setSize(630, 450);
 				registration.setResizable(false);
 				registration.setLocationRelativeTo(null);
 				registration.setVisible(true);

@@ -226,10 +226,15 @@ public class Login extends JFrame {
 				if (!username.equalsIgnoreCase("") && !password.equalsIgnoreCase("")) {
 					User userAux = SoftwareCompany.getInstance().searchUserByUsername(username, password);
 					if (userAux != null) {
-						userAux.setLast_enter(new Date());
-						MainVisual mainVisual = new MainVisual(userAux);
-						dispose();
-						mainVisual.setVisible(true);
+						if (userAux.isState()) {
+							userAux.setLast_enter(new Date());
+							MainVisual mainVisual = new MainVisual(userAux);
+							dispose();
+							mainVisual.setVisible(true);
+						} else {
+							JOptionPane.showMessageDialog(null, "Este usuario no esta activo", "Login", JOptionPane.WARNING_MESSAGE);
+							txtPassword.selectAll();
+						}
 					} else {
 						JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos", "Login", JOptionPane.ERROR_MESSAGE);
 						txtPassword.selectAll();

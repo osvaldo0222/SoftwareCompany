@@ -31,7 +31,6 @@ public class MainVisual extends JFrame {
 	private JPanel contentPane;
 	private User user;
 	private Dimension dimension;
-	private String hola;
 
 	public MainVisual(User user) {
 		setTitle("Software Company");
@@ -167,7 +166,9 @@ public class MainVisual extends JFrame {
 		JMenuItem mntmListar_2 = new JMenuItem("Listar Usuarios");
 		mntmListar_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				ListUser listUser = new ListUser();
+				listUser.setModal(true);
+				listUser.setVisible(true);
 			}
 		});
 		mntmListar_2.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/list30px.png")));

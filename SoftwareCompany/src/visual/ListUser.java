@@ -41,6 +41,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ListUser extends JDialog {
 
@@ -54,27 +55,12 @@ public class ListUser extends JDialog {
 	private int index = -1;
 	private String code = "";
 	private JTable tableUsuarios;
-	private String[] headers = {"Código", "Cedula", "Nombre", "Teléfono", "Correo", "Usuario", "Tipo", "Estado", "Creador", "Ultima Entrada"};
+	private String[] headers = {"Código", "Cedula", "Nombre", "Usuario", "Tipo", "Estado", "Creador", "Ultima Entrada"};
 	private JButton btnModificar;
 	private JButton btnActivar;
 	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			ListUser dialog = new ListUser();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Create the dialog.
-	 */
 	public ListUser() {
+		setTitle("Listar Usuarios");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ListUser.class.getResource("/Imgs/list30px.png")));
 		setResizable(false);
 		setBounds(100, 100, 1052, 437);
@@ -193,7 +179,7 @@ public class ListUser extends JDialog {
 								btnModificar.setEnabled(true);
 								btnActivar.setEnabled(true);
 								btnModificar.setText("Modificar " + code);
-								if (tableUsuarios.getValueAt(index, 7).toString().equalsIgnoreCase("Activo")) {
+								if (tableUsuarios.getValueAt(index, 5).toString().equalsIgnoreCase("ACTIVO")) {
 									btnActivar.setText("Desactivar " + code);
 									btnActivar.setIcon(new ImageIcon(ListUser.class.getResource("/Imgs/block16.png")));
 								} else {
@@ -244,6 +230,11 @@ public class ListUser extends JDialog {
 			}
 			{
 				JButton btnSalir = new JButton("Salir");
+				btnSalir.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						dispose();
+					}
+				});
 				btnSalir.setIcon(new ImageIcon(ListUser.class.getResource("/Imgs/exit.png")));
 				btnSalir.setFont(new Font("SansSerif", Font.PLAIN, 14));
 				btnSalir.setActionCommand("Cancel");
@@ -274,8 +265,15 @@ public class ListUser extends JDialog {
 		rows[0] = aux.getCode();
 		rows[1] = aux.getId();
 		rows[2] = aux.getName() + " " + aux.getLast_name();
-		rows[3] = aux.getAddress();
-		rows[4] = aux.getPhone();
+		rows[3] = aux.getUsername();
+		rows[4] = aux.getType();
+		if (aux.isState()) {
+			rows[5] = "ACTIVO";
+		}  else {
+			rows[7] = "DESACTIVADO";
+		}
+		rows[6] = aux.getCreation_user_code();
+		rows[7] = (new SimpleDateFormat("dd/MM/yyyy")).format(aux.getLast_enter());
 		model.addRow(rows);
 	}
 	
@@ -286,6 +284,7 @@ public class ListUser extends JDialog {
 		btnActivar.setEnabled(false);
 		btnModificar.setText("Modificar");
 		btnActivar.setText("Activar");
+		btnActivar.setIcon(new ImageIcon(ListUser.class.getResource("/Imgs/ok16.png")));
 		tableUsuarios.clearSelection();
 		loadtable();
 	}

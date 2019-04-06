@@ -63,8 +63,9 @@ public class UserRegistration extends JDialog {
 	private JButton btnEditCedula;
 	private JComboBox cbxTipo;
 	private JLabel lblImagen;
+	private boolean flagModifying = false;
 	
-	public UserRegistration(User activeUser) {
+	public UserRegistration(User activeUser, User modifyUser) {
 		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(UserRegistration.class.getResource("/Imgs/user.png")));
 		setTitle("Registrar Usuarios");
@@ -492,6 +493,10 @@ public class UserRegistration extends JDialog {
 									user.setPassword(password);
 									user.setUsername(username);
 									user.setType(type);
+									if (flagModifying) {
+										dispose();
+										return;
+									}
 								} else {
 									return;
 								}
@@ -528,6 +533,15 @@ public class UserRegistration extends JDialog {
 				btnSalir.setActionCommand("Cancel");
 				buttonPane.add(btnSalir);
 			}
+			
+			if (modifyUser != null) {
+				user = modifyUser;
+				completeInfo();
+				flagModifying   = true;
+				txtCedula.setText(user.getId());
+				txtCedula.setEditable(false);
+				btnGuardar.setEnabled(true);
+			}
 		}
 	}
 	
@@ -554,10 +568,15 @@ public class UserRegistration extends JDialog {
 		txtTelefono.setEditable(true);
 		txtDireccion.setEditable(true);
 		txtCorreo.setEditable(true);
-		txtUsuario.setEditable(true);
 		txtPassword.setEditable(true);
 		spnEdad.setEnabled(true);
-		cbxTipo.setEnabled(true);
+		if (user.getUsername().equalsIgnoreCase("admin")) {
+			cbxTipo.setEnabled(false);
+			txtUsuario.setEditable(false);
+		} else {
+			cbxTipo.setEnabled(true);
+			txtUsuario.setEditable(true);
+		}
 	}
 
 	private void stateOfCampos(boolean b) {

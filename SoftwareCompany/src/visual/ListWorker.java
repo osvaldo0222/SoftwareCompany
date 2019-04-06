@@ -43,9 +43,12 @@ import java.awt.event.InputMethodEvent;
 import javax.swing.ListSelectionModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class ListWorker extends JDialog {
 
+	private Validation validation = new Validation();
 	private final JPanel contentPanel = new JPanel();
 	private JTable tableTrabajadores;
 	private TableRowSorter<TableModel> sorter;
@@ -83,6 +86,16 @@ public class ListWorker extends JDialog {
 		panel.add(lblNewLabel);
 		
 		cbxColumnChooser = new JComboBox();
+		cbxColumnChooser.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				validation.setFocusBackground(cbxColumnChooser, true);
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				validation.setFocusBackground(cbxColumnChooser, false);
+			}
+		});
 		cbxColumnChooser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (cbxColumnChooser.getSelectedIndex() > 0) {
@@ -110,6 +123,16 @@ public class ListWorker extends JDialog {
 		panel.add(lblFiltro);
 		
 		txtFiltro = new JTextField();
+		txtFiltro.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				validation.setFocusBackground(txtFiltro, true);
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				validation.setFocusBackground(txtFiltro, false);
+			}
+		});
 		txtFiltro.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {

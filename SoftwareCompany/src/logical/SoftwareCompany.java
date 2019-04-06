@@ -299,4 +299,15 @@ public class SoftwareCompany implements Serializable {
 		
 		return aux;
 	}
+
+	public User userByCode(String code) {
+		User user = null;
+		for (User aux : users) {
+			if (aux.getCode().equalsIgnoreCase(code)) {
+				user = aux;
+				break;
+			}
+		}
+		return user;
+	}
 }

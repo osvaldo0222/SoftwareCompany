@@ -73,7 +73,7 @@ public class ListUser extends JDialog {
 			JPanel panel = new JPanel();
 			panel.setLayout(null);
 			panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Filtrado", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			panel.setBounds(10, 11, 1012, 57);
+			panel.setBounds(10, 11, 1026, 57);
 			contentPanel.add(panel);
 			{
 				JLabel label = new JLabel("Filtrar por:");
@@ -158,7 +158,7 @@ public class ListUser extends JDialog {
 		{
 			JPanel panel = new JPanel();
 			panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Usuarios", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-			panel.setBounds(10, 77, 1012, 277);
+			panel.setBounds(10, 77, 1026, 277);
 			contentPanel.add(panel);
 			panel.setLayout(new BorderLayout(0, 0));
 			{
@@ -214,6 +214,17 @@ public class ListUser extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				btnActivar = new JButton("Activar");
+				btnActivar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						if (!code.equalsIgnoreCase("") && index >= 0) {
+							User user = SoftwareCompany.getInstance().userByCode(code);
+							if (user != null) {
+								user.setState(!user.isState());
+								normalState();
+							}
+						}
+					}
+				});
 				btnActivar.setIcon(new ImageIcon(ListUser.class.getResource("/Imgs/ok16.png")));
 				btnActivar.setFont(new Font("SansSerif", Font.PLAIN, 14));
 				btnActivar.setEnabled(false);
@@ -221,6 +232,19 @@ public class ListUser extends JDialog {
 			}
 			{
 				btnModificar = new JButton("Modificar");
+				btnModificar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						if (!code.equalsIgnoreCase("") && index >= 0) {
+							User user = SoftwareCompany.getInstance().userByCode(code);
+							if (user != null) {
+								UserRegistration userRegistration = new UserRegistration(null, user);
+								userRegistration.setModal(true);
+								userRegistration.setVisible(true);
+								normalState();
+							}
+						}
+					}
+				});
 				btnModificar.setEnabled(false);
 				btnModificar.setIcon(new ImageIcon(ListUser.class.getResource("/Imgs/iconfinder_Modify_132685.png")));
 				btnModificar.setFont(new Font("SansSerif", Font.PLAIN, 14));
@@ -270,7 +294,7 @@ public class ListUser extends JDialog {
 		if (aux.isState()) {
 			rows[5] = "ACTIVO";
 		}  else {
-			rows[7] = "DESACTIVADO";
+			rows[5] = "DESACTIVADO";
 		}
 		rows[6] = aux.getCreation_user_code();
 		rows[7] = (new SimpleDateFormat("dd/MM/yyyy")).format(aux.getLast_enter());

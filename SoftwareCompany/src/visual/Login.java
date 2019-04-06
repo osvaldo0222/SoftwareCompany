@@ -69,7 +69,7 @@ public class Login extends JFrame {
 				} catch (Exception e) {
 					try {
 						outputStream = new FileOutputStream("SoftwareCompany.dat");
-						User user = new User("USER-" + (SoftwareCompany.codUsers + 1), "000-0000000-0", "ADMINISTRADOR", "N/A", "N/A", "N/A", 1, "", "admin", "admin", "ADMINISTRADOR", "USER-" + (SoftwareCompany.codUsers + 1));
+						User user = new User("USER-" + (SoftwareCompany.codUsers + 1), "000-0000000-0", "ADMINISTRADOR", "", "", "", 1, "", "admin", "admin", "ADMINISTRADOR", "USER-" + (SoftwareCompany.codUsers + 1));
 						SoftwareCompany.getInstance().insertUser(user);
 						outputStream.close();
 					} catch (Exception e2) {
@@ -93,6 +93,7 @@ public class Login extends JFrame {
 	 * Create the dialog.
 	 */
 	public Login() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {

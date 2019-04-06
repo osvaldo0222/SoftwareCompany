@@ -157,7 +157,7 @@ public class MainVisual extends JFrame {
 		mntmRegistrar_3.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/user30px.png")));
 		mntmRegistrar_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				UserRegistration registration = new UserRegistration(user);
+				UserRegistration registration = new UserRegistration(user, null);
 				registration.setModal(true);
 				registration.setVisible(true);
 			}

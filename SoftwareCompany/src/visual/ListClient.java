@@ -133,19 +133,23 @@ public class ListClient extends JDialog {
 				validation.setFocusBackground(txtFiltro, false);
 			}
 		});
-		txtFiltro.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if (!txtFiltro.isEnabled()) {
-					return;
-				}
-				for (int i = 0; i < model.getColumnCount(); i++) {
-					if (model.getColumnName(i).equalsIgnoreCase(cbxColumnChooser.getSelectedItem().toString())) {
-						tableFilter(txtFiltro.getText(), i);
+		try {
+			txtFiltro.addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyReleased(KeyEvent e) {
+					if (!txtFiltro.isEnabled()) {
+						return;
+					}
+					for (int i = 0; i < model.getColumnCount(); i++) {
+						if (model.getColumnName(i).equalsIgnoreCase(cbxColumnChooser.getSelectedItem().toString())) {
+							tableFilter(txtFiltro.getText(), i);
+						}
 					}
 				}
-			}
-		});
+			});
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		txtFiltro.setEnabled(false);
 		txtFiltro.setBounds(357, 20, 256, 20);
 		panel.add(txtFiltro);

@@ -294,9 +294,7 @@ public class SoftwareCompany implements Serializable {
 					aux=contracts.get(i);
 					break;
 				}
-				
 			}
-		
 		return aux;
 	}
 
@@ -309,5 +307,20 @@ public class SoftwareCompany implements Serializable {
 			}
 		}
 		return user;
+	}
+
+	public boolean atTwoAnAdmin() {
+		boolean atLeast = false;
+		int count = 0;
+		for (User aux : users) {
+			if (aux.getType().equalsIgnoreCase("ADMINISTRADOR") && aux.isState()) {
+				count++;
+			}
+		}
+		
+		if (count > 1) {
+			atLeast = true;
+		}
+		return atLeast;
 	}
 }

@@ -19,6 +19,8 @@ import logical.User;
 
 import javax.swing.border.EtchedBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
@@ -201,6 +203,7 @@ public class ListUser extends JDialog {
 					for (int i = 0; i < headers.length; i++) {
 						tableUsuarios.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 					}
+					tableUsuarios.getColumnModel().getColumn(2).setPreferredWidth(250);
 					tableUsuarios.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 					tableUsuarios.setRowSorter(sorter);
 					loadtable();
@@ -210,6 +213,7 @@ public class ListUser extends JDialog {
 		}
 		{
 			JPanel buttonPane = new JPanel();
+			buttonPane.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
@@ -219,6 +223,10 @@ public class ListUser extends JDialog {
 						if (!code.equalsIgnoreCase("") && index >= 0) {
 							User user = SoftwareCompany.getInstance().userByCode(code);
 							if (user != null) {
+								if (user.getType().equalsIgnoreCase("ADMINISTRADOR") && !SoftwareCompany.getInstance().atTwoAnAdmin() && user.isState()) {
+									JOptionPane.showMessageDialog(null, "Su sistema no pude quedar sin un administrador", "Usuarios", JOptionPane.ERROR_MESSAGE);
+									return;
+								}
 								user.setState(!user.isState());
 								normalState();
 							}

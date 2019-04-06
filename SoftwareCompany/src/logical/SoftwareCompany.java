@@ -233,7 +233,7 @@ public class SoftwareCompany implements Serializable {
 		SoftwareCompany.codContract = codContract;
 	}
 	
-	public int calcDays(JDateChooser dateBegin, JDateChooser dateEnd ) {
+	public int calcDays(JDateChooser dateBegin, JDateChooser dateEnd) {
 		int days = 0;
 		
 		if (dateBegin.getDate()!=null && dateEnd.getDate()!=null) {

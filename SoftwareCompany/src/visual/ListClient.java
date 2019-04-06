@@ -44,6 +44,7 @@ import javax.swing.JTable;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.print.PrinterException;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 

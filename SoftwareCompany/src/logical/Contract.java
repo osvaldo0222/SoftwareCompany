@@ -22,7 +22,7 @@ public class Contract implements Serializable {
 		this.id = id;
 		this.dateBegin = dateBegin;
 		this.dueDate = dueDate;
-		this.finalDate = new Date();
+		this.finalDate = dueDate;
 		this.idClient = idClient;
 		this.project = project;
 		this.price = price;

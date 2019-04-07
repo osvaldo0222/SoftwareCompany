@@ -16,6 +16,7 @@ public class Contract implements Serializable {
 	private Project project;
 	private float price;
 	private String SignoutDay;
+	private float copyPrice;
 	
 	public Contract(String id, Date dateBegin, Date dueDate,String idClient, Project project, float price,String SignoutDay) {
 		super();
@@ -27,6 +28,7 @@ public class Contract implements Serializable {
 		this.project = project;
 		this.price = price;
 		this.SignoutDay=SignoutDay;
+		this.copyPrice=copyPrice;
 	}
 
 	public String getId() {
@@ -91,5 +93,13 @@ public class Contract implements Serializable {
 
 	public void setSignoutDay(String signoutDay) {
 		SignoutDay = signoutDay;
+	}
+
+	public float getCopyPrice() {
+		return copyPrice;
+	}
+
+	public void setCopyPrice(float copyPrice) {
+		this.copyPrice = copyPrice;
 	}
 }

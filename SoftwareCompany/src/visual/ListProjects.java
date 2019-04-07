@@ -26,6 +26,7 @@ public class ListProjects extends JDialog {
 	private JTable tableProjects;
 	public static Object[] fila;
 	private DefaultTableModel model;
+	public static String codContractTable;
 
 
 	/**
@@ -68,25 +69,21 @@ public class ListProjects extends JDialog {
 			public void mouseClicked(MouseEvent e) {
 					int cont=e.getClickCount();
 				int row=tableProjects.getSelectedRow();
-				String codContractTable= String.valueOf(model.getValueAt(row, 0));
+			    codContractTable= String.valueOf(model.getValueAt(row, 0));
 				
-				
-				ProjectRegistration registrations = new ProjectRegistration();
-				registrations.setModal(true);
-				registrations.setSize(1200, 700);
-				registrations.setResizable(false);
-				registrations.setLocationRelativeTo(null);
-				registrations.setVisible(true);
-				
-				registrations.createSameWindowDiferentSize(codContractTable);
-				
+				WindowCheckContract newWindowCont=new WindowCheckContract();
+				newWindowCont.setModal(true);
+				newWindowCont.setSize(1250, 600);
+				newWindowCont.setResizable(false);
+				newWindowCont.setLocationRelativeTo(null);
+				newWindowCont.setVisible(true);
 				
 				
 				
 			}
 		});
 		
-		String [] header = {"ID Contrato", "ID Cliente", "Nombre Cliente", "ID Proyecto", "Tipo Proyecto","Firma Contrato", "Fecha Inicio", "Fecha de entrega", "Total a pagar","Estado","Fecha Prorrogado"};
+		String [] header = {"ID Contrato", "ID Cliente", "Nombre Cliente", "ID Proyecto", "Tipo Proyecto","Firma Contrato", "Fecha Inicio", "Fecha de entrega", "Total a pagar","Estado","Fecha Prorrogado","Cant Pro"};
 		
 		model.setColumnIdentifiers(header);
 		tableProjects.setModel(model);
@@ -143,6 +140,7 @@ columnModel.getColumn(2).setPreferredWidth(200);
 			fila[8]=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
 			fila[9]=SoftwareCompany.getInstance().getContracts().get(i).getProject().getState();
 			fila[10]="N/A";
+			fila[11]=SoftwareCompany.getInstance().getContracts().get(i).getProject().getWorkers().size();
 			model.addRow(fila);
 		}
 		

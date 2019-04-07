@@ -165,7 +165,7 @@ public class ProjectRegistration extends JDialog {
 		
 	    listWorkersSelected = new JList();
 	    panelTermsContract = new JPanel();
-	    panelTermsContract.setBounds(10, 154, 600, 215);
+	    panelTermsContract.setBounds(633, 154, 600, 215);
 	    FirstPanel.add(panelTermsContract);
 	    panelTermsContract.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "T\u00E9rminos y Condiciones ", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 	    panelTermsContract.setLayout(null);
@@ -257,7 +257,7 @@ public class ProjectRegistration extends JDialog {
 	     panelTermsContract.setVisible(false);
 		
 	    panelContractClient = new JPanel();
-	    panelContractClient.setBounds(10, 11, 600, 132);
+	    panelContractClient.setBounds(633, 11, 600, 132);
 	    FirstPanel.add(panelContractClient);
 	    panelContractClient.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "informaci\u00F3n Cliente", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 	    panelContractClient.setVisible(false);
@@ -736,6 +736,7 @@ public class ProjectRegistration extends JDialog {
 			    				
 							}
 			    			Contract c1=new Contract(CodContra, dateBegin.getDate(), dateFinish, clientId, pro1, price,sigDate);
+			    			c1.setCopyPrice(price);
 			    			c1.setId(CodContra);
 			    			
 			    			Client aux=SoftwareCompany.getInstance().clientById(clientId);
@@ -1054,13 +1055,5 @@ public class ProjectRegistration extends JDialog {
 		
 	}
 	
-	public void createSameWindowDiferentSize(String codeContract) {
-		SoftwareCompany.getInstance().searchContractByCode(codeContract);
-		txtCodigoProyecto.setText(SoftwareCompany.getInstance().searchContractByCode(codeContract).getProject().getId());
-		txtDateOriginContract.setText(SoftwareCompany.getInstance().searchContractByCode(codeContract).getSignoutDay());
-		txtNombreProyecto.setText(SoftwareCompany.getInstance().searchContractByCode(codeContract).getProject().getName());
-		comboBoxTipoProyecto.setSelectedItem(SoftwareCompany.getInstance().searchContractByCode(codeContract).getProject().getType().toString());
-		panelTermsContract.setVisible(true);
-		panelTermsContract.setBounds(620, 154, 600, 215);
-	}
+	
 }

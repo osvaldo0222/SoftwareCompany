@@ -3,6 +3,8 @@ package logical;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -20,6 +22,10 @@ public class SoftwareCompany implements Serializable {
 	public static int codClients = 0;
 	public static int codUsers = 0;
 	public static int codContract=0;
+	Calendar fechaInicio = new GregorianCalendar(); 
+	Calendar fechafin = new GregorianCalendar();
+	Calendar c = Calendar.getInstance();
+	
 	
 	private SoftwareCompany() {
 		super();
@@ -323,4 +329,65 @@ public class SoftwareCompany implements Serializable {
 		}
 		return atLeast;
 	}
+	public float calcAmountDelayTime(String idContract,int days) {
+		float delayAmount=0;
+		Contract aux=null;
+		aux=searchContractByCode(idContract);
+		//float total=aux.getPrice();
+		//aux.setCopyPrice(total);
+		
+		float price=aux.getCopyPrice();
+		delayAmount=(float) (price - price*(days*0.01));
+	
+		return delayAmount;
+		
+	}
+	
+	/*public float calcAmountOfMoney(int days) {
+		float aux=0;
+		float amount=0;
+		float percent=0;
+		
+		for
+		
+		for (int i = 0; i < DLMWorkersSelected.size(); i++) {
+			String[] codSplit=DLMWorkersSelected.getElementAt(i).toString().split(" ");
+			aux=SoftwareCompany.getInstance().searchWorkerByCode(codSplit[0]).getSalary()*8*days;
+			amount+=aux;
+			aux=0;
+		}
+		percent=(float) (amount*0.25);
+		amount+=percent;
+		return amount;
+		
+	}*/
+	
+	public float calcAmountOfMoney(int days,String codeCont) {
+		float amount=0;
+		float aux=0;
+		float aux2=0;
+		for (int i = 0; i < searchContractByCode(codeCont).getProject().getWorkers().size(); i++) {
+			amount=searchContractByCode(codeCont).getProject().getWorkers().get(i).getSalary()*8*days;
+			aux2+=amount;
+			amount=0;
+		}
+		//aux=(float)(aux2*0.25);
+		
+		
+		
+		return aux2;
+		
+	}
+	
+	
+	public int calcDaysJustDate(Date d1,Date d2) {
+		fechaInicio.setTime(d1);
+		fechafin.setTime(d2);
+		
+		c.setTimeInMillis(fechafin.getTime().getTime() - fechaInicio.getTime().getTime());
+		
+		return c.get(Calendar.DAY_OF_YEAR);
+		
+	}
+	
 }

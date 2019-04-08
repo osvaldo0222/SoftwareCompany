@@ -165,7 +165,7 @@ public class MainVisual extends JFrame implements Runnable {
 			public void actionPerformed(ActionEvent e) {
 				ProjectRegistration registration = new ProjectRegistration();
 				registration.setModal(true);
-				registration.setSize(1200, 700);
+				registration.setSize(625, 450);
 				registration.setResizable(false);
 				registration.setLocationRelativeTo(null);
 				registration.setVisible(true);
@@ -187,18 +187,6 @@ public class MainVisual extends JFrame implements Runnable {
 				listPro.setResizable(false);
 				listPro.setLocationRelativeTo(null);
 				listPro.setVisible(true);
-				
-				
-				/*CheeseCompany company=new CheeseCompany();
-					Main_Company frame = new Main_Company();
-					Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-				    int height = screenSize.height;
-				    int width = screenSize.width;
-				    frame.setSize(width, height-45);
-				    frame.setLocationRelativeTo(null);
-				    
-				    frame.setVisible(true);*/
-				
 				
 			}
 		});
@@ -309,6 +297,13 @@ public class MainVisual extends JFrame implements Runnable {
 		panel_4.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		JButton btnNewButton = new JButton("<html><p style=\"text-align:center;\">Registrar<br/>Trabajadores</p></html>");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				WorkerRegistration registration = new WorkerRegistration(null);
+				registration.setModal(true);
+				registration.setVisible(true);
+			}
+		});
 		btnNewButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnNewButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnNewButton.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/worker30px.png")));
@@ -316,6 +311,13 @@ public class MainVisual extends JFrame implements Runnable {
 		panel_4.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("<html><p style=\"text-align:center;\">Registrar<br/>Clientes</p></html>");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ClientRegistration registration = new ClientRegistration(null);
+				registration.setModal(true);
+				registration.setVisible(true);
+			}
+		});
 		btnNewButton_1.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnNewButton_1.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnNewButton_1.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/user30.png")));
@@ -323,6 +325,16 @@ public class MainVisual extends JFrame implements Runnable {
 		panel_4.add(btnNewButton_1);
 		
 		JButton btnNewButton_2 = new JButton("<html><p style=\"text-align:center;\">Registrar<br/>Proyectos</p></html>");
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ProjectRegistration registration = new ProjectRegistration();
+				registration.setModal(true);
+				registration.setSize(625, 450);
+				registration.setResizable(false);
+				registration.setLocationRelativeTo(null);
+				registration.setVisible(true);
+			}
+		});
 		btnNewButton_2.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnNewButton_2.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnNewButton_2.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/icons8-training-30.png")));
@@ -337,7 +349,21 @@ public class MainVisual extends JFrame implements Runnable {
 			}
 		});
 		
-		JButton btnNewButton_4 = new JButton("<html><p style=\"text-align:center;\">Finalizar<br/>Proyecto</p></html>");
+		JButton btnNewButton_4 = new JButton("<html><p style=\"text-align:center;\">Finalizar/Posponer<br/>Proyecto</p></html>");
+		btnNewButton_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ListProjects listPro=new ListProjects();
+				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+				listPro.setModal(true);
+				int height = screenSize.height;
+			    int width = screenSize.width;
+			    listPro.setSize(width, height-45);
+				//listPro.setSize(1250, 700);
+				listPro.setResizable(false);
+				listPro.setLocationRelativeTo(null);
+				listPro.setVisible(true);
+			}
+		});
 		btnNewButton_4.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnNewButton_4.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnNewButton_4.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/icons8-training-30.png")));

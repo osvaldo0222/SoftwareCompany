@@ -295,17 +295,25 @@ public class MainVisual extends JFrame implements Runnable {
 		panelEstadisticaContainer.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Estadisticas", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelEstadisticaContainer.setBounds(621, 11, 564, 635);
 		panel.add(panelEstadisticaContainer);
-		panelEstadisticaContainer.setLayout(null);
+	    panelEstadisticaContainer.setLayout(new BorderLayout(0, 0));
 		
 	    panelPieProjectStatus = new JPanel();
-		panelPieProjectStatus.setBounds(10, 21, 544, 303);
 		panelEstadisticaContainer.add(panelPieProjectStatus);
 		panelPieProjectStatus.setLayout(new BorderLayout(0, 0));
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
+		panelEstadisticaContainer.add(panel_2, BorderLayout.SOUTH);
+		panel_2.setLayout(new BorderLayout(0, 0));
+		
+		JButton btnNewButton_5 = new JButton("New button");
+		panel_2.add(btnNewButton_5, BorderLayout.NORTH);
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Perdidas", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_3.setBounds(10, 351, 601, 295);
 		panel.add(panel_3);
+		panel_3.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel_4 = new JPanel();
 		panel_4.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));

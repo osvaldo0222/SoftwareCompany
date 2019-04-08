@@ -60,6 +60,8 @@ import javax.swing.JSeparator;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 
 public class MainVisual extends JFrame implements Runnable {
 
@@ -258,12 +260,9 @@ public class MainVisual extends JFrame implements Runnable {
 		JPanel panel = new JPanel();
 		panel.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
 		contentPane.add(panel, BorderLayout.CENTER);
-		panel.setLayout(null);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Proyectos Activos", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.setBounds(10, 11, 601, 329);
-		panel.add(panel_1);
 		panel_1.setLayout(new BorderLayout(0, 0));
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -293,27 +292,38 @@ public class MainVisual extends JFrame implements Runnable {
 		JPanel panelEstadisticaContainer = new JPanel();
 		panelEstadisticaContainer.setBackground(Color.WHITE);
 		panelEstadisticaContainer.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Estadisticas", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelEstadisticaContainer.setBounds(621, 11, 564, 635);
-		panel.add(panelEstadisticaContainer);
 	    panelEstadisticaContainer.setLayout(new BorderLayout(0, 0));
 		
 	    panelPieProjectStatus = new JPanel();
 		panelEstadisticaContainer.add(panelPieProjectStatus);
 		panelPieProjectStatus.setLayout(new BorderLayout(0, 0));
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
-		panelEstadisticaContainer.add(panel_2, BorderLayout.SOUTH);
-		panel_2.setLayout(new BorderLayout(0, 0));
-		
-		JButton btnNewButton_5 = new JButton("New button");
-		panel_2.add(btnNewButton_5, BorderLayout.NORTH);
-		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Perdidas", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_3.setBounds(10, 351, 601, 295);
-		panel.add(panel_3);
 		panel_3.setLayout(new BorderLayout(0, 0));
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(8)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 601, GroupLayout.PREFERRED_SIZE)
+						.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 601, GroupLayout.PREFERRED_SIZE))
+					.addGap(10)
+					.addComponent(panelEstadisticaContainer, GroupLayout.PREFERRED_SIZE, 564, GroupLayout.PREFERRED_SIZE))
+		);
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(9)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 329, GroupLayout.PREFERRED_SIZE)
+							.addGap(11)
+							.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 295, GroupLayout.PREFERRED_SIZE))
+						.addComponent(panelEstadisticaContainer, GroupLayout.PREFERRED_SIZE, 635, GroupLayout.PREFERRED_SIZE)))
+		);
+		panel.setLayout(gl_panel);
 		
 		JPanel panel_4 = new JPanel();
 		panel_4.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));

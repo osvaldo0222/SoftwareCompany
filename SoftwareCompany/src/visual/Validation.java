@@ -10,6 +10,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.text.NumberFormatter;
 
+import logical.Contract;
+import logical.SoftwareCompany;
+
 public class Validation {
 	private Character character;
 	
@@ -77,7 +80,9 @@ public class Validation {
 				((JSpinner) object).setBackground(Color.white);
 			}
 		}
-	}
+	}	
+	
+	
 	
 
 }

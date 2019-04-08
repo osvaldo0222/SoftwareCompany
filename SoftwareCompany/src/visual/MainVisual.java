@@ -12,7 +12,9 @@ import javax.swing.border.EmptyBorder;
 import com.sun.glass.ui.Application;
 import com.toedter.calendar.JDateChooser;
 
+
 import javafx.scene.control.TableRow;
+
 import logical.Contract;
 import logical.SoftwareCompany;
 import logical.User;
@@ -176,11 +178,27 @@ public class MainVisual extends JFrame implements Runnable {
 		mntmListarProyectos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ListProjects listPro=new ListProjects();
+				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 				listPro.setModal(true);
-				listPro.setSize(1250, 700);
+				int height = screenSize.height;
+			    int width = screenSize.width;
+			    listPro.setSize(width, height-45);
+				//listPro.setSize(1250, 700);
 				listPro.setResizable(false);
 				listPro.setLocationRelativeTo(null);
 				listPro.setVisible(true);
+				
+				
+				/*CheeseCompany company=new CheeseCompany();
+					Main_Company frame = new Main_Company();
+					Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+				    int height = screenSize.height;
+				    int width = screenSize.width;
+				    frame.setSize(width, height-45);
+				    frame.setLocationRelativeTo(null);
+				    
+				    frame.setVisible(true);*/
+				
 				
 			}
 		});

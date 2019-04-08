@@ -383,6 +383,7 @@ public class WindowCheckContract extends JDialog {
 							aux.setPrice(SoftwareCompany.getInstance().calcAmountDelayTime(aux.getId(), calcDaysJustDate(aux.getDueDate(), dateChoserFinalDay.getDate())));
 						}else if(radioDeliver.isSelected()) {
 							aux.getProject().setState("Terminado");
+							aux.getProject().setEnded(true);
 							JOptionPane.showMessageDialog(null, "Este Proyecto Fue concluido con exito", "Proyectos", JOptionPane.INFORMATION_MESSAGE);
 						
 						}

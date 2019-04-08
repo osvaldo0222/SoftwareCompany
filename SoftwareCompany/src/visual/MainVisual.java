@@ -261,33 +261,6 @@ public class MainVisual extends JFrame implements Runnable {
 		panel.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
 		contentPane.add(panel, BorderLayout.CENTER);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Proyectos Activos", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.setLayout(new BorderLayout(0, 0));
-		
-		JScrollPane scrollPane = new JScrollPane();
-		panel_1.add(scrollPane, BorderLayout.CENTER);
-		
-		table = new JTable();
-		model = new DefaultTableModel();
-		model.setColumnCount(headers.length);
-		model.setColumnIdentifiers(headers);
-		table.setModel(model);
-		table.setAutoCreateRowSorter(true);
-		table.setDefaultEditor(Object.class, null);
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-		for (int i = 0; i < headers.length; i++) {
-			table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-		}
-		table.getColumnModel().getColumn(3).setPreferredWidth(95);
-		table.getColumnModel().getColumn(5).setPreferredWidth(95);
-		javax.swing.table.TableColumn column = table.getColumnModel().getColumn(6);
-	    column.setCellRenderer(new ProgressRenderer());
-	    loadtable();
-		scrollPane.setViewportView(table);
-		projects = new Thread(this);
-		projects.start();
 		
 		JPanel panelEstadisticaContainer = new JPanel();
 		panelEstadisticaContainer.setBackground(Color.WHITE);
@@ -297,33 +270,53 @@ public class MainVisual extends JFrame implements Runnable {
 	    panelPieProjectStatus = new JPanel();
 		panelEstadisticaContainer.add(panelPieProjectStatus);
 		panelPieProjectStatus.setLayout(new BorderLayout(0, 0));
+		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		
+		JPanel panelAux = new JPanel();
+		panel.add(panelAux);
+		panelAux.setLayout(new GridLayout(2, 0, 0, 0));
+		
+		JPanel panel_1 = new JPanel();
+		panelAux.add(panel_1);
+		panel_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Proyectos Activos", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_1.setLayout(new BorderLayout(0, 0));
+		
+		JScrollPane scrollPane = new JScrollPane();
+		panel_1.add(scrollPane, BorderLayout.CENTER);
+		
+		table = new JTable();
+		
+		model = new DefaultTableModel();
+		model.setColumnCount(headers.length);
+		model.setColumnIdentifiers(headers);
+		
+		
+		table.setModel(model);
+		table.setAutoCreateRowSorter(true);
+		table.setDefaultEditor(Object.class, null);
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		for (int i = 0; i < headers.length; i++) {
+			table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+		}
+	   
+	    loadtable();
+		projects = new Thread(this);
+		projects.start();
+		table.getColumnModel().getColumn(3).setPreferredWidth(95);
+		table.getColumnModel().getColumn(5).setPreferredWidth(95);
+		javax.swing.table.TableColumn column = table.getColumnModel().getColumn(6);
+		column.setCellRenderer(new ProgressRenderer());
+		scrollPane.setViewportView(table);
 		
 		JPanel panel_3 = new JPanel();
+		panelAux.add(panel_3);
 		panel_3.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Perdidas", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_3.setLayout(new BorderLayout(0, 0));
-		GroupLayout gl_panel = new GroupLayout(panel);
-		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(8)
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 601, GroupLayout.PREFERRED_SIZE)
-						.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 601, GroupLayout.PREFERRED_SIZE))
-					.addGap(10)
-					.addComponent(panelEstadisticaContainer, GroupLayout.PREFERRED_SIZE, 564, GroupLayout.PREFERRED_SIZE))
-		);
-		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(9)
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createSequentialGroup()
-							.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 329, GroupLayout.PREFERRED_SIZE)
-							.addGap(11)
-							.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 295, GroupLayout.PREFERRED_SIZE))
-						.addComponent(panelEstadisticaContainer, GroupLayout.PREFERRED_SIZE, 635, GroupLayout.PREFERRED_SIZE)))
-		);
-		panel.setLayout(gl_panel);
+		
+		JButton btnNewButton_5 = new JButton("New button");
+		panel_3.add(btnNewButton_5, BorderLayout.CENTER);
+		panel.add(panelEstadisticaContainer);
 		
 		JPanel panel_4 = new JPanel();
 		panel_4.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));

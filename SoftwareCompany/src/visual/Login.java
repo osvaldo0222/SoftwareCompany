@@ -54,9 +54,9 @@ public class Login extends JFrame {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				/*try {
+				try {
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				} catch (Exception e1) {} */
+				} catch (Exception e1) {}
 				FileInputStream company;
 				FileOutputStream outputStream;
 				ObjectInputStream reader;

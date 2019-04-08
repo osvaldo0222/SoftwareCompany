@@ -293,12 +293,12 @@ public class MainVisual extends JFrame implements Runnable {
 		JPanel panelEstadisticaContainer = new JPanel();
 		panelEstadisticaContainer.setBackground(Color.WHITE);
 		panelEstadisticaContainer.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Estadisticas", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelEstadisticaContainer.setBounds(621, 11, 478, 635);
+		panelEstadisticaContainer.setBounds(621, 11, 564, 635);
 		panel.add(panelEstadisticaContainer);
 		panelEstadisticaContainer.setLayout(null);
 		
 	    panelPieProjectStatus = new JPanel();
-		panelPieProjectStatus.setBounds(10, 21, 458, 303);
+		panelPieProjectStatus.setBounds(10, 21, 544, 303);
 		panelEstadisticaContainer.add(panelPieProjectStatus);
 		panelPieProjectStatus.setLayout(new BorderLayout(0, 0));
 		

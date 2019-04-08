@@ -37,6 +37,13 @@ import javax.swing.ImageIcon;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.data.general.DefaultPieDataset;
+
 import javax.swing.border.EtchedBorder;
 import javax.swing.JToolBar;
 import javax.swing.JButton;
@@ -52,6 +59,7 @@ import javax.swing.border.BevelBorder;
 import javax.swing.JSeparator;
 import java.awt.Font;
 import javax.swing.SwingConstants;
+import java.awt.FlowLayout;
 
 public class MainVisual extends JFrame implements Runnable {
 
@@ -63,6 +71,7 @@ public class MainVisual extends JFrame implements Runnable {
 	private final String[] headers = {"Proyecto", "Contrato", "Trabajadores", "Cliente", "F. Entrega", "Estado", "Proceso"};
 	private Object[] rows;
 	Thread projects;
+	private JPanel panelPieProjectStatus;
 
 	public MainVisual(User user) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainVisual.class.getResource("/Imgs/main-visual-icon.png")));
@@ -281,10 +290,17 @@ public class MainVisual extends JFrame implements Runnable {
 		projects = new Thread(this);
 		projects.start();
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Estadisticas", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_2.setBounds(621, 11, 564, 635);
-		panel.add(panel_2);
+		JPanel panelEstadisticaContainer = new JPanel();
+		panelEstadisticaContainer.setBackground(Color.WHITE);
+		panelEstadisticaContainer.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Estadisticas", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelEstadisticaContainer.setBounds(621, 11, 478, 635);
+		panel.add(panelEstadisticaContainer);
+		panelEstadisticaContainer.setLayout(null);
+		
+	    panelPieProjectStatus = new JPanel();
+		panelPieProjectStatus.setBounds(10, 21, 458, 303);
+		panelEstadisticaContainer.add(panelPieProjectStatus);
+		panelPieProjectStatus.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Perdidas", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
@@ -380,6 +396,7 @@ public class MainVisual extends JFrame implements Runnable {
 		
 		JPanel panel_5 = new JPanel();
 		panel_4.add(panel_5);
+		graphPie();
 	}
 	
 	private void saveData() {
@@ -451,5 +468,61 @@ public class MainVisual extends JFrame implements Runnable {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public void graphPie() {
+		
+		 DefaultPieDataset data = new DefaultPieDataset();
+		 int proFin=0;
+		 int proInProces=0;
+		 int proProrrogado=0;
+		 int nuevo=0;
+		 
+		 for (int i = 0; i < SoftwareCompany.getInstance().getProjects().size(); i++) {
+			 if (SoftwareCompany.getInstance().getProjects().get(i).getState().equalsIgnoreCase("Terminado")) {
+				 proFin++;
+				
+			}else if(SoftwareCompany.getInstance().getProjects().get(i).getState().equalsIgnoreCase("En Proceso")) {
+				proInProces++;
+			}else if(SoftwareCompany.getInstance().getProjects().get(i).getState().equalsIgnoreCase("Prorrogado")) {
+				proProrrogado++;
+			}else if(SoftwareCompany.getInstance().getProjects().get(i).getState().equalsIgnoreCase("Nuevo")) {
+				nuevo++;
+			}
+			
+		}
+		 
+		 
+		 	data.setValue("Proyectos Terminados", proFin);
+	        data.setValue("Proyectos En Proceso", proInProces);
+	        data.setValue("Proyectos Prorrogados", proProrrogado);
+	        data.setValue("Proyectos Nuevo", nuevo);
+	 
+	        
+	       JFreeChart chart = ChartFactory.createPieChart3D(
+	         "Grafica Status Proyectos", 
+	         data, 
+	         true, 
+	         true, 
+	         false);
+	       //chart.setBackgroundPaint(new Color(222, 222, 255));
+	      // chart.setBorderPaint(Color.WHITE);
+	      
+	       
+	       PiePlot plot = (PiePlot) chart.getPlot();
+	       plot.setSectionPaint("Proyectos Terminados", new Color( 130, 224, 170 ));
+	       plot.setSectionPaint("Proyectos Prorrogados", new Color( 236, 112, 99 ));
+	       plot.setSectionPaint("Proyectos En Proceso", new Color( 247, 220, 111 ));
+	       plot.setSectionPaint("Proyectos Nuevo", new Color( 133, 193, 233 ));
+	       plot.setBackgroundPaint(Color.WHITE);
+	       
+	       
+	 
+	        // Crear el Panel del Grafico con ChartPanel
+	        ChartPanel chartPanel = new ChartPanel(chart);
+	        panelPieProjectStatus.add(chartPanel);
+	        
+		
+		
 	}
 }

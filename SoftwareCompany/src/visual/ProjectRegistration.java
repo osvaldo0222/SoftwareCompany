@@ -131,16 +131,11 @@ public class ProjectRegistration extends JDialog {
 		FirstPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(FirstPanel, BorderLayout.CENTER);
 		FirstPanel.setLayout(null);
-		
-		comboBoxTipoProyecto = new JComboBox();
 		txtpreciototal = new JTextField();
 		txtpreciototal.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtpreciototal.setBackground(Color.WHITE);
 		txtpreciototal.setEditable(false);
 		 TrabajadoresPanel = new JPanel();
-		
-		comboBoxTipoProyecto.setFont(new Font("SansSerif", Font.PLAIN, 12));
-	    comboBoxLenguaje = new JComboBox();
 	    JButton btnFinalizar = new JButton("Finalizar");
 	  
 	    
@@ -152,14 +147,7 @@ public class ProjectRegistration extends JDialog {
 				
 			}
 		});
-		
-		
-		comboBoxLenguaje.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		comboBoxTipoWorkers = new JComboBox();
 		JButton sigButton = new JButton("Siguiente");
-		
-		
-		comboBoxTipoWorkers.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		DLM=new DefaultListModel();
 		DLMWorkersSelected=new DefaultListModel();
 		
@@ -444,37 +432,6 @@ public class ProjectRegistration extends JDialog {
 		InformacionGeneralPanel.add(txtCodigoProyecto);
 		txtCodigoProyecto.setColumns(10);
 		
-		
-		
-		comboBoxTipoProyecto.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				VD.setFocusBackground(comboBoxTipoProyecto, true);
-			}
-			@Override
-			public void focusLost(FocusEvent e) {
-				VD.setFocusBackground(comboBoxTipoProyecto, false);
-			}
-		});
-		
-		
-		comboBoxTipoProyecto.setModel(new DefaultComboBoxModel(new String[] {"<Selecciona un tipo de App>", "App. Escritorio", "Movil", "Paginas WEB"}));
-		comboBoxTipoProyecto.setBounds(115, 89, 198, 20);
-		InformacionGeneralPanel.add(comboBoxTipoProyecto);
-		comboBoxTipoProyecto.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				if (!comboBoxTipoProyecto.equals("<Selecciona un tipo de App>") && !comboBoxLenguaje.equals("<Selecciona un lenguaje>")) {
-					comboBoxTipoWorkers.setEnabled(true);
-					FuntioncomboTipoWorkers();
-				}
-				
-				
-				
-			
-			}
-		});
-		
 		txtNombreProyecto = new JTextField();
 		txtNombreProyecto.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtNombreProyecto.addKeyListener(new KeyAdapter() {
@@ -497,6 +454,45 @@ public class ProjectRegistration extends JDialog {
 		txtNombreProyecto.setBounds(115, 59, 475, 20);
 		InformacionGeneralPanel.add(txtNombreProyecto);
 		txtNombreProyecto.setColumns(10);
+		
+		JLabel lblFecha = new JLabel("Fecha:");
+		lblFecha.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		lblFecha.setBounds(324, 29, 82, 20);
+		InformacionGeneralPanel.add(lblFecha);
+		
+		txtDateOriginContract = new JTextField();
+		txtDateOriginContract.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtDateOriginContract.setEditable(false);
+		txtDateOriginContract.setBounds(392, 29, 198, 20);
+		InformacionGeneralPanel.add(txtDateOriginContract);
+		txtDateOriginContract.setColumns(10);
+		txtDateOriginContract.setText(dateFormat.format(date));
+		
+		comboBoxTipoProyecto = new JComboBox();
+		
+		comboBoxTipoProyecto.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		
+		
+		
+		comboBoxTipoProyecto.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				VD.setFocusBackground(comboBoxTipoProyecto, true);
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				VD.setFocusBackground(comboBoxTipoProyecto, false);
+			}
+		});
+		
+		
+		comboBoxTipoProyecto.setModel(new DefaultComboBoxModel(new String[] {"<Selecciona un tipo de App>", "App. Escritorio", "Movil", "Paginas WEB"}));
+		comboBoxTipoProyecto.setBounds(115, 89, 198, 20);
+		InformacionGeneralPanel.add(comboBoxTipoProyecto);
+		comboBoxLenguaje = new JComboBox();
+		
+		
+		comboBoxLenguaje.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		
 		
 		comboBoxLenguaje.addFocusListener(new FocusAdapter() {
@@ -527,19 +523,19 @@ public class ProjectRegistration extends JDialog {
 		comboBoxLenguaje.setModel(new DefaultComboBoxModel(new String[] {"<Selecciona un lenguaje>", "PHP", "Python", "Java", "RubyOnRails", "Swift", "C#", "VisualBasic", "Delphi", "C", "C++"}));
 		comboBoxLenguaje.setBounds(405, 89, 185, 20);
 		InformacionGeneralPanel.add(comboBoxLenguaje);
-		
-		JLabel lblFecha = new JLabel("Fecha:");
-		lblFecha.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		lblFecha.setBounds(324, 29, 82, 20);
-		InformacionGeneralPanel.add(lblFecha);
-		
-		txtDateOriginContract = new JTextField();
-		txtDateOriginContract.setHorizontalAlignment(SwingConstants.RIGHT);
-		txtDateOriginContract.setEditable(false);
-		txtDateOriginContract.setBounds(392, 29, 198, 20);
-		InformacionGeneralPanel.add(txtDateOriginContract);
-		txtDateOriginContract.setColumns(10);
-		txtDateOriginContract.setText(dateFormat.format(date));
+		comboBoxTipoProyecto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if (!comboBoxTipoProyecto.equals("<Selecciona un tipo de App>") && !comboBoxLenguaje.equals("<Selecciona un lenguaje>")) {
+					comboBoxTipoWorkers.setEnabled(true);
+					FuntioncomboTipoWorkers();
+				}
+				
+				
+				
+			
+			}
+		});
 		
 		
 		TrabajadoresPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Trabajadores", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
@@ -551,33 +547,6 @@ public class ProjectRegistration extends JDialog {
 		lblBuscarPor.setFont(new Font("SansSerif", Font.PLAIN, 14));
 		lblBuscarPor.setBounds(10, 21, 71, 20);
 		TrabajadoresPanel.add(lblBuscarPor);
-		
-		
-		
-		comboBoxTipoWorkers.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				VD.setFocusBackground(comboBoxTipoWorkers, true);
-			}
-			@Override
-			public void focusLost(FocusEvent e) {
-				VD.setFocusBackground(comboBoxTipoWorkers, false);
-			}
-		});
-		comboBoxTipoWorkers.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				DLM.removeAllElements();
-				FuntioncomboTipoWorkers();
-				
-				
-			}
-		});
-		
-		comboBoxTipoWorkers.setModel(new DefaultComboBoxModel(new String[] {"<Selecciona>", "Dise\u00F1ador", "Jefe", "Planeador", "Programador"}));
-		comboBoxTipoWorkers.setBounds(91, 22, 203, 20);
-		TrabajadoresPanel.add(comboBoxTipoWorkers);
-		comboBoxTipoWorkers.setSelectedIndex(0);
-		comboBoxTipoWorkers.setEnabled(false);
 		
 		JLabel lblSeleccionado = new JLabel("Seleccionados:");
 		lblSeleccionado.setFont(new Font("SansSerif", Font.PLAIN, 14));
@@ -638,6 +607,37 @@ public class ProjectRegistration extends JDialog {
 		listWorkersSelected.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane_1.setViewportView(listWorkersSelected);
 		listWorkersSelected.setModel(DLMWorkersSelected);
+		comboBoxTipoWorkers = new JComboBox();
+		
+		
+		comboBoxTipoWorkers.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		
+		
+		
+		comboBoxTipoWorkers.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				VD.setFocusBackground(comboBoxTipoWorkers, true);
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				VD.setFocusBackground(comboBoxTipoWorkers, false);
+			}
+		});
+		comboBoxTipoWorkers.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DLM.removeAllElements();
+				FuntioncomboTipoWorkers();
+				
+				
+			}
+		});
+		
+		comboBoxTipoWorkers.setModel(new DefaultComboBoxModel(new String[] {"<Selecciona>", "Dise\u00F1ador", "Jefe", "Planeador", "Programador"}));
+		comboBoxTipoWorkers.setBounds(91, 22, 203, 20);
+		TrabajadoresPanel.add(comboBoxTipoWorkers);
+		comboBoxTipoWorkers.setSelectedIndex(0);
+		comboBoxTipoWorkers.setEnabled(false);
 		listWorkersSelected.addMouseListener(new MouseAdapter() {
 	    	@Override
 	    	public void mouseClicked(MouseEvent e) {

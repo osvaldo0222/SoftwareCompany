@@ -9,6 +9,9 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import javax.swing.text.MaskFormatter;
 import javax.swing.border.EtchedBorder;
 import java.awt.Color;
@@ -41,9 +44,12 @@ import logical.Programmer;
 import logical.SoftwareCompany;
 
 import javax.swing.JTextPane;
+import javax.swing.ListSelectionModel;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
+import javax.swing.JTable;
 
 public class WindowCheckContract extends JDialog {
 
@@ -62,7 +68,6 @@ public class WindowCheckContract extends JDialog {
 	SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy");
 	Date date=new Date();
 	private DefaultListModel DLMWorkersSelected;
-	private JList listWorkersOnPro;
 	private Contract aux;
 	Calendar fechaInicio = new GregorianCalendar(); 
 	Calendar fechafin = new GregorianCalendar();
@@ -77,6 +82,9 @@ public class WindowCheckContract extends JDialog {
 	private JRadioButton radioDeliver;
 	private JButton okButton;
 	private JPanel buttonPane;
+	private JTable tableWorkers;
+	public static Object[] filas;
+	private DefaultTableModel models;
 	
 
 	/**
@@ -101,12 +109,13 @@ public class WindowCheckContract extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
-		DLMWorkersSelected=new DefaultListModel();
+		
 		 aux= SoftwareCompany.getInstance().searchContractByCode(ListProjects.codContractTable);
 		 radioProrroga = new JRadioButton("Prorrogar Proyecto");
 		 JTextPane bigContract = new JTextPane();
          dateChoserFinalDay = new JDateChooser();
           totalAcordadoLabel = new Label("Total Acordado:");
+         
 		JPanel InformacionGeneralPanel = new JPanel();
 		InformacionGeneralPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "informaci\u00F3n contrato", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		InformacionGeneralPanel.setBounds(10, 11, 600, 143);
@@ -179,9 +188,35 @@ public class WindowCheckContract extends JDialog {
 		scrollPane.setBounds(10, 31, 580, 229);
 		TrabajadoresPanel.add(scrollPane);
 		
-		 listWorkersOnPro = new JList();
-		scrollPane.setViewportView(listWorkersOnPro);
-		listWorkersOnPro.setModel(DLMWorkersSelected);
+		tableWorkers = new JTable();
+		 models = new DefaultTableModel();
+		
+		String[] headers = {"Codigo","Nombre","Rol","Sueldo por Proyecto"};
+
+		models.setColumnCount(headers.length);
+		models.setColumnIdentifiers(headers);
+		
+		tableWorkers.setModel(models);
+		tableWorkers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		 TableColumnModel columnModel = tableWorkers.getColumnModel();
+		 
+		
+		tableWorkers.setAutoCreateRowSorter(true);
+		 columnModel.getColumn(0).setPreferredWidth(10);
+		 columnModel.getColumn(1).setPreferredWidth(175);
+		 columnModel.getColumn(2).setPreferredWidth(20);
+		 columnModel.getColumn(3).setPreferredWidth(20);
+		 DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		 centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		 for (int i = 0; i < headers.length; i++) {
+				tableWorkers.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+			}
+		scrollPane.setViewportView(tableWorkers);
+	
+		
+		
+		
+		
 		 radioDeliver = new JRadioButton("Entregar Proyecto");
 		
 		JPanel panelContractClient = new JPanel();
@@ -358,7 +393,7 @@ public class WindowCheckContract extends JDialog {
 		txtTotalPagar.setBounds(487, 243, 103, 20);
 		panelTermsContract.add(txtTotalPagar);
 		txtTotalPagar.setColumns(10);
-		loadInfo();
+		
 		
 		
 		{
@@ -433,9 +468,35 @@ public class WindowCheckContract extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+		
+		loadInfo();
 	}
 	
 	public void loadInfo() {
+		
+		
+		models.setRowCount(0);
+		filas = new Object[models.getColumnCount()];
+		
+		//	private String[] headers = {"Codigo","Nombre","Rol","Sueldo por Proyecto"};
+		
+		for (int i = 0; i <aux.getProject().getWorkers().size(); i++) {
+			filas[0]=aux.getProject().getWorkers().get(i).getCode();
+			filas[1]=aux.getProject().getWorkers().get(i).getName()+" "+aux.getProject().getWorkers().get(i).getLast_name();
+			if (aux.getProject().getWorkers().get(i) instanceof Boss ) {
+				filas[2]="Jefe";
+
+			}else if (aux.getProject().getWorkers().get(i) instanceof Programmer ) {
+				filas[2]="Programador";
+			}else if (aux.getProject().getWorkers().get(i) instanceof Designer ) {
+				filas[2]="Diseñador";
+			}else if (aux.getProject().getWorkers().get(i) instanceof Planner ) {
+				filas[2]="Planeador";
+			}
+			filas[3]=aux.getProject().getWorkers().get(i).getSalary()*8*SoftwareCompany.getInstance().calcDaysJustDate(aux.getDateBegin(), aux.getFinalDate());
+			models.addRow(filas);
+			
+		}
 		
 		if (aux.getProject().getState().equalsIgnoreCase("Prorrogado")) {
 			radioProrroga.setEnabled(false);
@@ -475,7 +536,11 @@ public class WindowCheckContract extends JDialog {
 		txtTipoPro.setText(aux.getProject().getType());
 		txtduedate.setText(dateFormat.format(aux.getDueDate()));
 		
-		for (int i = 0; i < aux.getProject().getWorkers().size(); i++) {
+		
+		
+
+		
+	/*	for (int i = 0; i < aux.getProject().getWorkers().size(); i++) {
 			
 			if (aux.getProject().getWorkers().get(i) instanceof Boss ) {
 				DLMWorkersSelected.addElement(aux.getProject().getWorkers().get(i).getCode()+"->"+aux.getProject().getWorkers().get(i).getName()+" "+aux.getProject().getWorkers().get(i).getLast_name()+" |Jefe|");
@@ -490,7 +555,7 @@ public class WindowCheckContract extends JDialog {
 				DLMWorkersSelected.addElement(aux.getProject().getWorkers().get(i).getCode()+" -> "+aux.getProject().getWorkers().get(i).getName()+" "+aux.getProject().getWorkers().get(i).getLast_name()+" |Planeador|");
 
 			}	
-		}
+		}*/
 	}
 	
 public int calcDaysJustDate(Date d1,Date d2) {

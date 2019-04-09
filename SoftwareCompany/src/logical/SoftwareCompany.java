@@ -108,11 +108,12 @@ public class SoftwareCompany implements Serializable {
 		
 		
 		Worker aux = workerById(id);
+		System.out.println(aux.getName()+"\n");
 		if (aux != null) {
 			for (Contract contract : contracts) {
 				System.out.println("pepe");
 				for (Worker contraWorker : contract.getProject().getWorkers()) {
-					if (contraWorker.getCode().equalsIgnoreCase(id)) {
+					if (contraWorker.getId().equalsIgnoreCase(id)) {
 						
 						total++;
 						if (contract.getFinalDate().after(contract.getDueDate())) {

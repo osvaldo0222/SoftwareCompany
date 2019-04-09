@@ -74,8 +74,16 @@ public class MainVisual extends JFrame implements Runnable {
 	private Object[] rows;
 	private Thread projects;
 	private JPanel panelPieProjectStatus;
+	private JFreeChart chart;
+	private ChartPanel chartPanel;
+	private Thread pieThread;
+
 
 	public MainVisual(User user) {
+		
+		
+		
+		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainVisual.class.getResource("/Imgs/main-visual-icon.png")));
 		setTitle("Software Company");
 		setResizable(false);
@@ -93,6 +101,9 @@ public class MainVisual extends JFrame implements Runnable {
 		setLocationRelativeTo(null);
 		
 		JMenuBar menuBar = new JMenuBar();
+		pieThread=new Thread();
+		pieThread.start();
+		
 		setJMenuBar(menuBar);
 		
 		JMenu mnArchivo = new JMenu("Archivo");
@@ -309,6 +320,13 @@ public class MainVisual extends JFrame implements Runnable {
 	    panelPieProjectStatus = new JPanel();
 	    panelEstadisticaContainer.add(panelPieProjectStatus);
 	    panelPieProjectStatus.setLayout(new BorderLayout(0, 0));
+	    graphPie();
+	 // Crear el Panel del Grafico con ChartPanel
+        chartPanel = new ChartPanel(chart);
+      
+       // panelPieProjectStatus.removeAll();
+        panelPieProjectStatus.add(chartPanel);
+        
 		
 		JPanel panel_3 = new JPanel();
 		panelAux.add(panel_3);
@@ -484,6 +502,19 @@ public class MainVisual extends JFrame implements Runnable {
 				e.printStackTrace();
 			}
 		}
+		
+		while (ct==pieThread) {
+			try {
+				System.out.println("pepe");
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+		}
+		
 	}
 	
 	public void graphPie() {
@@ -515,7 +546,7 @@ public class MainVisual extends JFrame implements Runnable {
 	        data.setValue("Proyectos Nuevo", nuevo);
 	 
 	        
-	       JFreeChart chart = ChartFactory.createPieChart3D(
+	         chart = ChartFactory.createPieChart3D(
 	         "Grafica Status Proyectos", 
 	         data, 
 	         true, 
@@ -530,8 +561,11 @@ public class MainVisual extends JFrame implements Runnable {
 	       plot.setSectionPaint("Proyectos En Proceso", new Color( 247, 220, 111 ));
 	       plot.setSectionPaint("Proyectos Nuevo", new Color( 133, 193, 233 ));
 	       plot.setBackgroundPaint(Color.WHITE);
-	       // Crear el Panel del Grafico con ChartPanel
-	        ChartPanel chartPanel = new ChartPanel(chart);
-	        panelPieProjectStatus.add(chartPanel);
+	       
+
+	       
+	       
+	       
+	        
 	}
 }

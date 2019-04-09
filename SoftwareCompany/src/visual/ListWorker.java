@@ -263,6 +263,7 @@ public class ListWorker extends JDialog {
 				buttonPane.add(btnSalir);
 			}
 		}
+		
 	}
 
 	private void loadtable() {
@@ -289,7 +290,7 @@ public class ListWorker extends JDialog {
 		rows[4] = aux.getPhone();
 		rows[5] = aux.getMail();
 		rows[6] = "RD$" + format.format(aux.getSalary());
-		rows[7] = SoftwareCompany.getInstance().calification(aux.getCode());
+		rows[7] = SoftwareCompany.getInstance().calification(aux.getId());
 		model.addRow(rows);
 	}
 	

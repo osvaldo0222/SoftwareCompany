@@ -98,6 +98,7 @@ public class ListProjects extends JDialog {
 			public void mouseClicked(MouseEvent e) {
 				   int row=tableProjects.getSelectedRow();
 			        codContractTable= String.valueOf(model.getValueAt(row, 0));	
+			        System.out.println(codContractTable);
 			    	WindowCheckContract newWindowCont=new WindowCheckContract();
 					newWindowCont.setModal(true);
 					newWindowCont.setSize(1240, 520);

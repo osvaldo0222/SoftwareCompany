@@ -363,11 +363,14 @@ public class WindowCheckContract extends JDialog {
 		
 		{
 			 buttonPane = new JPanel();
+			 buttonPane.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
 			 
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
                   okButton = new JButton("Finalizar");
+                  okButton.setIcon(new ImageIcon(WindowCheckContract.class.getResource("/Imgs/ok16.png")));
+                  okButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						
@@ -375,17 +378,36 @@ public class WindowCheckContract extends JDialog {
 							
 							dispose();
 							
-						}else if(!aux.getProject().getState().equalsIgnoreCase("Prorrogado") && !aux.getProject().getState().equalsIgnoreCase("Terminado")) {
+						}else if(!aux.getProject().getState().equalsIgnoreCase("Terminado")) {
 						if (radioProrroga.isSelected() && !txtTotalPagar.equals("") && !txtTotalAcordado.equals("")) {
 							aux.getProject().setState("Prorrogado");
 							aux.setFinalDate(dateChoserFinalDay.getDate());
 							JOptionPane.showMessageDialog(null, "Este Proyecto Fue prorrogado con exito", "Proyectos", JOptionPane.INFORMATION_MESSAGE);
 							aux.setPrice(SoftwareCompany.getInstance().calcAmountDelayTime(aux.getId(), calcDaysJustDate(aux.getDueDate(), dateChoserFinalDay.getDate())));
-						}else if(radioDeliver.isSelected()) {
+						}else if(radioDeliver.isSelected() && !aux.getProject().getState().equalsIgnoreCase("Terminado")) {
 							aux.getProject().setState("Terminado");
 							aux.getProject().setEnded(true);
+							for (int i = 0; i <aux.getProject().getWorkers().size(); i++) {
+								
+								aux.getProject().getWorkers().get(i).getProjects().removeAll(aux.getProject().getWorkers().get(i).getProjects());
+								
+							}
 							JOptionPane.showMessageDialog(null, "Este Proyecto Fue concluido con exito", "Proyectos", JOptionPane.INFORMATION_MESSAGE);
 						
+						}else if(aux.getProject().getState().equalsIgnoreCase("Prorrogado") && radioDeliver.isSelected()) {
+							radioDeliver.setEnabled(true);
+							radioDeliver.setSelected(true);
+							aux.getProject().setState("Terminado");
+							aux.getProject().setEnded(true);
+							for (int i = 0; i <aux.getProject().getWorkers().size(); i++) {
+								
+								aux.getProject().getWorkers().get(i).getProjects().removeAll(aux.getProject().getWorkers().get(i).getProjects());
+								
+							}
+							JOptionPane.showMessageDialog(null, "Este Proyecto Fue concluido con exito", "Proyectos", JOptionPane.INFORMATION_MESSAGE);
+						
+							
+							
 						}
 						
 						}else {
@@ -400,6 +422,13 @@ public class WindowCheckContract extends JDialog {
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});
+				cancelButton.setIcon(new ImageIcon(WindowCheckContract.class.getResource("/Imgs/exit.png")));
+				cancelButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}

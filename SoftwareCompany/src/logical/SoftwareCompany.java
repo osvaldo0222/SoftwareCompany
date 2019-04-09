@@ -103,14 +103,26 @@ public class SoftwareCompany implements Serializable {
 		String calification = "EXCELENTE";
 		int total = 0;
 		int good = 0;
+		
+		//System.out.println("pepe"+contract.getDueDate());
+		
+		
 		Worker aux = workerById(id);
 		if (aux != null) {
 			for (Contract contract : contracts) {
+				System.out.println("pepe");
 				for (Worker contraWorker : contract.getProject().getWorkers()) {
-					if (contraWorker.equals(aux)) {
+					if (contraWorker.getCode().equalsIgnoreCase(id)) {
+						
 						total++;
-						if (!contract.getDueDate().before(contract.getFinalDate())) {
+						if (contract.getFinalDate().after(contract.getDueDate())) {
+						
+							//good++;
+						}else {
 							good++;
+							System.out.println(""+contract.getDueDate());
+							System.out.println(""+contract.getFinalDate());
+							
 						}
 					}
 				}

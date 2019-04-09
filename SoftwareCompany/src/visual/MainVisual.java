@@ -183,6 +183,7 @@ public class MainVisual extends JFrame implements Runnable {
 				registration.setLocationRelativeTo(null);
 				registration.setVisible(true);
 				loadtable();
+				graphPie();
 			}
 		});
 		mnProyectos.add(mntmRegistrar_2);
@@ -202,6 +203,7 @@ public class MainVisual extends JFrame implements Runnable {
 				listPro.setLocationRelativeTo(null);
 				listPro.setVisible(true);
 				loadtable();
+				graphPie();
 			}
 		});
 		
@@ -391,6 +393,7 @@ public class MainVisual extends JFrame implements Runnable {
 				listPro.setLocationRelativeTo(null);
 				listPro.setVisible(true);
 				loadtable();
+				graphPie();
 			}
 		});
 		btnNewButton_4.setHorizontalTextPosition(SwingConstants.CENTER);

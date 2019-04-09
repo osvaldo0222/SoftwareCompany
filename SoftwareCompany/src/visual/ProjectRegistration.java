@@ -158,6 +158,11 @@ public class ProjectRegistration extends JDialog {
 	    panelTermsContract.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "T\u00E9rminos y Condiciones ", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 	    panelTermsContract.setLayout(null);
 	    
+	    JDateChooser dateEnd = new JDateChooser();
+	    dateEnd.setBounds(130, 60, 171, 20);
+	    panelTermsContract.add(dateEnd);
+	    dateEnd.setEnabled(false);
+	    
 	    Label label_5 = new Label("Fecha Inicio:");
 	    label_5.setFont(new Font("SansSerif", Font.PLAIN, 14));
 	    label_5.setBounds(12, 29, 94, 20);
@@ -168,16 +173,6 @@ public class ProjectRegistration extends JDialog {
 	    panelTermsContract.add(dateBegin);
 	    dateBegin.setMinSelectableDate(date);
 	    dateBegin.setEnabled(false);
-	    
-	    Label label_6 = new Label("Fecha Entrega:");
-	    label_6.setFont(new Font("SansSerif", Font.PLAIN, 14));
-	    label_6.setBounds(12, 60, 112, 20);
-	    panelTermsContract.add(label_6);
-	    
-	    JDateChooser dateEnd = new JDateChooser();
-	    dateEnd.setBounds(130, 60, 171, 20);
-	    panelTermsContract.add(dateEnd);
-	    dateEnd.setEnabled(false);
 	    
 	    JButton btnGenerar = new JButton("Generar Contrato");
 	    btnGenerar.setFont(new Font("SansSerif", Font.PLAIN, 12));
@@ -242,6 +237,11 @@ public class ProjectRegistration extends JDialog {
 	     txtpreciototal.setBounds(458, 185, 132, 20);
 	     panelTermsContract.add(txtpreciototal);
 	     txtpreciototal.setColumns(10);
+	     
+	     Label label_6 = new Label("Fecha Entrega:");
+	     label_6.setFont(new Font("SansSerif", Font.PLAIN, 14));
+	     label_6.setBounds(12, 60, 112, 20);
+	     panelTermsContract.add(label_6);
 	     panelTermsContract.setVisible(false);
 		
 	    panelContractClient = new JPanel();
@@ -354,7 +354,18 @@ public class ProjectRegistration extends JDialog {
 					
 					
 				}else {
-					JOptionPane.showMessageDialog(null, "Cliente no existe", "Buscar Cliente", JOptionPane.ERROR_MESSAGE);
+					 Object[] options = {"Si!","No"};
+					int x=JOptionPane.showOptionDialog(null, "Cliente no Existe,¿Desea registrarlo?", "Error", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+				
+					if (x==0) {
+						ClientRegistration registration = new ClientRegistration(null);
+						registration.setModal(true);
+						registration.setVisible(true);
+						
+					}else {
+						
+					}
+				
 				}
 				
 				
@@ -432,29 +443,6 @@ public class ProjectRegistration extends JDialog {
 		InformacionGeneralPanel.add(txtCodigoProyecto);
 		txtCodigoProyecto.setColumns(10);
 		
-		txtNombreProyecto = new JTextField();
-		txtNombreProyecto.setHorizontalAlignment(SwingConstants.RIGHT);
-		txtNombreProyecto.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				VD.justLetters(e);
-			}
-		});
-		txtNombreProyecto.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				VD.setFocusBackground(txtNombreProyecto, true);
-			}
-			@Override
-			public void focusLost(FocusEvent e) {
-				VD.setFocusBackground(txtNombreProyecto, false);
-			}
-		});
-		
-		txtNombreProyecto.setBounds(115, 59, 475, 20);
-		InformacionGeneralPanel.add(txtNombreProyecto);
-		txtNombreProyecto.setColumns(10);
-		
 		JLabel lblFecha = new JLabel("Fecha:");
 		lblFecha.setFont(new Font("SansSerif", Font.PLAIN, 14));
 		lblFecha.setBounds(324, 29, 82, 20);
@@ -523,6 +511,29 @@ public class ProjectRegistration extends JDialog {
 		comboBoxLenguaje.setModel(new DefaultComboBoxModel(new String[] {"<Selecciona un lenguaje>", "PHP", "Python", "Java", "RubyOnRails", "Swift", "C#", "VisualBasic", "Delphi", "C", "C++"}));
 		comboBoxLenguaje.setBounds(405, 89, 185, 20);
 		InformacionGeneralPanel.add(comboBoxLenguaje);
+		
+		txtNombreProyecto = new JTextField();
+		txtNombreProyecto.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtNombreProyecto.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				VD.justLetters(e);
+			}
+		});
+		txtNombreProyecto.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				VD.setFocusBackground(txtNombreProyecto, true);
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				VD.setFocusBackground(txtNombreProyecto, false);
+			}
+		});
+		
+		txtNombreProyecto.setBounds(115, 59, 475, 20);
+		InformacionGeneralPanel.add(txtNombreProyecto);
+		txtNombreProyecto.setColumns(10);
 		comboBoxTipoProyecto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -584,12 +595,6 @@ public class ProjectRegistration extends JDialog {
 						else {
 						addLanguaje();
 					}
-					
-					/*for (int i = 0; i < DLMWorkersSelected.size(); i++) {
-				String[] codSplit=DLMWorkersSelected.getElementAt(i).toString().split(" ");
-				if (SoftwareCompany.getInstance().searchWorkerByCode(codSplit[0]) instanceof Boss) {
-					contBoss++;
-				}*/
 					
 				}else {
 					addLanguaje();
@@ -668,6 +673,9 @@ public class ProjectRegistration extends JDialog {
 							btnAtras.setVisible(true);
 							btnFinalizar.setEnabled(true);
 				    		btnFinalizar.setVisible(true);
+				    		comboBoxLenguaje.setVisible(false);
+				    		comboBoxTipoProyecto.setVisible(false);
+				    		comboBoxTipoWorkers.setVisible(false);
 						
 						}
 						
@@ -705,7 +713,7 @@ public class ProjectRegistration extends JDialog {
 			    			//String beginD=dateBegin.getDateFormatString();
 			    			//String dateFinish=dateEnd.getDateFormatString();
 			    			
-			    			String CodContra=("CONT-"+SoftwareCompany.codContract);
+			    			String CodContra=("CONT-"+(SoftwareCompany.codContract+1));
 			    			System.out.println("cont"+CodContra);
 			    			
 			    			
@@ -771,6 +779,11 @@ public class ProjectRegistration extends JDialog {
 			    });
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});
 				cancelButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
 				cancelButton.setIcon(new ImageIcon(ProjectRegistration.class.getResource("/Imgs/exit.png")));
 				cancelButton.setActionCommand("Cancel");

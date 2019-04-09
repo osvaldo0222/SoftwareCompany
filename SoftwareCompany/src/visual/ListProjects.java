@@ -100,10 +100,11 @@ public class ListProjects extends JDialog {
 			        codContractTable= String.valueOf(model.getValueAt(row, 0));	
 			    	WindowCheckContract newWindowCont=new WindowCheckContract();
 					newWindowCont.setModal(true);
-					newWindowCont.setSize(1250, 600);
+					newWindowCont.setSize(1240, 520);
 					newWindowCont.setResizable(false);
 					newWindowCont.setLocationRelativeTo(null);
 					newWindowCont.setVisible(true);
+					
 					
 				
 			}

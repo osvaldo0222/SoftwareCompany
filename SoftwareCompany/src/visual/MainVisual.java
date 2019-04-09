@@ -72,7 +72,7 @@ public class MainVisual extends JFrame implements Runnable {
 	private DefaultTableModel model;
 	private final String[] headers = {"Proyecto", "Contrato", "Trabajadores", "Cliente", "F. Entrega", "Estado", "Proceso"};
 	private Object[] rows;
-	Thread projects;
+	private Thread projects;
 	private JPanel panelPieProjectStatus;
 
 	public MainVisual(User user) {
@@ -83,9 +83,10 @@ public class MainVisual extends JFrame implements Runnable {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
 				saveData();
+				System.exit(0);
 			}
 		});
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		dimension = super.getToolkit().getScreenSize();
 		super.setSize(dimension.width, (dimension.height - 40));
@@ -103,6 +104,7 @@ public class MainVisual extends JFrame implements Runnable {
 			public void actionPerformed(ActionEvent e) {
 				saveData();
 				dispose();
+				System.exit(0);
 			}
 		});
 		mntmCerrar.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/exit30.png")));
@@ -180,6 +182,7 @@ public class MainVisual extends JFrame implements Runnable {
 				registration.setResizable(false);
 				registration.setLocationRelativeTo(null);
 				registration.setVisible(true);
+				loadtable();
 			}
 		});
 		mnProyectos.add(mntmRegistrar_2);
@@ -198,7 +201,7 @@ public class MainVisual extends JFrame implements Runnable {
 				listPro.setResizable(false);
 				listPro.setLocationRelativeTo(null);
 				listPro.setVisible(true);
-				
+				loadtable();
 			}
 		});
 		
@@ -260,21 +263,11 @@ public class MainVisual extends JFrame implements Runnable {
 		JPanel panel = new JPanel();
 		panel.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
 		contentPane.add(panel, BorderLayout.CENTER);
-		
-		
-		JPanel panelEstadisticaContainer = new JPanel();
-		panelEstadisticaContainer.setBackground(Color.WHITE);
-		panelEstadisticaContainer.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Estadisticas", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-	    panelEstadisticaContainer.setLayout(new BorderLayout(0, 0));
-		
-	    panelPieProjectStatus = new JPanel();
-		panelEstadisticaContainer.add(panelPieProjectStatus);
-		panelPieProjectStatus.setLayout(new BorderLayout(0, 0));
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		
 		JPanel panelAux = new JPanel();
 		panel.add(panelAux);
-		panelAux.setLayout(new GridLayout(2, 0, 0, 0));
+		panelAux.setLayout(new GridLayout(2, 2, 0, 0));
 		
 		JPanel panel_1 = new JPanel();
 		panelAux.add(panel_1);
@@ -285,12 +278,9 @@ public class MainVisual extends JFrame implements Runnable {
 		panel_1.add(scrollPane, BorderLayout.CENTER);
 		
 		table = new JTable();
-		
 		model = new DefaultTableModel();
 		model.setColumnCount(headers.length);
 		model.setColumnIdentifiers(headers);
-		
-		
 		table.setModel(model);
 		table.setAutoCreateRowSorter(true);
 		table.setDefaultEditor(Object.class, null);
@@ -299,24 +289,33 @@ public class MainVisual extends JFrame implements Runnable {
 		for (int i = 0; i < headers.length; i++) {
 			table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 		}
-	   
-	    loadtable();
-		projects = new Thread(this);
-		projects.start();
 		table.getColumnModel().getColumn(3).setPreferredWidth(95);
 		table.getColumnModel().getColumn(5).setPreferredWidth(95);
 		javax.swing.table.TableColumn column = table.getColumnModel().getColumn(6);
 		column.setCellRenderer(new ProgressRenderer());
+	    loadtable();
+		projects = new Thread(this);
+		projects.start();
 		scrollPane.setViewportView(table);
+		
+		
+		JPanel panelEstadisticaContainer = new JPanel();
+		panelAux.add(panelEstadisticaContainer);
+		panelEstadisticaContainer.setBackground(Color.WHITE);
+		panelEstadisticaContainer.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Estatus de Proyectos", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelEstadisticaContainer.setLayout(new BorderLayout(0, 0));
+	    panelPieProjectStatus = new JPanel();
+	    panelEstadisticaContainer.add(panelPieProjectStatus);
+	    panelPieProjectStatus.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel_3 = new JPanel();
 		panelAux.add(panel_3);
 		panel_3.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Perdidas", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_3.setLayout(new BorderLayout(0, 0));
 		
-		JButton btnNewButton_5 = new JButton("New button");
-		panel_3.add(btnNewButton_5, BorderLayout.CENTER);
-		panel.add(panelEstadisticaContainer);
+		JPanel panel_2 = new JPanel();
+		panel_2.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Otra grafica", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelAux.add(panel_2);
 		
 		JPanel panel_4 = new JPanel();
 		panel_4.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
@@ -360,6 +359,7 @@ public class MainVisual extends JFrame implements Runnable {
 				registration.setResizable(false);
 				registration.setLocationRelativeTo(null);
 				registration.setVisible(true);
+				loadtable();
 			}
 		});
 		btnNewButton_2.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -373,6 +373,7 @@ public class MainVisual extends JFrame implements Runnable {
 			public void actionPerformed(ActionEvent arg0) {
 				saveData();
 				dispose();
+				System.exit(0);
 			}
 		});
 		
@@ -389,6 +390,7 @@ public class MainVisual extends JFrame implements Runnable {
 				listPro.setResizable(false);
 				listPro.setLocationRelativeTo(null);
 				listPro.setVisible(true);
+				loadtable();
 			}
 		});
 		btnNewButton_4.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -519,21 +521,14 @@ public class MainVisual extends JFrame implements Runnable {
 	       //chart.setBackgroundPaint(new Color(222, 222, 255));
 	      // chart.setBorderPaint(Color.WHITE);
 	      
-	       
 	       PiePlot plot = (PiePlot) chart.getPlot();
 	       plot.setSectionPaint("Proyectos Terminados", new Color( 130, 224, 170 ));
 	       plot.setSectionPaint("Proyectos Prorrogados", new Color( 236, 112, 99 ));
 	       plot.setSectionPaint("Proyectos En Proceso", new Color( 247, 220, 111 ));
 	       plot.setSectionPaint("Proyectos Nuevo", new Color( 133, 193, 233 ));
 	       plot.setBackgroundPaint(Color.WHITE);
-	       
-	       
-	 
-	        // Crear el Panel del Grafico con ChartPanel
+	       // Crear el Panel del Grafico con ChartPanel
 	        ChartPanel chartPanel = new ChartPanel(chart);
 	        panelPieProjectStatus.add(chartPanel);
-	        
-		
-		
 	}
 }

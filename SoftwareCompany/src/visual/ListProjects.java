@@ -51,6 +51,21 @@ public class ListProjects extends JDialog {
 	private TableRowSorter<TableModel> sorter;
 	private String[] headers = {"ID Contrato", "ID Cliente", "Nombre Cliente", "ID Proyecto", "Tipo Proyecto", "Firma Contrato", "Fecha Inicio","Fecha de Entrega","Total a pagar","Estado","Fecha Prorrogado","Cant Pro"};
 	private static int cont;
+	private static ListProjects listPro=null;
+	
+	public static ListProjects getInstance() {
+		if (listPro==null) {
+			listPro=new ListProjects();
+		}
+		return listPro;
+	}
+	
+	/*public static SoftwareCompany getInstance() {
+		if (softwareCompany == null) {
+			softwareCompany = new SoftwareCompany();
+		}
+		return softwareCompany;
+	}*/
 	 
 
 
@@ -257,5 +272,19 @@ columnModel.getColumn(2).setPreferredWidth(200);
 	        return;
 	    }
 	    sorter.setRowFilter(filter);
+	}
+	public JTable getTableProjects() {
+		return tableProjects;
+	}
+	public void setTableProjects(JTable tableProjects) {
+		this.tableProjects = tableProjects;
+	}
+
+	public String[] getHeaders() {
+		return headers;
+	}
+
+	public void setHeaders(String[] headers) {
+		this.headers = headers;
 	}
 }

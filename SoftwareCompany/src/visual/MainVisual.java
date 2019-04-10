@@ -9,6 +9,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.sun.glass.ui.Application;
 import com.toedter.calendar.JDateChooser;
 
@@ -94,6 +103,11 @@ public class MainVisual extends JFrame implements Runnable {
 	private int mes;
 	private int year;
 	private Label labelforDate;
+	private JFreeChart lineChart;
+	private ListProjects listPro;
+	private Document documento;
+	private FileOutputStream ficheroPdf;
+	private PdfPTable tabla;
 
 
 	public MainVisual(User user) {
@@ -204,6 +218,7 @@ public class MainVisual extends JFrame implements Runnable {
 		mntmRegistrar_2.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/new_project30.png")));
 		mntmRegistrar_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				ProjectRegistration registration = new ProjectRegistration();
 				registration.setModal(true);
 				registration.setSize(625, 450);
@@ -220,16 +235,17 @@ public class MainVisual extends JFrame implements Runnable {
 		mntmListarProyectos.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/list30px.png")));
 		mntmListarProyectos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListProjects listPro=new ListProjects();
+				
+				//ListProjects listPro=new ListProjects();
 				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-				listPro.setModal(true);
+				ListProjects.getInstance().setModal(true);
 				int height = screenSize.height;
 			    int width = screenSize.width;
-			    listPro.setSize(width, height-45);
+			    ListProjects.getInstance().setSize(width, height-45);
 				//listPro.setSize(1250, 700);
-				listPro.setResizable(false);
-				listPro.setLocationRelativeTo(null);
-				listPro.setVisible(true);
+			    ListProjects.getInstance().setResizable(false);
+			    ListProjects.getInstance().setLocationRelativeTo(null);
+			    ListProjects.getInstance().setVisible(true);
 				loadtable();
 				graphPie();
 			}
@@ -486,6 +502,8 @@ public class MainVisual extends JFrame implements Runnable {
 		panelFouUserBar.add(labelForClock);
 		graphPie();
 		lineGraph();
+		
+		
 	}
 	
 	private void saveData() {
@@ -667,7 +685,7 @@ public class MainVisual extends JFrame implements Runnable {
 	      dataset.addValue( amountByMonth[11] , "Meses" , "Dic" );
 	      
 	      
-	      JFreeChart lineChart = ChartFactory.createLineChart3D(
+	             lineChart = ChartFactory.createLineChart3D(
 	    	         "Ingresos Mensuales",
 	    	         "Meses","Ingresos",
 	    	         dataset,
@@ -675,7 +693,7 @@ public class MainVisual extends JFrame implements Runnable {
 	    	         true,true,false);
 	    	      panelLineGraph.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 	            
-	    	      ChartPanel chartPanel = new ChartPanel( lineChart );
+	    	      chartPanel = new ChartPanel( lineChart );
 	    	    
 	    	      panelLineGraph.add(chartPanel);
 	    	      chartPanel.setPreferredSize( new java.awt.Dimension( 532 , 300 ) );
@@ -692,4 +710,84 @@ public class MainVisual extends JFrame implements Runnable {
         mes=calendario.get(Calendar.MONTH);
         year=calendario.get(Calendar.YEAR);
     }
+	public void createPdf() {
+		
+		System.out.println("syso");
+		 
+		
+		try {
+			 // Se crea el documento
+    	     documento = new Document();
+
+    	    // Se crea el OutputStream para el fichero donde queremos dejar el pdf.
+    	     ficheroPdf = new FileOutputStream("fichero2.pdf");
+
+    	    // Se asocia el documento al OutputStream y se indica que el espaciado entre
+    	    // lineas sera de 20. Esta llamada debe hacerse antes de abrir el documento
+    	    PdfWriter.getInstance(documento,ficheroPdf).setInitialLeading(20);
+
+    	    // Se abre el documento.
+    	    documento.open();
+    	    documento.add(new Paragraph("Reporte completo actividad en 'La Empresa'"));
+
+    	    documento.add(new Paragraph("Mas datos",
+    	    				FontFactory.getFont("arial",   // fuente
+    	    				12,                            // tamaño
+    	    				Font.ITALIC,                   // estilo
+    	    				BaseColor.BLACK)));             // color
+    	    
+    	     tabla = new PdfPTable(ListProjects.getInstance().getTableProjects().getColumnCount());
+    	     PdfPCell cell=new PdfPCell();
+    	     
+    	     cell.setBackgroundColor(BaseColor.BLACK);
+    	     
+    	     //cell.equals(ListProjects.getInstance().getHeaders()[0].toString());
+    	     
+    	    // cell.addElement();
+    	     
+    	    
+    	    System.out.println("Tabla"+ ListProjects.getInstance().getTableProjects().getRowCount());
+			//tabla.addCell(ListProjects.getInstance().getHeaders().toString());
+    	    tabla.addCell(cell);
+    		tabla.addCell( ListProjects.getInstance().getHeaders()[0].toString());
+    		tabla.addCell( ListProjects.getInstance().getHeaders()[1].toString());
+    		tabla.addCell( ListProjects.getInstance().getHeaders()[2].toString());
+    		tabla.addCell( ListProjects.getInstance().getHeaders()[3].toString());
+    		tabla.addCell( ListProjects.getInstance().getHeaders()[4].toString());
+    		tabla.addCell( ListProjects.getInstance().getHeaders()[5].toString());
+    		tabla.addCell( ListProjects.getInstance().getHeaders()[6].toString());
+    		tabla.addCell( ListProjects.getInstance().getHeaders()[7].toString());
+    		tabla.addCell( ListProjects.getInstance().getHeaders()[8].toString());
+    		tabla.addCell( ListProjects.getInstance().getHeaders()[9].toString());
+    		tabla.addCell( ListProjects.getInstance().getHeaders()[10].toString());
+    		tabla.addCell( ListProjects.getInstance().getHeaders()[11].toString());
+    		
+
+    	    for (int i = 0; i <  ListProjects.getInstance().getTableProjects().getRowCount(); i++) {
+    	    	
+    	    	for (int j = 0; j <  ListProjects.getInstance().getTableProjects().getColumnCount(); j++) {
+    	    		
+    	    		tabla.addCell( ListProjects.getInstance().getTableProjects().getValueAt(i, j).toString());
+					
+				}
+				
+			}
+    	    tabla.setWidthPercentage(100);
+    	    
+    	   
+    	    documento.add(tabla);
+    	   // documento.add(foto);
+    	    
+    	    documento.close();
+    	    
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		
+		
+	}
+
+	
 }

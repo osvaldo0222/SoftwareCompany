@@ -24,7 +24,9 @@ import java.awt.event.WindowEvent;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -64,6 +66,7 @@ import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import java.awt.Label;
 
 public class MainVisual extends JFrame implements Runnable {
 
@@ -82,6 +85,15 @@ public class MainVisual extends JFrame implements Runnable {
 	private String prueba;
 	private JPanel panelLineGraph;
 	private String[] split;
+	private int hora;
+	private int minutos;
+	private int segundos;
+	private Label labelForClock;
+	private int dia;
+	private int diaSemana;
+	private int mes;
+	private int year;
+	private Label labelforDate;
 
 
 	public MainVisual(User user) {
@@ -341,10 +353,9 @@ public class MainVisual extends JFrame implements Runnable {
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Otra grafica", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelAux.add(panel_2);
-		panel_2.setLayout(null);
+		 panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		 panelLineGraph = new JPanel();
-		panelLineGraph.setBounds(10, 22, 532, 309);
 		panel_2.add(panelLineGraph);
 		
 		JPanel panel_4 = new JPanel();
@@ -440,6 +451,39 @@ public class MainVisual extends JFrame implements Runnable {
 		
 		JPanel panel_5 = new JPanel();
 		panel_4.add(panel_5);
+		
+		JPanel panelFouUserBar = new JPanel();
+		panelFouUserBar.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
+		contentPane.add(panelFouUserBar, BorderLayout.SOUTH);
+		panelFouUserBar.setLayout(new BoxLayout(panelFouUserBar, BoxLayout.X_AXIS));
+		
+		Label labeluser = new Label("Usuario:");
+		labeluser.setAlignment(Label.CENTER);
+		labeluser.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		panelFouUserBar.add(labeluser);
+		
+		Label labelSetUser = new Label("");
+		labelSetUser.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		labelSetUser.setText(user.getUsername());
+		panelFouUserBar.add(labelSetUser);
+		
+		Label fecha = new Label("Fecha:");
+		fecha.setAlignment(Label.CENTER);
+		fecha.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		panelFouUserBar.add(fecha);
+		 
+		 labelforDate = new Label("");
+		 labelforDate.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		 panelFouUserBar.add(labelforDate);
+		 
+		 Label labelforHour = new Label("Hora:");
+		 labelforHour.setAlignment(Label.CENTER);
+		 labelforHour.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		 panelFouUserBar.add(labelforHour);
+		
+		 labelForClock = new Label("");
+		 labelForClock.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		panelFouUserBar.add(labelForClock);
 		graphPie();
 		lineGraph();
 	}
@@ -507,24 +551,18 @@ public class MainVisual extends JFrame implements Runnable {
 				table.setValueAt(porcentage, i, 6);
 			}
 			try {
+				
 				Thread.sleep(3000);
+				calcTime();
+				labelforDate.setText(dia+"/"+mes+"/"+year);
+				labelForClock.setText(hora + ":" + minutos);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		
-		while (ct==pieThread) {
-			try {
-				System.out.println("pepe");
-				Thread.sleep(3000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
-		}
+		
 		
 	}
 	
@@ -635,18 +673,23 @@ public class MainVisual extends JFrame implements Runnable {
 	    	         dataset,
 	    	         PlotOrientation.VERTICAL,
 	    	         true,true,false);
-	      
-	      
-	     // XYPlot plot = LineChart.getXYPlot();
-	      
-	    
-	    	         
+	    	      panelLineGraph.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+	            
 	    	      ChartPanel chartPanel = new ChartPanel( lineChart );
 	    	    
 	    	      panelLineGraph.add(chartPanel);
-	    	      chartPanel.setPreferredSize( new java.awt.Dimension( 532 , 309 ) );
-	    	      
-	    	     
-		
+	    	      chartPanel.setPreferredSize( new java.awt.Dimension( 532 , 300 ) );
+	    	
 	}
+	
+	public void calcTime() {
+        Calendar calendario = new GregorianCalendar();
+        hora =calendario.get(Calendar.HOUR_OF_DAY);
+        minutos = calendario.get(Calendar.MINUTE);
+      
+        diaSemana=calendario.get(Calendar.DAY_OF_WEEK);
+        dia=calendario.get(Calendar.DAY_OF_MONTH);
+        mes=calendario.get(Calendar.MONTH);
+        year=calendario.get(Calendar.YEAR);
+    }
 }

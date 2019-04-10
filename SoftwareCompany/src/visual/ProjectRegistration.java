@@ -660,7 +660,7 @@ public class ProjectRegistration extends JDialog {
 				sigButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						
-						if (validateData()==true && !comboBoxTipoProyecto.getSelectedItem().equals("<Selecciona un tipo de App>") && !comboBoxLenguaje.getSelectedItem().equals("<Selecciona un lenguaje>") && validateProgrammer_AndLanguajes()==true && validateLits()==true) {
+						if ( validateData()==true && !comboBoxLenguaje.getSelectedItem().equals("<Selecciona un lenguaje>") && validateProgrammer_AndLanguajes()==true && validateLits()==true ) {
 							sigButton.setEnabled(false);
 							sigButton.setVisible(false);
 							comboBoxLenguaje.setEnabled(false);
@@ -792,6 +792,22 @@ public class ProjectRegistration extends JDialog {
 				
 			}
 		}
+	}
+	
+	public boolean validateDesigner() {
+		boolean validate=false;
+		
+		String[] codSplit=listWorkers.getSelectedValue().toString().split(" ");
+		if (SoftwareCompany.getInstance().searchWorkerByCode(codSplit[0]) instanceof Designer) {
+			
+			if (((Designer)SoftwareCompany.getInstance().searchWorkerByCode(codSplit[0])).getMaster().equalsIgnoreCase(comboBoxTipoProyecto.getSelectedItem().toString())) {
+				validate=true;
+			}
+			
+		}
+		
+		
+		return validate;
 	}
 	
 	public boolean validateProgrammer_AndLanguajes() {

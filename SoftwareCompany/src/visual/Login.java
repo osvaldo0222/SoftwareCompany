@@ -47,7 +47,6 @@ public class Login extends JFrame {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtUsername;
 	private JPasswordField txtPassword;
-	private String prueba;
 
 	/**
 	 * Launch the application.

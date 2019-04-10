@@ -77,6 +77,7 @@ public class MainVisual extends JFrame implements Runnable {
 	private JFreeChart chart;
 	private ChartPanel chartPanel;
 	private Thread pieThread;
+	private String prueba;
 
 
 	public MainVisual(User user) {

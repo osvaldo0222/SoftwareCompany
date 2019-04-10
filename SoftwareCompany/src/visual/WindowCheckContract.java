@@ -537,25 +537,6 @@ public class WindowCheckContract extends JDialog {
 		txtduedate.setText(dateFormat.format(aux.getDueDate()));
 		
 		
-		
-
-		
-	/*	for (int i = 0; i < aux.getProject().getWorkers().size(); i++) {
-			
-			if (aux.getProject().getWorkers().get(i) instanceof Boss ) {
-				DLMWorkersSelected.addElement(aux.getProject().getWorkers().get(i).getCode()+"->"+aux.getProject().getWorkers().get(i).getName()+" "+aux.getProject().getWorkers().get(i).getLast_name()+" |Jefe|");
-
-			}else if (aux.getProject().getWorkers().get(i) instanceof Programmer ) {
-				DLMWorkersSelected.addElement(aux.getProject().getWorkers().get(i).getCode()+"->"+aux.getProject().getWorkers().get(i).getName()+" "+aux.getProject().getWorkers().get(i).getLast_name()+" |Programador|");
-
-			}else if (aux.getProject().getWorkers().get(i) instanceof Designer ) {
-				DLMWorkersSelected.addElement(aux.getProject().getWorkers().get(i).getCode()+"->"+aux.getProject().getWorkers().get(i).getName()+" "+aux.getProject().getWorkers().get(i).getLast_name()+" |Diseñador|");
-
-			}else if (aux.getProject().getWorkers().get(i) instanceof Planner ) {
-				DLMWorkersSelected.addElement(aux.getProject().getWorkers().get(i).getCode()+" -> "+aux.getProject().getWorkers().get(i).getName()+" "+aux.getProject().getWorkers().get(i).getLast_name()+" |Planeador|");
-
-			}	
-		}*/
 	}
 	
 public int calcDaysJustDate(Date d1,Date d2) {

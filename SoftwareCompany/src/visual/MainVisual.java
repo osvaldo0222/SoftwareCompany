@@ -42,6 +42,8 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
 import javax.swing.border.EtchedBorder;
@@ -78,6 +80,8 @@ public class MainVisual extends JFrame implements Runnable {
 	private ChartPanel chartPanel;
 	private Thread pieThread;
 	private String prueba;
+	private JPanel panelLineGraph;
+	private String[] split;
 
 
 	public MainVisual(User user) {
@@ -337,6 +341,11 @@ public class MainVisual extends JFrame implements Runnable {
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Otra grafica", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelAux.add(panel_2);
+		panel_2.setLayout(null);
+		
+		 panelLineGraph = new JPanel();
+		panelLineGraph.setBounds(10, 22, 532, 309);
+		panel_2.add(panelLineGraph);
 		
 		JPanel panel_4 = new JPanel();
 		panel_4.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
@@ -432,6 +441,7 @@ public class MainVisual extends JFrame implements Runnable {
 		JPanel panel_5 = new JPanel();
 		panel_4.add(panel_5);
 		graphPie();
+		lineGraph();
 	}
 	
 	private void saveData() {
@@ -564,9 +574,79 @@ public class MainVisual extends JFrame implements Runnable {
 	       plot.setBackgroundPaint(Color.WHITE);
 	       
 
-	       
-	       
-	       
 	        
+	}
+	public void lineGraph() {
+		
+		float[] amountByMonth= {0,0,0,0,0,0,0,0,0,0,0,0};
+		
+		
+		
+		for (int i = 0; i < SoftwareCompany.getInstance().getContracts().size(); i++) {
+			 split=SoftwareCompany.getInstance().getContracts().get(i).getFinalDate().toString().split(" ");
+			if (split[1].equalsIgnoreCase("Jan")) {
+				amountByMonth[0]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+			}else if (split[1].equalsIgnoreCase("Feb")) {
+				amountByMonth[1]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+			}else if (split[1].equalsIgnoreCase("Mar")) {
+				amountByMonth[2]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+			}else if (split[1].equalsIgnoreCase("Apr")) {
+				amountByMonth[3]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+			}else if (split[1].equalsIgnoreCase("May")) {
+				amountByMonth[4]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+			}else if (split[1].equalsIgnoreCase("Jun")) {
+				amountByMonth[5]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+			}else if (split[1].equalsIgnoreCase("Jul")) {
+				amountByMonth[6]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+			}else if (split[1].equalsIgnoreCase("Aug")) {
+				amountByMonth[7]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+			}else if (split[1].equalsIgnoreCase("Sep")) {
+				amountByMonth[8]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+			}else if (split[1].equalsIgnoreCase("Oct")) {
+				amountByMonth[9]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+			}else if (split[1].equalsIgnoreCase("Nov")) {
+				amountByMonth[10]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+			}else if (split[1].equalsIgnoreCase("Dec")) {
+				amountByMonth[11]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+			}
+			
+		}
+		
+		
+		
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
+	      dataset.addValue( amountByMonth[0] , "Meses" , "Ene" );
+	      dataset.addValue( amountByMonth[1] , "Meses" , "Feb" );
+	      dataset.addValue( amountByMonth[2] , "Meses" , "Mar" );
+	      dataset.addValue( amountByMonth[3] , "Meses" , "Abr" );
+	      dataset.addValue( amountByMonth[4] , "Meses" , "May" );
+	      dataset.addValue( amountByMonth[5] , "Meses" , "Jun" );
+	      dataset.addValue( amountByMonth[6] , "Meses" , "Jul" );
+	      dataset.addValue( amountByMonth[7] , "Meses" , "Ago" );
+	      dataset.addValue( amountByMonth[8] , "Meses" , "Sep" );
+	      dataset.addValue( amountByMonth[9] , "Meses" , "Oct" );
+	      dataset.addValue( amountByMonth[10] , "Meses" , "Nov" );
+	      dataset.addValue( amountByMonth[11] , "Meses" , "Dic" );
+	      
+	      
+	      JFreeChart lineChart = ChartFactory.createLineChart3D(
+	    	         "Ingresos Mensuales",
+	    	         "Meses","Ingresos",
+	    	         dataset,
+	    	         PlotOrientation.VERTICAL,
+	    	         true,true,false);
+	      
+	      
+	     // XYPlot plot = LineChart.getXYPlot();
+	      
+	    
+	    	         
+	    	      ChartPanel chartPanel = new ChartPanel( lineChart );
+	    	    
+	    	      panelLineGraph.add(chartPanel);
+	    	      chartPanel.setPreferredSize( new java.awt.Dimension( 532 , 309 ) );
+	    	      
+	    	     
+		
 	}
 }

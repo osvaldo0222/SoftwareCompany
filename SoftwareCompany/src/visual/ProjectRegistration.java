@@ -403,6 +403,8 @@ public class ProjectRegistration extends JDialog {
 	    		panelContractClient.setVisible(false);
 	    		panelTermsContract.setVisible(false);
 	    		btnAtras.setVisible(false);
+	    		comboBoxLenguaje.setVisible(true);
+	    		comboBoxTipoProyecto.setVisible(true);
 	    	}
 	    });
 	    btnAtras.setVisible(false);
@@ -660,7 +662,7 @@ public class ProjectRegistration extends JDialog {
 				sigButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						
-						if ( validateData()==true && !comboBoxLenguaje.getSelectedItem().equals("<Selecciona un lenguaje>") && validateProgrammer_AndLanguajes()==true && validateLits()==true ) {
+						if ( validateData()==true && !comboBoxLenguaje.getSelectedItem().equals("<Selecciona un lenguaje>") && validateProgrammer_AndLanguajes()==true && validateLits()==true && validateDesigner()==true) {
 							sigButton.setEnabled(false);
 							sigButton.setVisible(false);
 							comboBoxLenguaje.setEnabled(false);
@@ -796,15 +798,27 @@ public class ProjectRegistration extends JDialog {
 	
 	public boolean validateDesigner() {
 		boolean validate=false;
+		int cont1=0;
+		int cont2=0;
 		
-		String[] codSplit=listWorkers.getSelectedValue().toString().split(" ");
-		if (SoftwareCompany.getInstance().searchWorkerByCode(codSplit[0]) instanceof Designer) {
-			
-			if (((Designer)SoftwareCompany.getInstance().searchWorkerByCode(codSplit[0])).getMaster().equalsIgnoreCase(comboBoxTipoProyecto.getSelectedItem().toString())) {
-				validate=true;
+		for (int i = 0; i < DLMWorkersSelected.size(); i++) {
+			String[] codSplit=DLMWorkersSelected.getElementAt(i).toString().split(" ");
+			if (SoftwareCompany.getInstance().searchWorkerByCode(codSplit[0]) instanceof Designer ) {
+				cont1++;
+				
+					
+				if (((Designer)SoftwareCompany.getInstance().searchWorkerByCode(codSplit[0])).getMaster().equalsIgnoreCase(comboBoxTipoProyecto.getSelectedItem().toString())) {
+					cont2++;
+				}
+				
 			}
-			
 		}
+		if (cont1==cont2) {
+			validate=true;
+		}else {
+			JOptionPane.showMessageDialog(null, "Existen Diseñadores en su lista que no tienen experiencia en "+comboBoxTipoProyecto.getSelectedItem().toString()+" Por favor elija otro", "Registro Proyecto", JOptionPane.ERROR_MESSAGE);
+		}
+		
 		
 		
 		return validate;

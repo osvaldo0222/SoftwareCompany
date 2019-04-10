@@ -22,9 +22,9 @@ public class SoftwareCompany implements Serializable {
 	public static int codClients = 0;
 	public static int codUsers = 0;
 	public static int codContract=0;
-	Calendar fechaInicio = new GregorianCalendar(); 
-	Calendar fechafin = new GregorianCalendar();
-	Calendar c = Calendar.getInstance();
+	private Calendar fechaInicio = new GregorianCalendar(); 
+	private Calendar fechafin = new GregorianCalendar();
+	private Calendar c = Calendar.getInstance();
 	
 	
 	private SoftwareCompany() {
@@ -377,7 +377,6 @@ public class SoftwareCompany implements Serializable {
 	
 	public float calcAmountOfMoney(int days,String codeCont) {
 		float amount=0;
-		float aux=0;
 		float aux2=0;
 		for (int i = 0; i < searchContractByCode(codeCont).getProject().getWorkers().size(); i++) {
 			amount=searchContractByCode(codeCont).getProject().getWorkers().get(i).getSalary()*8*days;

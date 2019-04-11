@@ -3,7 +3,6 @@ package visual;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -108,6 +107,9 @@ public class MainVisual extends JFrame implements Runnable {
 	private Document documento;
 	private FileOutputStream ficheroPdf;
 	private PdfPTable tabla;
+	private JPanel panelForBar;
+
+	private ChartPanel panelBarGraph;
 
 
 	public MainVisual(User user) {
@@ -362,14 +364,19 @@ public class MainVisual extends JFrame implements Runnable {
         
 		
 		JPanel panel_3 = new JPanel();
+		panel_3.setBackground(Color.WHITE);
 		panelAux.add(panel_3);
 		panel_3.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Perdidas", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_3.setLayout(new BorderLayout(0, 0));
+		 panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.X_AXIS));
+		
+		 panelForBar = new JPanel();
+		panel_3.add(panelForBar);
 		
 		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(Color.WHITE);
 		panel_2.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Otra grafica", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelAux.add(panel_2);
-		 panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		 panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.X_AXIS));
 		
 		 panelLineGraph = new JPanel();
 		panel_2.add(panelLineGraph);
@@ -448,7 +455,7 @@ public class MainVisual extends JFrame implements Runnable {
 				listPro.setLocationRelativeTo(null);
 				listPro.setVisible(true);
 				loadtable();
-				graphPie();
+				
 			}
 		});
 		btnNewButton_4.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -502,6 +509,9 @@ public class MainVisual extends JFrame implements Runnable {
 		panelFouUserBar.add(labelForClock);
 		graphPie();
 		lineGraph();
+		graphBar();
+		createPdf();
+		
 		
 		
 	}
@@ -584,7 +594,89 @@ public class MainVisual extends JFrame implements Runnable {
 		
 	}
 	
+	public void graphBar() {
+		DefaultCategoryDataset datasetForBar = new DefaultCategoryDataset( );  
+		float aux=0;
+		
+		/*for (int i = 0; i < SoftwareCompany.getInstance().getContracts().size(); i++) {
+			aux+=SoftwareCompany.getInstance().getContracts().get(i).getPrice()-SoftwareCompany.getInstance().getContracts().get(i).getCopyPrice();
+		}*/
+		float[] amountByMonth= {0,0,0,0,0,0,0,0,0,0,0,0};
+		
+		for (int i = 0; i < SoftwareCompany.getInstance().getContracts().size(); i++) {
+			 split=SoftwareCompany.getInstance().getContracts().get(i).getFinalDate().toString().split(" ");
+			if (split[1].equalsIgnoreCase("Jan") && SoftwareCompany.getInstance().getContracts().get(i).getProject().isEnded()==true) {
+				amountByMonth[0]+=SoftwareCompany.getInstance().getContracts().get(i).getCopyPrice()-SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+			}else if (split[1].equalsIgnoreCase("Feb") && SoftwareCompany.getInstance().getContracts().get(i).getProject().isEnded()==true) {
+				amountByMonth[1]+=SoftwareCompany.getInstance().getContracts().get(i).getCopyPrice()-SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+			}else if (split[1].equalsIgnoreCase("Mar") && SoftwareCompany.getInstance().getContracts().get(i).getProject().isEnded()==true) {
+				amountByMonth[2]+=SoftwareCompany.getInstance().getContracts().get(i).getCopyPrice()-SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+			}else if (split[1].equalsIgnoreCase("Apr") && SoftwareCompany.getInstance().getContracts().get(i).getProject().isEnded()==true) {
+				amountByMonth[3]+=SoftwareCompany.getInstance().getContracts().get(i).getCopyPrice()-SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+			}else if (split[1].equalsIgnoreCase("May") && SoftwareCompany.getInstance().getContracts().get(i).getProject().isEnded()==true) {
+				amountByMonth[4]+=SoftwareCompany.getInstance().getContracts().get(i).getCopyPrice()-SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+			}else if (split[1].equalsIgnoreCase("Jun") && SoftwareCompany.getInstance().getContracts().get(i).getProject().isEnded()==true) {
+				amountByMonth[5]+=SoftwareCompany.getInstance().getContracts().get(i).getCopyPrice()-SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+			}else if (split[1].equalsIgnoreCase("Jul") && SoftwareCompany.getInstance().getContracts().get(i).getProject().isEnded()==true) {
+				amountByMonth[6]+=SoftwareCompany.getInstance().getContracts().get(i).getCopyPrice()-SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+			}else if (split[1].equalsIgnoreCase("Aug") && SoftwareCompany.getInstance().getContracts().get(i).getProject().isEnded()==true) {
+				amountByMonth[7]+=SoftwareCompany.getInstance().getContracts().get(i).getCopyPrice()-SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+			}else if (split[1].equalsIgnoreCase("Sep") && SoftwareCompany.getInstance().getContracts().get(i).getProject().isEnded()==true) {
+				amountByMonth[8]+=SoftwareCompany.getInstance().getContracts().get(i).getCopyPrice()-SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+			}else if (split[1].equalsIgnoreCase("Oct") && SoftwareCompany.getInstance().getContracts().get(i).getProject().isEnded()==true) {
+				amountByMonth[9]+=SoftwareCompany.getInstance().getContracts().get(i).getCopyPrice()-SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+			}else if (split[1].equalsIgnoreCase("Nov") && SoftwareCompany.getInstance().getContracts().get(i).getProject().isEnded()==true) {
+				amountByMonth[10]+=SoftwareCompany.getInstance().getContracts().get(i).getCopyPrice()-SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+			}else if (split[1].equalsIgnoreCase("Dec") && SoftwareCompany.getInstance().getContracts().get(i).getProject().isEnded()==true) {
+				amountByMonth[11]+=SoftwareCompany.getInstance().getContracts().get(i).getCopyPrice()-SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+			}
+			
+		}
+		datasetForBar.addValue( amountByMonth[0] , "Meses" , "Ene" );
+		datasetForBar.addValue( amountByMonth[1] , "Meses" , "Feb" );
+		datasetForBar.addValue( amountByMonth[2] , "Meses" , "Mar" );
+		datasetForBar.addValue( amountByMonth[3] , "Meses" , "Abr" );
+		datasetForBar.addValue( amountByMonth[4] , "Meses" , "May" );
+		datasetForBar.addValue( amountByMonth[5] , "Meses" , "Jun" );
+		datasetForBar.addValue( amountByMonth[6] , "Meses" , "Jul" );
+		datasetForBar.addValue( amountByMonth[7] , "Meses" , "Ago" );
+		datasetForBar.addValue( amountByMonth[8] , "Meses" , "Sep" );
+		datasetForBar.addValue( amountByMonth[9] , "Meses" , "Oct" );
+		datasetForBar.addValue( amountByMonth[10] , "Meses" , "Nov" );
+		datasetForBar.addValue( amountByMonth[11] , "Meses" , "Dic" );
+		
+	    
+	   
+	    JFreeChart chartBar=ChartFactory.createBarChart( "Perdidas Mensuales",
+	        "Mes", // Category axis
+	        "Cantidad Dinero", // Value axis
+	        datasetForBar,
+	        PlotOrientation.VERTICAL,
+	        true,true,false
+	       );
+	    
+	    /* panelLineGraph.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+	            
+	    	      chartPanel = new ChartPanel( lineChart );
+	    	    
+	    	      panelLineGraph.add(chartPanel);*/
+	    panelForBar.setLayout(new BoxLayout(panelForBar, BoxLayout.X_AXIS));
+
+	    panelBarGraph=new ChartPanel(chartBar);
+	    panelForBar.add(panelBarGraph);
+	    panelBarGraph.setPreferredSize( new java.awt.Dimension( 532 , 285 ) );
+	    panelBarGraph.setLayout(new BorderLayout(0, 0));
+	    //panelBar.setPreferredSize( new java.awt.Dimension( 532 , 300 ) );
+	    
+		
+	}
+	
 	public void graphPie() {
+		
+		for (int i = 0; i < SoftwareCompany.getInstance().getContracts().size(); i++) {
+			System.out.println("Precio Real  "+SoftwareCompany.getInstance().getContracts().get(i).getPrice() +"Precio a pagar "+SoftwareCompany.getInstance().getContracts().get(i).getCopyPrice());
+			
+		}
 		
 		 DefaultPieDataset data = new DefaultPieDataset();
 		 int proFin=0;
@@ -691,12 +783,12 @@ public class MainVisual extends JFrame implements Runnable {
 	    	         dataset,
 	    	         PlotOrientation.VERTICAL,
 	    	         true,true,false);
-	    	      panelLineGraph.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+	    	      panelLineGraph.setLayout(new BoxLayout(panelLineGraph, BoxLayout.X_AXIS));
 	            
 	    	      chartPanel = new ChartPanel( lineChart );
 	    	    
 	    	      panelLineGraph.add(chartPanel);
-	    	      chartPanel.setPreferredSize( new java.awt.Dimension( 532 , 300 ) );
+	    	      chartPanel.setPreferredSize( new java.awt.Dimension( 532 , 285 ) );
 	    	
 	}
 	
@@ -728,18 +820,22 @@ public class MainVisual extends JFrame implements Runnable {
 
     	    // Se abre el documento.
     	    documento.open();
-    	    documento.add(new Paragraph("Reporte completo actividad en 'La Empresa'"));
+    	    documento.add(new Paragraph("Reporte completo actividad en 'La Empresa'\n",
+    				FontFactory.getFont("Sans-serif",   // fuente
+    				14,                            // tamaño
+    				Font.BOLD,                   // estilo
+    				BaseColor.BLACK)));
 
-    	    documento.add(new Paragraph("Mas datos",
-    	    				FontFactory.getFont("arial",   // fuente
+    	    documento.add(new Paragraph("Estados de cuenta ultimos meses",
+    	    				FontFactory.getFont("Sans-serif",   // fuente
     	    				12,                            // tamaño
-    	    				Font.ITALIC,                   // estilo
     	    				BaseColor.BLACK)));             // color
     	    
     	     tabla = new PdfPTable(ListProjects.getInstance().getTableProjects().getColumnCount());
     	     PdfPCell cell=new PdfPCell();
+    	   
     	     
-    	     cell.setBackgroundColor(BaseColor.BLACK);
+    	     cell.setBackgroundColor(BaseColor.GREEN);
     	     
     	     //cell.equals(ListProjects.getInstance().getHeaders()[0].toString());
     	     
@@ -748,7 +844,7 @@ public class MainVisual extends JFrame implements Runnable {
     	    
     	    System.out.println("Tabla"+ ListProjects.getInstance().getTableProjects().getRowCount());
 			//tabla.addCell(ListProjects.getInstance().getHeaders().toString());
-    	    tabla.addCell(cell);
+    	   
     		tabla.addCell( ListProjects.getInstance().getHeaders()[0].toString());
     		tabla.addCell( ListProjects.getInstance().getHeaders()[1].toString());
     		tabla.addCell( ListProjects.getInstance().getHeaders()[2].toString());
@@ -766,8 +862,8 @@ public class MainVisual extends JFrame implements Runnable {
     	    for (int i = 0; i <  ListProjects.getInstance().getTableProjects().getRowCount(); i++) {
     	    	
     	    	for (int j = 0; j <  ListProjects.getInstance().getTableProjects().getColumnCount(); j++) {
-    	    		
-    	    		tabla.addCell( ListProjects.getInstance().getTableProjects().getValueAt(i, j).toString());
+    	    		cell.equals(ListProjects.getInstance().getTableProjects().getValueAt(i, j));
+    	    		tabla.addCell(cell);
 					
 				}
 				

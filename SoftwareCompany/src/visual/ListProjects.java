@@ -120,7 +120,7 @@ public class ListProjects extends JDialog {
 					newWindowCont.setResizable(false);
 					newWindowCont.setLocationRelativeTo(null);
 					newWindowCont.setVisible(true);
-					
+					loadUser();
 					
 				
 			}
@@ -240,13 +240,13 @@ columnModel.getColumn(2).setPreferredWidth(200);
 	public void loadUser() {
 		model.setRowCount(0);
 		fila = new Object[model.getColumnCount()];
-		int exist=-1;
+	
 		//"ID Contrato", "ID Cliente", "Nombre Cliente", "ID Proyecto", "Tipo Proyecto", "Fecha Inicio", "Fecha de entrega", "Total a pagar"};
 
 		for (int i = 0; i <SoftwareCompany.getInstance().getContracts().size(); i++) {
 			fila[0]=SoftwareCompany.getInstance().getContracts().get(i).getId();
 			fila[1]=SoftwareCompany.getInstance().getContracts().get(i).getIdClient();
-			Client aux=SoftwareCompany.getInstance().clientById((String) fila[1]);
+			Client aux=SoftwareCompany.getInstance().clientById(SoftwareCompany.getInstance().getContracts().get(i).getIdClient());
 			fila[2]=aux.getName();
 			fila[3]=SoftwareCompany.getInstance().getContracts().get(i).getProject().getId();
 			fila[4]=SoftwareCompany.getInstance().getContracts().get(i).getProject().getType();

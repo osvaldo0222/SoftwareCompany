@@ -78,7 +78,7 @@ public class ProjectRegistration extends JDialog {
 	private final JPanel FirstPanel = new JPanel();
 	private JTextField txtCodigoProyecto;
 	private JTextField txtNombreProyecto;
-	Validation VD=new Validation();
+	Validation VD = new Validation();
 	private DefaultListModel DLM;
 	private DefaultListModel DLMWorkersSelected;
 	private JList listWorkers;
@@ -102,6 +102,10 @@ public class ProjectRegistration extends JDialog {
 	private JTextPane BigTxtContract;
 	private Object formatCedula;
 	private JTextField txtpreciototal;
+	private Calendar init;
+	private JDateChooser dateEnd;
+	private JDateChooser dateBegin;
+	private JLabel lblimg;
 	
 
 	/**
@@ -158,21 +162,12 @@ public class ProjectRegistration extends JDialog {
 	    panelTermsContract.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "T\u00E9rminos y Condiciones ", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 	    panelTermsContract.setLayout(null);
 	    
-	    JDateChooser dateEnd = new JDateChooser();
-	    dateEnd.setBounds(130, 60, 171, 20);
-	    panelTermsContract.add(dateEnd);
-	    dateEnd.setEnabled(false);
+	     
 	    
 	    Label label_5 = new Label("Fecha Inicio:");
 	    label_5.setFont(new Font("SansSerif", Font.PLAIN, 14));
 	    label_5.setBounds(12, 29, 94, 20);
 	    panelTermsContract.add(label_5);
-	    
-	    JDateChooser dateBegin = new JDateChooser();
-	    dateBegin.setBounds(130, 29, 171, 20);
-	    panelTermsContract.add(dateBegin);
-	    dateBegin.setMinSelectableDate(date);
-	    dateBegin.setEnabled(false);
 	    
 	    JButton btnGenerar = new JButton("Generar Contrato");
 	    btnGenerar.setFont(new Font("SansSerif", Font.PLAIN, 12));
@@ -181,11 +176,11 @@ public class ProjectRegistration extends JDialog {
 	    		
 	    		
 	    		int daysCalculated=SoftwareCompany.getInstance().calcDays(dateBegin, dateEnd);
-	    		System.out.println("el dia calculado cono "+daysCalculated);
+	    		//System.out.println("el dia calculado cono "+daysCalculated);
 	    		if (daysCalculated>0) {
 	    			
 	    			txtpreciototal.setText(Float.toString(calcAmountOfMoney(daysCalculated)));
-	    			txtpreciototal.setBackground(Color.RED);
+	    			txtpreciototal.setBackground(new Color(255, 255, 204));
 		    		BigTxtContract.setText("Señores, "+txtQueryNameClient.getText()+" dominicano, mayor de edad, soltero,"
 		    				+ " portador  de la Cédula de Identidad y Electoral No."+SoftwareCompany.getInstance().clientById(txtQueryCodClient.getText()).getId()+" "
 		    				+ "domiciliado y residente en "+txtQueryAddress.getText()+" quien en lo adelante y para todos los fines y consecuencias legales del presente "
@@ -238,16 +233,32 @@ public class ProjectRegistration extends JDialog {
 	     panelTermsContract.add(txtpreciototal);
 	     txtpreciototal.setColumns(10);
 	     
-	     Label label_6 = new Label("Fecha Entrega:");
-	     label_6.setFont(new Font("SansSerif", Font.PLAIN, 14));
-	     label_6.setBounds(12, 60, 112, 20);
-	     panelTermsContract.add(label_6);
+	      dateBegin = new JDateChooser();
+	     dateBegin.setBounds(130, 29, 171, 20);
+	     panelTermsContract.add(dateBegin);
+	     dateBegin.setMinSelectableDate(date);
+	     
+	   
+	     
+	      dateBegin.setEnabled(false);
+	      dateEnd = new JDateChooser();
+		  dateEnd.setBounds(130, 60, 171, 20);
+		  panelTermsContract.add(dateEnd);
+		  Date d=dateBegin.getDate();
+		  dateEnd.setMinSelectableDate(d);
+		  dateEnd.setEnabled(false);
+	     
+	      
+	      Label label_4 = new Label("Fecha Fin:");
+	      label_4.setFont(new Font("SansSerif", Font.PLAIN, 14));
+	      label_4.setBounds(12, 55, 82, 22);
+	      panelTermsContract.add(label_4);
 	     panelTermsContract.setVisible(false);
 		
 	    panelContractClient = new JPanel();
 	    panelContractClient.setBounds(10, 11, 600, 132);
 	    FirstPanel.add(panelContractClient);
-	    panelContractClient.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "informaci\u00F3n Cliente", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+	    panelContractClient.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Informaci\u00F3n Cliente", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 	    panelContractClient.setVisible(false);
 	    panelContractClient.setLayout(null);
 	    
@@ -259,10 +270,12 @@ public class ProjectRegistration extends JDialog {
 		try {
 			formatCedula = new MaskFormatter("###-#######-#");
 			formatCedula.setPlaceholderCharacter('_');
+			txtQueryCodClient = new JFormattedTextField(formatCedula);
+			txtQueryCodClient.setToolTipText("Cedula");
 		} catch (Exception e) {
 			txtQueryCodClient = new JTextField();
 		}
-	    txtQueryCodClient = new JFormattedTextField(formatCedula);	
+	    	
 	    
 	    txtQueryCodClient.addFocusListener(new FocusAdapter() {
 	    	@Override
@@ -276,7 +289,7 @@ public class ProjectRegistration extends JDialog {
 	    });
 	    
 	    txtQueryCodClient.setHorizontalAlignment(SwingConstants.LEFT);
-	    txtQueryCodClient.setFont(new Font("SansSerif", Font.PLAIN, 14));
+	    txtQueryCodClient.setFont(new Font("SansSerif", Font.PLAIN, 11));
 	    txtQueryCodClient.setBounds(115, 15, 185, 20);
 	    panelContractClient.add(txtQueryCodClient);
 	    txtQueryCodClient.setColumns(10);
@@ -299,7 +312,7 @@ public class ProjectRegistration extends JDialog {
 		txtQueryNameClient = new JTextField();
 		txtQueryNameClient.setHorizontalAlignment(SwingConstants.LEFT);
 		txtQueryNameClient.setEditable(false);
-		txtQueryNameClient.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		txtQueryNameClient.setFont(new Font("SansSerif", Font.PLAIN, 11));
 		txtQueryNameClient.setColumns(10);
 		txtQueryNameClient.setBounds(115, 45, 279, 20);
 		panelContractClient.add(txtQueryNameClient);
@@ -312,7 +325,7 @@ public class ProjectRegistration extends JDialog {
 		txtQueryAddress = new JTextField();
 		txtQueryAddress.setHorizontalAlignment(SwingConstants.LEFT);
 		txtQueryAddress.setEditable(false);
-		txtQueryAddress.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		txtQueryAddress.setFont(new Font("SansSerif", Font.PLAIN, 11));
 		txtQueryAddress.setColumns(10);
 		txtQueryAddress.setBounds(115, 75, 279, 20);
 		panelContractClient.add(txtQueryAddress);
@@ -325,21 +338,24 @@ public class ProjectRegistration extends JDialog {
 		txtQueryTel = new JTextField();
 		txtQueryTel.setHorizontalAlignment(SwingConstants.LEFT);
 		txtQueryTel.setEditable(false);
-		txtQueryTel.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		txtQueryTel.setFont(new Font("SansSerif", Font.PLAIN, 11));
 		txtQueryTel.setColumns(10);
 		txtQueryTel.setBounds(115, 105, 279, 20);
 		panelContractClient.add(txtQueryTel);
 		
-		Label label_4 = new Label("New label");
-		label_4.setBounds(420, 19, 118, 97);
-		panelContractClient.add(label_4);
+		lblimg = new JLabel("<Imagen>");
+		lblimg.setHorizontalAlignment(SwingConstants.CENTER);
+		lblimg.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
+		lblimg.setBounds(430, 15, 134, 110);
+		panelContractClient.add(lblimg);
 		
 		JButton button = new JButton("");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				String auxCodQuery=txtQueryCodClient.getText();
-				if (SoftwareCompany.getInstance().clientById(auxCodQuery)!=null) {
+				Client client=SoftwareCompany.getInstance().clientById(auxCodQuery);
+				if (client!=null) {
 					dateBegin.setEnabled(true);
 					dateEnd.setEnabled(true);
 					btnGenerar.setEnabled(true);
@@ -349,6 +365,14 @@ public class ProjectRegistration extends JDialog {
 					txtQueryTel.setText(SoftwareCompany.getInstance().clientById(auxCodQuery).getPhone());
 					
 					
+					if (client.getPicture() == null) {
+						lblimg.setIcon(new ImageIcon(ClientRegistration.class.getResource("/com/sun/java/swing/plaf/windows/icons/UpFolder.gif")));
+						lblimg.setText("<Imagen>");
+					} else {
+						lblimg.setIcon(client.getPicture());
+						
+						
+						}
 					
 					//BigTxtContract.setText("Yo "+SoftwareCompany.getInstance().clientById(auxCodQuery).getName()+" "+SoftwareCompany.getInstance().clientById(auxCodQuery).getLast_name()+" en virtud de esta prueba"+SoftwareCompany.getInstance().clientById(auxCodQuery).getId());
 					
@@ -405,6 +429,11 @@ public class ProjectRegistration extends JDialog {
 	    		btnAtras.setVisible(false);
 	    		comboBoxLenguaje.setVisible(true);
 	    		comboBoxTipoProyecto.setVisible(true);
+	    		txtNombreProyecto.setEnabled(true);
+	    		txtNombreProyecto.setVisible(true);
+	    		comboBoxTipoWorkers.setVisible(true);
+	    		txtDateOriginContract.setVisible(true);
+	    		txtDateOriginContract.setEnabled(true);
 	    	}
 	    });
 	    btnAtras.setVisible(false);
@@ -435,6 +464,7 @@ public class ProjectRegistration extends JDialog {
 		}
 		
 		txtCodigoProyecto = new JTextField();
+		txtCodigoProyecto.setFont(new Font("SansSerif", Font.PLAIN, 11));
 		txtCodigoProyecto.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtCodigoProyecto.setEditable(false);
 		txtCodigoProyecto.setText("PRO-" + (SoftwareCompany.codProjects + 1));
@@ -451,6 +481,7 @@ public class ProjectRegistration extends JDialog {
 		InformacionGeneralPanel.add(lblFecha);
 		
 		txtDateOriginContract = new JTextField();
+		txtDateOriginContract.setFont(new Font("SansSerif", Font.PLAIN, 11));
 		txtDateOriginContract.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtDateOriginContract.setEditable(false);
 		txtDateOriginContract.setBounds(392, 29, 198, 20);
@@ -515,7 +546,8 @@ public class ProjectRegistration extends JDialog {
 		InformacionGeneralPanel.add(comboBoxLenguaje);
 		
 		txtNombreProyecto = new JTextField();
-		txtNombreProyecto.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtNombreProyecto.setFont(new Font("SansSerif", Font.PLAIN, 11));
+		txtNombreProyecto.setHorizontalAlignment(SwingConstants.LEFT);
 		txtNombreProyecto.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -678,6 +710,10 @@ public class ProjectRegistration extends JDialog {
 				    		comboBoxLenguaje.setVisible(false);
 				    		comboBoxTipoProyecto.setVisible(false);
 				    		comboBoxTipoWorkers.setVisible(false);
+				    		txtNombreProyecto.setEnabled(false);
+				    		txtNombreProyecto.setVisible(false);
+				    		txtDateOriginContract.setVisible(false);
+				    		txtDateOriginContract.setEnabled(false);
 						
 						}
 						
@@ -705,13 +741,15 @@ public class ProjectRegistration extends JDialog {
 			  btnFinalizar.addActionListener(new ActionListener() {
 			    	public void actionPerformed(ActionEvent e) {
 			    		
-			    		if (!txtQueryNameClient.getText().equalsIgnoreCase("") && SoftwareCompany.getInstance().calcDays(dateBegin, dateEnd)>0) {
+			    		if (!txtQueryNameClient.getText().equalsIgnoreCase("") && SoftwareCompany.getInstance().calcDays(dateBegin, dateEnd)>1 ) {
+			    			String clientId=txtQueryCodClient.getText();
+			    			if(SoftwareCompany.getInstance().clientById(clientId) != null && (SoftwareCompany.getInstance().clientById(clientId)).getCant_projects() <= 5) {
 			    			String codPro=txtCodigoProyecto.getText();
 			    			String dateSigContract=txtDateOriginContract.getText();
 			    			String namePRo=txtNombreProyecto.getText();
 			    			String tipoPro=comboBoxTipoProyecto.getSelectedItem().toString();
 			    			String langujae=comboBoxLenguaje.getSelectedItem().toString();
-			    			String clientId=txtQueryCodClient.getText();
+			    			
 			    			//String beginD=dateBegin.getDateFormatString();
 			    			//String dateFinish=dateEnd.getDateFormatString();
 			    			
@@ -772,6 +810,17 @@ public class ProjectRegistration extends JDialog {
 							
 							SoftwareCompany.codProjects++;
 						}else {
+							JOptionPane.showMessageDialog(null, "No puede tener mas de 5 proyectos activos", "Error", JOptionPane.ERROR_MESSAGE);
+
+						}
+			    			
+			    		}else if(SoftwareCompany.getInstance().calcDays(dateBegin, dateEnd)<=1) {
+							JOptionPane.showMessageDialog(null, "Los proyectos deben tener minimo 1 día de duración", "Error", JOptionPane.ERROR_MESSAGE);
+
+						}
+			    		
+			    		
+			    		else {
 							JOptionPane.showMessageDialog(null, "Revise sus datos", "Error", JOptionPane.ERROR_MESSAGE);
 
 						}
@@ -1097,6 +1146,4 @@ public class ProjectRegistration extends JDialog {
 		}
 		
 	}
-	
-	
 }

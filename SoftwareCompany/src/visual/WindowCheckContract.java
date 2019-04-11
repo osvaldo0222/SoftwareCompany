@@ -85,6 +85,7 @@ public class WindowCheckContract extends JDialog {
 	private JTable tableWorkers;
 	public static Object[] filas;
 	private DefaultTableModel models;
+	private JLabel lblimg;
 	
 
 	/**
@@ -268,6 +269,11 @@ public class WindowCheckContract extends JDialog {
 		txttel.setBounds(98, 101, 316, 20);
 		panelContractClient.add(txttel);
 		txttel.setColumns(10);
+		
+		lblimg = new JLabel("<Imagen>");
+		lblimg.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
+		lblimg.setBounds(420, 21, 118, 97);
+		panelContractClient.add(lblimg);
 		JPanel panelTermsContract = new JPanel();
 		panelTermsContract.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "T\u00E9rminos y Condiciones ", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelTermsContract.setBounds(620, 165, 600, 271);
@@ -422,6 +428,8 @@ public class WindowCheckContract extends JDialog {
 						}else if(radioDeliver.isSelected() && !aux.getProject().getState().equalsIgnoreCase("Terminado")) {
 							aux.getProject().setState("Terminado");
 							aux.getProject().setEnded(true);
+							int x=(SoftwareCompany.getInstance().clientById(aux.getIdClient()).getCant_projects()-1);
+							SoftwareCompany.getInstance().clientById(aux.getIdClient()).setCant_projects(x);
 							for (int i = 0; i <aux.getProject().getWorkers().size(); i++) {
 								
 								aux.getProject().getWorkers().get(i).getProjects().removeAll(aux.getProject().getWorkers().get(i).getProjects());
@@ -434,6 +442,8 @@ public class WindowCheckContract extends JDialog {
 							radioDeliver.setSelected(true);
 							aux.getProject().setState("Terminado");
 							aux.getProject().setEnded(true);
+							int x=(SoftwareCompany.getInstance().clientById(aux.getIdClient()).getCant_projects()-1);
+							SoftwareCompany.getInstance().clientById(aux.getIdClient()).setCant_projects(x);
 							for (int i = 0; i <aux.getProject().getWorkers().size(); i++) {
 								
 								aux.getProject().getWorkers().get(i).getProjects().removeAll(aux.getProject().getWorkers().get(i).getProjects());
@@ -535,6 +545,15 @@ public class WindowCheckContract extends JDialog {
 		txttel.setText(SoftwareCompany.getInstance().clientById(aux.getIdClient()).getPhone());
 		txtTipoPro.setText(aux.getProject().getType());
 		txtduedate.setText(dateFormat.format(aux.getDueDate()));
+		
+		if (SoftwareCompany.getInstance().clientById(aux.getIdClient()).getPicture() == null) {
+			lblimg.setIcon(new ImageIcon(ClientRegistration.class.getResource("/com/sun/java/swing/plaf/windows/icons/UpFolder.gif")));
+			lblimg.setText("<Imagen>");
+		} else {
+			lblimg.setIcon(SoftwareCompany.getInstance().clientById(aux.getIdClient()).getPicture());
+			
+			
+			}
 		
 		
 	}

@@ -6,9 +6,11 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
@@ -25,6 +27,7 @@ import javax.swing.RowFilter;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.swing.border.TitledBorder;
@@ -51,6 +54,8 @@ public class ListProjects extends JDialog {
 	private TableRowSorter<TableModel> sorter;
 	private String[] headers = {"ID Contrato", "ID Cliente", "Nombre Cliente", "ID Proyecto", "Tipo Proyecto", "Firma Contrato", "Fecha Inicio","Fecha de Entrega","Total a pagar","Estado","Fecha Prorrogado","Cant Pro"};
 	private static int cont;
+	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+	private Render render;
 	private static ListProjects listPro=null;
 	
 	public static ListProjects getInstance() {
@@ -133,12 +138,16 @@ public class ListProjects extends JDialog {
 		tableProjects.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableProjects.setModel(model);
 		
+		
+		
+		
 		 TableColumnModel columnModel = tableProjects.getColumnModel();
 		 tableProjects.setAutoCreateRowSorter(true);
 		 columnModel.getColumn(0).setPreferredWidth(50);
 		 columnModel.getColumn(3).setPreferredWidth(50);
 		 columnModel.getColumn(3).setPreferredWidth(75);
 		 columnModel.getColumn(9).setPreferredWidth(40);
+		 columnModel.getColumn(11).setPreferredWidth(40);
 		 tableProjects.setRowSorter(sorter);
 		
 		/*
@@ -242,7 +251,13 @@ columnModel.getColumn(2).setPreferredWidth(200);
 		fila = new Object[model.getColumnCount()];
 	
 		//"ID Contrato", "ID Cliente", "Nombre Cliente", "ID Proyecto", "Tipo Proyecto", "Fecha Inicio", "Fecha de entrega", "Total a pagar"};
-
+		render=new Render(9);
+		tableProjects.setDefaultRenderer(Object.class,render);
+		render.setHorizontalAlignment(JLabel.CENTER);
+		for (int i = 0; i < headers.length; i++) {
+			tableProjects.getColumnModel().getColumn(i).setCellRenderer(render);
+		}	
+		
 		for (int i = 0; i <SoftwareCompany.getInstance().getContracts().size(); i++) {
 			fila[0]=SoftwareCompany.getInstance().getContracts().get(i).getId();
 			fila[1]=SoftwareCompany.getInstance().getContracts().get(i).getIdClient();
@@ -251,16 +266,15 @@ columnModel.getColumn(2).setPreferredWidth(200);
 			fila[3]=SoftwareCompany.getInstance().getContracts().get(i).getProject().getId();
 			fila[4]=SoftwareCompany.getInstance().getContracts().get(i).getProject().getType();
 			fila[5]=SoftwareCompany.getInstance().getContracts().get(i).getSignoutDay();
-			fila[6]=SoftwareCompany.getInstance().getContracts().get(i).getDateBegin();
-			fila[7]=SoftwareCompany.getInstance().getContracts().get(i).getDueDate();
+			fila[6]=dateFormat.format(SoftwareCompany.getInstance().getContracts().get(i).getDateBegin());
+			fila[7]=dateFormat.format(SoftwareCompany.getInstance().getContracts().get(i).getDueDate());
 			fila[8]=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
 			fila[9]=SoftwareCompany.getInstance().getContracts().get(i).getProject().getState();
 			fila[10]="N/A";
 			fila[11]=SoftwareCompany.getInstance().getContracts().get(i).getProject().getWorkers().size();
 			model.addRow(fila);
 		}
-		Render render=new Render(9);
-		tableProjects.setDefaultRenderer(Object.class,render);
+		
 		
 	}
 	

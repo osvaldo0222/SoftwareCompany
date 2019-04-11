@@ -29,6 +29,7 @@ import logical.User;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
@@ -45,6 +46,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -59,6 +61,7 @@ import org.jfree.data.general.DefaultPieDataset;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JToolBar;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.BoxLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -96,7 +99,6 @@ public class MainVisual extends JFrame implements Runnable {
 	private int hora;
 	private int minutos;
 	private int segundos;
-	private Label labelForClock;
 	private int dia;
 	private int diaSemana;
 	private int mes;
@@ -108,6 +110,11 @@ public class MainVisual extends JFrame implements Runnable {
 	private FileOutputStream ficheroPdf;
 	private PdfPTable tabla;
 	private JPanel panelForBar;
+	private Render render;
+	private Component log;
+	private String ficheroRura;
+	private File ficheroRuta;
+	private JFileChooser fileChose;
 
 	private ChartPanel panelBarGraph;
 
@@ -463,22 +470,57 @@ public class MainVisual extends JFrame implements Runnable {
 		btnNewButton_4.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/icons8-training-30.png")));
 		btnNewButton_4.setFont(new Font("SansSerif", Font.PLAIN, 14));
 		panel_4.add(btnNewButton_4);
+		
+		JButton btnImprimirEstadoFinanciero = new JButton("<html><p style=\\\"text-align:center;\\\">Imprimir estado<br/>Financiero</p></html>");
+		btnImprimirEstadoFinanciero.addActionListener(new ActionListener() {
+			
+
+			
+
+			public void actionPerformed(ActionEvent e) {
+				
+				 fileChose = new JFileChooser();
+			
+		        FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Files", ".pdf");
+		        int seleccion = fileChose.showSaveDialog(log);
+		        if (seleccion == JFileChooser.APPROVE_OPTION){
+		                     ficheroRuta = fileChose.getSelectedFile();
+		                     createPdf(ficheroRuta);
+		                    System.out.println("Ruta: "+ficheroRura);
+		        }
+				
+				
+			}
+		});
+		btnImprimirEstadoFinanciero.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnImprimirEstadoFinanciero.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnImprimirEstadoFinanciero.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/icons8-print-30.png")));
+		btnImprimirEstadoFinanciero.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		panel_4.add(btnImprimirEstadoFinanciero);
 		btnNewButton_3.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnNewButton_3.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnNewButton_3.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/exit30.png")));
 		btnNewButton_3.setFont(new Font("SansSerif", Font.PLAIN, 14));
 		panel_4.add(btnNewButton_3);
 		
-		JPanel panel_6 = new JPanel();
-		panel_4.add(panel_6);
-		
-		JPanel panel_5 = new JPanel();
-		panel_4.add(panel_5);
-		
 		JPanel panelFouUserBar = new JPanel();
 		panelFouUserBar.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
 		contentPane.add(panelFouUserBar, BorderLayout.SOUTH);
 		panelFouUserBar.setLayout(new BoxLayout(panelFouUserBar, BoxLayout.X_AXIS));
+		
+		Label labelType = new Label("");
+		labelType.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		labelType.setText(user.getType());
+		panelFouUserBar.add(labelType);
+		
+		JPanel panel_13 = new JPanel();
+		panelFouUserBar.add(panel_13);
+		
+		JPanel panel_14 = new JPanel();
+		panelFouUserBar.add(panel_14);
+		
+		JPanel panel_7 = new JPanel();
+		panelFouUserBar.add(panel_7);
 		
 		Label labeluser = new Label("Usuario:");
 		labeluser.setAlignment(Label.CENTER);
@@ -496,21 +538,12 @@ public class MainVisual extends JFrame implements Runnable {
 		panelFouUserBar.add(fecha);
 		 
 		 labelforDate = new Label("");
-		 labelforDate.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		 labelforDate.setFont(new Font("SansSerif", Font.PLAIN, 13));
 		 panelFouUserBar.add(labelforDate);
-		 
-		 Label labelforHour = new Label("Hora:");
-		 labelforHour.setAlignment(Label.CENTER);
-		 labelforHour.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		 panelFouUserBar.add(labelforHour);
-		
-		 labelForClock = new Label("");
-		 labelForClock.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		panelFouUserBar.add(labelForClock);
 		graphPie();
 		lineGraph();
 		graphBar();
-		createPdf();
+	
 		
 		
 		
@@ -582,8 +615,8 @@ public class MainVisual extends JFrame implements Runnable {
 				
 				Thread.sleep(3000);
 				calcTime();
-				labelforDate.setText(dia+"/"+mes+"/"+year);
-				labelForClock.setText(hora + ":" + minutos);
+				labelforDate.setText(dia+"/"+mes+"/"+year+" "+hora+":" + minutos);
+				//labelForClock.setText(hora + ":" + minutos);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -802,7 +835,7 @@ public class MainVisual extends JFrame implements Runnable {
         mes=calendario.get(Calendar.MONTH);
         year=calendario.get(Calendar.YEAR);
     }
-	public void createPdf() {
+	public void createPdf(File file) {
 		
 		System.out.println("syso");
 		 
@@ -812,7 +845,11 @@ public class MainVisual extends JFrame implements Runnable {
     	     documento = new Document();
 
     	    // Se crea el OutputStream para el fichero donde queremos dejar el pdf.
+    	     file.toString();
     	     ficheroPdf = new FileOutputStream("fichero2.pdf");
+		        fileChose.setCurrentDirectory(new File(System.getProperty(file.toString())));
+
+    	     
 
     	    // Se asocia el documento al OutputStream y se indica que el espaciado entre
     	    // lineas sera de 20. Esta llamada debe hacerse antes de abrir el documento

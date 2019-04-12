@@ -54,7 +54,7 @@ public class ListProjects extends JDialog {
 	public static String codContractTable;
 	private JTextField txtfiltrer;
 	private TableRowSorter<TableModel> sorter;
-	private String[] headers = {"ID Contrato", "ID Cliente", "Nombre Cliente", "ID Proyecto", "Tipo Proyecto", "Firma Contrato", "Fecha Inicio","Fecha de Entrega","Total a pagar","Estado","Fecha Prorrogado","Cant Pro"};
+	private String[] headers = {"ID Contrato", "ID Cliente", "Nombre Cliente", "ID Proyecto", "Tipo Proyecto", "Firma Contrato", "Fecha Inicio","Fecha de Entrega","Total a pagar","Estado","Fecha Prorrogado","Cant Trabajadores"};
 	private static int cont;
 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 	private Render render;
@@ -136,7 +136,7 @@ public class ListProjects extends JDialog {
 			}
 		});
 		
-		String [] header = {"ID Contrato", "ID Cliente", "Nombre Cliente", "ID Proyecto", "Tipo Proyecto","Firma Contrato", "Fecha Inicio", "Fecha de entrega", "Total a pagar","Estado","Fecha Prorrogado","Cant Pro"};
+		String [] header = {"ID Contrato", "ID Cliente", "Nombre Cliente", "ID Proyecto", "Tipo Proyecto","Firma Contrato", "Fecha Inicio", "Fecha de entrega", "Total a pagar","Estado","Fecha Prorrogado","Trabajadores"};
 		
 		model.setColumnIdentifiers(header);
 		tableProjects.setModel(model);
@@ -284,9 +284,15 @@ columnModel.getColumn(2).setPreferredWidth(200);
 			fila[5]=SoftwareCompany.getInstance().getContracts().get(i).getSignoutDay();
 			fila[6]=dateFormat.format(SoftwareCompany.getInstance().getContracts().get(i).getDateBegin());
 			fila[7]=dateFormat.format(SoftwareCompany.getInstance().getContracts().get(i).getDueDate());
-			fila[8]=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+			fila[8]="$"+SoftwareCompany.getInstance().getContracts().get(i).getPrice();
 			fila[9]=SoftwareCompany.getInstance().getContracts().get(i).getProject().getState();
-			fila[10]="N/A";
+			if (SoftwareCompany.getInstance().getContracts().get(i).getProject().getState().equalsIgnoreCase("Prorrogado")) {
+				fila[10]=dateFormat.format(SoftwareCompany.getInstance().getContracts().get(i).getFinalDate());
+			}else {
+				fila[10]="N/A";
+			}
+			
+			
 			fila[11]=SoftwareCompany.getInstance().getContracts().get(i).getProject().getWorkers().size();
 			model.addRow(fila);
 		}

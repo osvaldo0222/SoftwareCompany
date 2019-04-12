@@ -842,9 +842,18 @@ public class MainVisual extends JFrame implements Runnable {
     	    				13,                            // tamaño
     	    				BaseColor.BLACK)));             // color
     	    
-    	    documento.add(new Paragraph("<html><p style=\\\"text-align:center;\\\"><strong>Reporte en la Fecha</strong></p></html>"+mes+"/"+dia+"/"+year,
+    	    documento.add(new Paragraph("Reporte en la Fecha :"+mes+"/"+dia+"/"+year+"\n",
     				FontFactory.getFont("Sans-serif",   // fuente
     				13,                            // tamaño
+    				BaseColor.BLACK))); 
+    	    /* documento.add(new Paragraph("Usuario :"+user.getName()+" "+user.getLast_name()+"\n",
+    				FontFactory.getFont("Sans-serif",   // fuente
+    				13,                            // tamaño
+    				BaseColor.BLACK))); */
+    	    
+    	    documento.add(new Paragraph("Rendimiento global :\n\n",
+    				FontFactory.getFont("Sans-serif",   // fuente
+    				14,                            // tamaño
     				BaseColor.BLACK))); 
     	    
     	     tabla = new PdfPTable(ListProjects.getInstance().getTableProjects().getColumnCount());

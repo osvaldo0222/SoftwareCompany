@@ -96,7 +96,7 @@ public class ProjectRegistration extends JDialog {
 	private JPanel panelTermsContract;
 	private JButton btnAtras;
 	private int cont=0;
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy");
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 	private Date date=new Date();
 	private JTextPane BigTxtContract;
 	private JTextField txtpreciototal;
@@ -935,10 +935,10 @@ public class ProjectRegistration extends JDialog {
 	}
 	
 	public void addBoss() {
-		int aux=-1;
+	
 	
 		
-		System.out.println(DLMWorkersSelected.size()+"---->"+cont);
+	
 		
 			if (cont>=1) {
 					

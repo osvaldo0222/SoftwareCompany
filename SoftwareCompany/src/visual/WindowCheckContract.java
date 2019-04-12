@@ -409,10 +409,18 @@ public class WindowCheckContract extends JDialog {
 							
 						}else if(!aux.getProject().getState().equalsIgnoreCase("Terminado")) {
 						if (radioProrroga.isSelected() && !txtTotalPagar.equals("") && !txtTotalAcordado.equals("")) {
-							aux.getProject().setState("Prorrogado");
-							aux.setFinalDate(dateChoserFinalDay.getDate());
-							JOptionPane.showMessageDialog(null, "Este Proyecto Fue prorrogado con exito", "Proyectos", JOptionPane.INFORMATION_MESSAGE);
-							aux.setPrice(SoftwareCompany.getInstance().calcAmountDelayTime(aux.getId(), calcDaysJustDate(aux.getDueDate(), dateChoserFinalDay.getDate())));
+							
+							if(!dateChoserFinalDay.equals("")) {
+								JOptionPane.showMessageDialog(null, "Seleccione fecha entrega", "Proyectos", JOptionPane.ERROR_MESSAGE);
+									return;
+							}else {
+								aux.getProject().setState("Prorrogado");
+								aux.setFinalDate(dateChoserFinalDay.getDate());
+								JOptionPane.showMessageDialog(null, "Este Proyecto Fue prorrogado con exito", "Proyectos", JOptionPane.INFORMATION_MESSAGE);
+								aux.setPrice(SoftwareCompany.getInstance().calcAmountDelayTime(aux.getId(), calcDaysJustDate(aux.getDueDate(), dateChoserFinalDay.getDate())));
+							}
+							
+							
 						}else if(radioDeliver.isSelected() && !aux.getProject().getState().equalsIgnoreCase("Terminado")) {
 							aux.getProject().setState("Terminado");
 							aux.getProject().setEnded(true);
@@ -549,7 +557,7 @@ public int calcDaysJustDate(Date d1,Date d2) {
 		fechaInicio.setTime(d1);;
 		fechafin.setTime(d2);
 		
-		System.out.println(fechafin.getTime().toString());
+	
 		
 		c.setTimeInMillis(fechafin.getTime().getTime() - fechaInicio.getTime().getTime());
 		

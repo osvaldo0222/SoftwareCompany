@@ -19,6 +19,9 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.orsonpdf.PDFDocument;
+import com.orsonpdf.PDFGraphics2D;
+import com.orsonpdf.Page;
 import com.sun.glass.ui.Application;
 import com.toedter.calendar.JDateChooser;
 
@@ -34,6 +37,7 @@ import java.awt.event.WindowEvent;
 import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -55,6 +59,7 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
@@ -81,6 +86,7 @@ import java.awt.FlowLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.Label;
+import java.awt.Rectangle;
 
 public class MainVisual extends JFrame implements Runnable {
 
@@ -108,6 +114,12 @@ public class MainVisual extends JFrame implements Runnable {
 	private PdfPTable tabla;
 	private JPanel panelForBar;
 	private ChartPanel panelBarGraph;
+	private PDFGraphics2D g2;
+	private PDFDocument pdfDoc;
+	private Image foto;
+	private Image Bar;
+	private Image Lost;
+
 	
 	public MainVisual(User user) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainVisual.class.getResource("/Imgs/main-visual-icon.png")));
@@ -680,6 +692,13 @@ public class MainVisual extends JFrame implements Runnable {
 	    panelBarGraph.setLayout(new BorderLayout(0, 0));
 	    //panelBar.setPreferredSize( new java.awt.Dimension( 532 , 300 ) );
 	    
+	    try {
+			ChartUtilities.saveChartAsJPEG(new File("graphBar.jpg"), chartBar, 500,500);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
 		
 	}
 	
@@ -731,6 +750,13 @@ public class MainVisual extends JFrame implements Runnable {
 	       plot.setSectionPaint("Proyectos En Proceso", new Color( 247, 220, 111 ));
 	       plot.setSectionPaint("Proyectos Nuevo", new Color( 133, 193, 233 ));
 	       plot.setBackgroundPaint(Color.WHITE);
+	       
+	       try {
+				ChartUtilities.saveChartAsJPEG(new File("graficopie.jpg"), chart, 500, 500);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	       
 
 	        
@@ -799,6 +825,13 @@ public class MainVisual extends JFrame implements Runnable {
 	    	    
 	    	      panelLineGraph.add(chartPanel);
 	    	      chartPanel.setPreferredSize( new java.awt.Dimension( 532 , 285 ) );
+	    	      
+	    	      try {
+	  				ChartUtilities.saveChartAsJPEG(new File("graphLine.jpg"), lineChart, 500, 500);
+	  			} catch (IOException e) {
+	  				// TODO Auto-generated catch block
+	  				e.printStackTrace();
+	  			}
 	    	
 	}
 	
@@ -815,6 +848,9 @@ public class MainVisual extends JFrame implements Runnable {
 		try {
 			 // Se crea el documento
     	     Document documento = new Document();
+    	     //crear foto
+    	    
+    	     
     	     
     	  // Se crea el OutputStream para el fichero donde queremos dejar el pdf.
     	     if (!ruta.endsWith(".pdf")) {
@@ -869,7 +905,8 @@ public class MainVisual extends JFrame implements Runnable {
     	    
     	    //System.out.println("Tabla"+ ListProjects.getInstance().getTableProjects().getRowCount());
 			//tabla.addCell(ListProjects.getInstance().getHeaders().toString());
-    	   
+//{"ID Contrato", "ID Cliente", "Nombre Cliente", "ID Proyecto", "Tipo Proyecto","Firma Contrato", "Fecha Inicio", "Fecha de entrega", "Total a pagar","Estado","Fecha Prorrogado","Trabajadores"};
+
     		tabla.addCell( ListProjects.getInstance().getHeaders()[0].toString());
     		tabla.addCell( ListProjects.getInstance().getHeaders()[1].toString());
     		tabla.addCell( ListProjects.getInstance().getHeaders()[2].toString());
@@ -882,12 +919,22 @@ public class MainVisual extends JFrame implements Runnable {
     		tabla.addCell( ListProjects.getInstance().getHeaders()[9].toString());
     		tabla.addCell( ListProjects.getInstance().getHeaders()[10].toString());
     		tabla.addCell( ListProjects.getInstance().getHeaders()[11].toString());
+    	     
+    	    /* tabla.addCell("ID Proyecto");
+    	     tabla.addCell("ID Contrato");
+    	     tabla.addCell("Trabajadores");
+    	     tabla.addCell("ID Cliente");
+    	     tabla.addCell("Fecha Entrega");
+    	     tabla.addCell("Estado");
+    	     tabla.addCell("Completado");*/
+    	     
+    	    
     		
 
-    	    for (int i = 0; i <  ListProjects.getInstance().getTableProjects().getRowCount(); i++) {
+    	 for (int i = 0; i <  ListProjects.getInstance().getTableProjects().getRowCount(); i++) {
     	    	
     	    	for (int j = 0; j <  ListProjects.getInstance().getTableProjects().getColumnCount(); j++) {
-    	    		//cell.equals(ListProjects.getInstance().getTableProjects().getValueAt(i, j));
+    	    		
     	    		tabla.addCell(ListProjects.getInstance().getTableProjects().getValueAt(i, j).toString());
 					
 				}
@@ -895,13 +942,40 @@ public class MainVisual extends JFrame implements Runnable {
 			}
     	    tabla.setWidthPercentage(100);
     	    
-    	   
+    	    try
+    	    {
+    	    	 foto = Image.getInstance("graficopie.jpg");
+    	    	 
+    	    	foto.scaleToFit(500, 500);
+    	    	foto.setAlignment(Chunk.ALIGN_CENTER);
+    	    	
+    	    	Bar = Image.getInstance("graphBar.jpg");
+    	    	Bar.scaleToFit(500, 500);
+    	    	Bar.setAlignment(Chunk.ALIGN_CENTER);
+    	    	
+    	    	Lost = Image.getInstance("graphLine.jpg");
+    	    	Lost.scaleToFit(500, 500);
+    	    	Lost.setAlignment(Chunk.ALIGN_CENTER);
+    	    	
+    	    	
+    	    	
+    	    }
+    	    catch ( Exception e )
+    	    {
+    	    	e.printStackTrace();
+    	    }
     	    documento.add(tabla);
-    	   // documento.add(foto);
+    	    documento.add(foto);
+    	    documento.add(Bar);
+    	   
+    	    documento.add(Lost);
+    	    
     	    
     	    documento.close();
  
-		} catch (Exception e) {}	
+		} catch (Exception e) {
+			
+		}	
 	}
 	
 	private void openSavePdf() {
@@ -918,4 +992,14 @@ public class MainVisual extends JFrame implements Runnable {
             createPdf(path);
         }
 	}
+
+	public JTable getTable() {
+		return table;
+	}
+
+	public void setTable(JTable table) {
+		this.table = table;
+	}
+
+	
 }

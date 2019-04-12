@@ -239,8 +239,9 @@ public class MainVisual extends JFrame implements Runnable {
 		mntmListarProyectos.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/list30px.png")));
 		mntmListarProyectos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListProjects.getInstance().setModal(true);
-			    ListProjects.getInstance().setVisible(true);
+				ListProjects listPro=new ListProjects();
+				listPro.setModal(true);
+				listPro.setVisible(true);
 				loadtable();
 				graphPie();
 			}
@@ -531,7 +532,7 @@ public class MainVisual extends JFrame implements Runnable {
 		rows = new Object[model.getColumnCount()];
 		for (Contract aux : SoftwareCompany.getInstance().getContracts()) {
 			if (!aux.getProject().isEnded()) {
-				if (aux.getDateBegin().before(new Date()) && aux.getFinalDate().after(new Date())) {
+				if (aux.getDateBegin().before(new Date()) && aux.getFinalDate().after(new Date()) && !aux.getProject().getState().equalsIgnoreCase("Prorrogado") && aux.getFinalDate().before(new Date())) {
 					aux.getProject().setState("En Proceso");
 				} else if (!aux.getDateBegin().before(new Date())) {
 					aux.getProject().setState("Nuevo");
@@ -828,23 +829,29 @@ public class MainVisual extends JFrame implements Runnable {
     	    PdfWriter.getInstance(documento,ficheroPdf).setInitialLeading(20);
 
     	    // Se abre el documento.
+    	    
     	    documento.open();
-    	    documento.add(new Paragraph("Reporte completo actividad en 'La Empresa'\n",
+    	    documento.add(new Paragraph("Reporte completo actividad en 'SoftwareCompany'\n",
     				FontFactory.getFont("Sans-serif",   // fuente
     				14,                            // tamaño
     				Font.BOLD,                   // estilo
     				BaseColor.BLACK)));
 
-    	    documento.add(new Paragraph("Estados de cuenta ultimos meses",
+    	    documento.add(new Paragraph("Estadística de los ultimos meses \n",
     	    				FontFactory.getFont("Sans-serif",   // fuente
-    	    				12,                            // tamaño
+    	    				13,                            // tamaño
     	    				BaseColor.BLACK)));             // color
     	    
+    	    documento.add(new Paragraph("Reporte hasta la fecha: "+mes+"/"+dia+"/"+year,
+    				FontFactory.getFont("Sans-serif",   // fuente
+    				13,                            // tamaño
+    				BaseColor.BLACK))); 
+    	    
     	     tabla = new PdfPTable(ListProjects.getInstance().getTableProjects().getColumnCount());
-    	     PdfPCell cell=new PdfPCell();
+    	     //PdfPCell cell=new PdfPCell();
     	   
     	     
-    	     cell.setBackgroundColor(BaseColor.GREEN);
+    	     //cell.setBackgroundColor(BaseColor.GREEN);
     	     
     	     //cell.equals(ListProjects.getInstance().getHeaders()[0].toString());
     	     
@@ -871,8 +878,8 @@ public class MainVisual extends JFrame implements Runnable {
     	    for (int i = 0; i <  ListProjects.getInstance().getTableProjects().getRowCount(); i++) {
     	    	
     	    	for (int j = 0; j <  ListProjects.getInstance().getTableProjects().getColumnCount(); j++) {
-    	    		cell.equals(ListProjects.getInstance().getTableProjects().getValueAt(i, j));
-    	    		tabla.addCell(cell);
+    	    		//cell.equals(ListProjects.getInstance().getTableProjects().getValueAt(i, j));
+    	    		tabla.addCell(ListProjects.getInstance().getTableProjects().getValueAt(i, j).toString());
 					
 				}
 				

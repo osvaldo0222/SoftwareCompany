@@ -511,13 +511,9 @@ public class MainVisual extends JFrame implements Runnable {
 		 labelforDate = new Label("");
 		 labelforDate.setFont(new Font("SansSerif", Font.PLAIN, 13));
 		 panelFouUserBar.add(labelforDate);
-		graphPie();
-		lineGraph();
-		graphBar();
-	
-		
-		
-		
+		 graphPie();
+		 lineGraph();
+		 graphBar();
 	}
 	
 	private void saveData() {
@@ -557,7 +553,7 @@ public class MainVisual extends JFrame implements Runnable {
 		Render render = new Render(5);
 		table.setDefaultRenderer(Object.class, render);
 		render.setHorizontalAlignment(JLabel.CENTER);
-		for (int i = 0; i < headers.length; i++) {
+		for (int i = 0; i < (headers.length - 1); i++) {
 			table.getColumnModel().getColumn(i).setCellRenderer(render);
 		}	
 		javax.swing.table.TableColumn column = table.getColumnModel().getColumn(6);
@@ -598,6 +594,8 @@ public class MainVisual extends JFrame implements Runnable {
 		while(ct == projects) {
 			if (time >= 30) {
 				loadtable();
+				graphBar();
+				graphPie();
 			}
 			try {
 				Thread.sleep(1000);
@@ -613,9 +611,6 @@ public class MainVisual extends JFrame implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		
-		
-		
 	}
 	
 	public void graphBar() {
@@ -704,10 +699,7 @@ public class MainVisual extends JFrame implements Runnable {
 	
 	public void graphPie() {
 		
-		for (int i = 0; i < SoftwareCompany.getInstance().getContracts().size(); i++) {
-			System.out.println("Precio Real  "+SoftwareCompany.getInstance().getContracts().get(i).getPrice() +"Precio a pagar "+SoftwareCompany.getInstance().getContracts().get(i).getCopyPrice());
-			
-		}
+		
 		
 		 DefaultPieDataset data = new DefaultPieDataset();
 		 int proFin=0;

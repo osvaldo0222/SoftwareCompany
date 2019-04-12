@@ -763,7 +763,7 @@ public class ProjectRegistration extends JDialog {
 			    			float price=calcAmountOfMoney(SoftwareCompany.getInstance().calcDays(dateBegin, dateEnd));
 			    			for (int i = 0; i < DLMWorkersSelected.size(); i++) {
 			    				String[] split=DLMWorkersSelected.getElementAt(i).toString().split(" ");
-			    				System.out.println("Split"+split[0]);
+			    				//System.out.println("Split"+split[0]);
 			    				worker=SoftwareCompany.getInstance().searchWorkerByCode(split[0]);
 			    				pro1.inserWorker(worker);
 			    				worker.insertProject(txtCodigoProyecto.getText());
@@ -948,7 +948,7 @@ public class ProjectRegistration extends JDialog {
 						String[] codSplit=DLMWorkersSelected.getElementAt(i).toString().split(" ");
 							if (SoftwareCompany.getInstance().searchWorkerByCode(codSplit[0]) instanceof Boss && cont==0) {
 								cont++;
-								System.out.println("Entrada1");
+								//System.out.println("Entrada1");
 								DLMWorkersSelected.addElement(listWorkers.getSelectedValue());
 								DLM.remove(listWorkers.getSelectedIndex());
 								break;

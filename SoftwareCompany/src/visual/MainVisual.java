@@ -532,7 +532,7 @@ public class MainVisual extends JFrame implements Runnable {
 		rows = new Object[model.getColumnCount()];
 		for (Contract aux : SoftwareCompany.getInstance().getContracts()) {
 			if (!aux.getProject().isEnded()) {
-				if (aux.getDateBegin().before(new Date()) && aux.getFinalDate().after(new Date()) && !aux.getProject().getState().equalsIgnoreCase("Prorrogado") && aux.getFinalDate().before(new Date())) {
+				if (aux.getDateBegin().before(new Date()) && aux.getFinalDate().after(new Date()) && !aux.getProject().getState().equalsIgnoreCase("Prorrogado") ) {
 					aux.getProject().setState("En Proceso");
 				} else if (!aux.getDateBegin().before(new Date())) {
 					aux.getProject().setState("Nuevo");
@@ -842,7 +842,7 @@ public class MainVisual extends JFrame implements Runnable {
     	    				13,                            // tamaño
     	    				BaseColor.BLACK)));             // color
     	    
-    	    documento.add(new Paragraph("Reporte hasta la fecha: "+mes+"/"+dia+"/"+year,
+    	    documento.add(new Paragraph("<html><p style=\\\"text-align:center;\\\"><strong>Reporte en la Fecha</strong></p></html>"+mes+"/"+dia+"/"+year,
     				FontFactory.getFont("Sans-serif",   // fuente
     				13,                            // tamaño
     				BaseColor.BLACK))); 

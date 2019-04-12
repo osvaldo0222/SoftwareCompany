@@ -729,7 +729,7 @@ public class ProjectRegistration extends JDialog {
 			    		
 			    		if (!txtQueryNameClient.getText().equalsIgnoreCase("") && SoftwareCompany.getInstance().calcDays(dateBegin, dateEnd)>1 ) {
 			    			String clientId=txtQueryCodClient.getText();
-			    			if(SoftwareCompany.getInstance().clientById(clientId) != null && (SoftwareCompany.getInstance().clientById(clientId)).getCant_projects() <= 5) {
+			    			if(SoftwareCompany.getInstance().clientById(clientId) != null && (SoftwareCompany.getInstance().clientById(clientId)).getCant_projects() <= 4) {
 			    			String codPro=txtCodigoProyecto.getText();
 			    			String dateSigContract=txtDateOriginContract.getText();
 			    			String namePRo=txtNombreProyecto.getText();

@@ -22,12 +22,12 @@ public class Render extends DefaultTableCellRenderer {
 	    setBackground(Color.white);
 	    table.setForeground(Color.black);
 	    super.getTableCellRendererComponent(table, value, selected, focused, row, column);
-	    if(table.getValueAt(row,columna).equals("Prorrogado")){
+	    if(table.getValueAt(row,columna).toString().equalsIgnoreCase("Prorrogado") || table.getValueAt(row,columna).toString().equalsIgnoreCase("DEFICIENTE") || table.getValueAt(row,columna).toString().equalsIgnoreCase("Atrasado")){
 	        this.setBackground(new Color(  251, 88, 74  ));
-	    }else if(table.getValueAt(row,columna).equals("Terminado")) {
+	    }else if(table.getValueAt(row,columna).toString().equalsIgnoreCase("Terminado") || table.getValueAt(row,columna).toString().equalsIgnoreCase("EXCELENTE")) {
 	    	this.setBackground(new Color(156, 252, 131));
 	    	
-	    }else if(table.getValueAt(row,columna).equals("En Proceso")) {
+	    }else if(table.getValueAt(row,columna).toString().equalsIgnoreCase("En Proceso") || table.getValueAt(row,columna).toString().equalsIgnoreCase("BUENO")) {
 	    	this.setBackground(new Color( 250, 209, 40 ));
 	    	
 	    }

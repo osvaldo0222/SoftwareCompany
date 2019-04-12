@@ -103,27 +103,14 @@ public class SoftwareCompany implements Serializable {
 		String calification = "EXCELENTE";
 		int total = 0;
 		int good = 0;
-		
-		//System.out.println("pepe"+contract.getDueDate());
-		
-		
 		Worker aux = workerById(id);
-		System.out.println(aux.getName()+"\n");
 		if (aux != null) {
 			for (Contract contract : contracts) {
-				System.out.println("pepe");
 				for (Worker contraWorker : contract.getProject().getWorkers()) {
 					if (contraWorker.getId().equalsIgnoreCase(id)) {
-						
 						total++;
-						if (contract.getFinalDate().after(contract.getDueDate())) {
-						
-							//good++;
-						}else {
+						if (!contract.getFinalDate().after(contract.getDueDate())) {
 							good++;
-							System.out.println(""+contract.getDueDate());
-							System.out.println(""+contract.getFinalDate());
-							
 						}
 					}
 				}
@@ -377,18 +364,13 @@ public class SoftwareCompany implements Serializable {
 	
 	public float calcAmountOfMoney(int days,String codeCont) {
 		float amount=0;
-		float aux2=0;
+		float aux=0;
 		for (int i = 0; i < searchContractByCode(codeCont).getProject().getWorkers().size(); i++) {
 			amount=searchContractByCode(codeCont).getProject().getWorkers().get(i).getSalary()*8*days;
-			aux2+=amount;
+			aux+=amount;
 			amount=0;
 		}
-		//aux=(float)(aux2*0.25);
-		
-		
-		
-		return aux2;
-		
+		return aux;
 	}
 	
 	

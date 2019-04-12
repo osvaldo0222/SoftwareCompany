@@ -42,6 +42,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class ListProjects extends JDialog {
 
@@ -57,6 +59,7 @@ public class ListProjects extends JDialog {
 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 	private Render render;
 	private static ListProjects listPro=null;
+	private Validation validation = new Validation();
 	
 	public static ListProjects getInstance() {
 		if (listPro==null) {
@@ -91,9 +94,11 @@ public class ListProjects extends JDialog {
 	 * Create the dialog.
 	 */
 	public ListProjects() {
+		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ListProjects.class.getResource("/Imgs/list30px.png")));
 		setTitle("Listar Proyectos");
-		setBounds(100, 100, 1269, 803);
+		setBounds(100, 100, 1269, 545);
+		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -102,8 +107,8 @@ public class ListProjects extends JDialog {
 		JPanel panel = new JPanel();
 		model = new DefaultTableModel();
 		sorter = new TableRowSorter<TableModel>(model);
-		panel.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
-		panel.setBounds(10, 106, 1233, 574);
+		panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Proyectos", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel.setBounds(10, 106, 1233, 358);
 		contentPanel.add(panel);
 		panel.setLayout(new BorderLayout(0, 0));
 		
@@ -206,6 +211,17 @@ columnModel.getColumn(2).setPreferredWidth(200);
 		panel_1.add(label_1);
 		
 		txtfiltrer = new JTextField();
+		txtfiltrer.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				validation.setFocusBackground(txtfiltrer, true);
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				validation.setFocusBackground(txtfiltrer, false);
+			}
+		});
+		txtfiltrer.setEnabled(false);
 		try {
 			txtfiltrer.addKeyListener(new KeyAdapter() {
 				@Override

@@ -187,11 +187,6 @@ public class ListWorker extends JDialog {
 		tableTrabajadores.setModel(model);
 		tableTrabajadores.setDefaultEditor(Object.class, null);
 		tableTrabajadores.setAutoCreateRowSorter(true);
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-		for (int i = 0; i < headers.length; i++) {
-			tableTrabajadores.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-		}
 		tableTrabajadores.getColumnModel().getColumn(0).setPreferredWidth(30);
 		tableTrabajadores.getColumnModel().getColumn(2).setPreferredWidth(250);
 		tableTrabajadores.getColumnModel().getColumn(3).setPreferredWidth(85);
@@ -272,6 +267,12 @@ public class ListWorker extends JDialog {
 		for (Worker aux : SoftwareCompany.getInstance().getWorkers()) {
 			addRow(aux);
 		}
+		Render render = new Render(7);
+		tableTrabajadores.setDefaultRenderer(Object.class, render);
+		render.setHorizontalAlignment(JLabel.CENTER);
+		for (int i = 0; i < headers.length; i++) {
+			tableTrabajadores.getColumnModel().getColumn(i).setCellRenderer(render);
+		}	
 	}
 
 	private void addRow(Worker aux) {

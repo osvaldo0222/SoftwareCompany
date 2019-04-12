@@ -50,6 +50,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
+import java.awt.Toolkit;
 
 public class WindowCheckContract extends JDialog {
 
@@ -86,25 +87,9 @@ public class WindowCheckContract extends JDialog {
 	public static Object[] filas;
 	private DefaultTableModel models;
 	private JLabel lblimg;
-	
 
-	/**
-	 * Launch the application.
-	 *
-	public static void main(String[] args) {
-		try {
-			WindowCheckContract dialog = new WindowCheckContract();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Create the dialog.
-	 */
 	public WindowCheckContract() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(WindowCheckContract.class.getResource("/Imgs/icons8-compose-64.png")));
 		setBounds(100, 100, 1259, 621);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -112,13 +97,14 @@ public class WindowCheckContract extends JDialog {
 		contentPanel.setLayout(null);
 		
 		 aux= SoftwareCompany.getInstance().searchContractByCode(ListProjects.codContractTable);
+		 setTitle("Informe Proyecto: " + aux.getProject().getName());
 		 radioProrroga = new JRadioButton("Prorrogar Proyecto");
 		 JTextPane bigContract = new JTextPane();
          dateChoserFinalDay = new JDateChooser();
           totalAcordadoLabel = new Label("Total Acordado:");
          
 		JPanel InformacionGeneralPanel = new JPanel();
-		InformacionGeneralPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "informaci\u00F3n contrato", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		InformacionGeneralPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Informaci\u00F3n Contrato", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		InformacionGeneralPanel.setBounds(10, 11, 600, 143);
 		contentPanel.add(InformacionGeneralPanel);
 		InformacionGeneralPanel.setLayout(null);
@@ -203,6 +189,7 @@ public class WindowCheckContract extends JDialog {
 		 
 		
 		tableWorkers.setAutoCreateRowSorter(true);
+		tableWorkers.setDefaultEditor(Object.class, null);
 		 columnModel.getColumn(0).setPreferredWidth(10);
 		 columnModel.getColumn(1).setPreferredWidth(175);
 		 columnModel.getColumn(2).setPreferredWidth(20);
@@ -221,12 +208,12 @@ public class WindowCheckContract extends JDialog {
 		 radioDeliver = new JRadioButton("Entregar Proyecto");
 		
 		JPanel panelContractClient = new JPanel();
-		panelContractClient.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "informaci\u00F3n Cliente", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelContractClient.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Informaci\u00F3n Cliente", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panelContractClient.setBounds(620, 11, 600, 143);
 		contentPanel.add(panelContractClient);
 		panelContractClient.setLayout(null);
 		
-		Label label = new Label("tel\u00E9fono:");
+		Label label = new Label("Tel\u00E9fono:");
 		label.setFont(new Font("SansSerif", Font.PLAIN, 14));
 		label.setBounds(10, 101, 82, 20);
 		panelContractClient.add(label);
@@ -271,8 +258,9 @@ public class WindowCheckContract extends JDialog {
 		txttel.setColumns(10);
 		
 		lblimg = new JLabel("<Imagen>");
+		lblimg.setHorizontalAlignment(SwingConstants.CENTER);
 		lblimg.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
-		lblimg.setBounds(420, 21, 118, 97);
+		lblimg.setBounds(420, 21, 170, 100);
 		panelContractClient.add(lblimg);
 		JPanel panelTermsContract = new JPanel();
 		panelTermsContract.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "T\u00E9rminos y Condiciones ", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -466,7 +454,7 @@ public class WindowCheckContract extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				JButton cancelButton = new JButton("Cancel");
+				JButton cancelButton = new JButton("Salir");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						dispose();
@@ -551,8 +539,7 @@ public class WindowCheckContract extends JDialog {
 			lblimg.setText("<Imagen>");
 		} else {
 			lblimg.setIcon(SoftwareCompany.getInstance().clientById(aux.getIdClient()).getPicture());
-			
-			
+			lblimg.setText("");
 			}
 		
 		

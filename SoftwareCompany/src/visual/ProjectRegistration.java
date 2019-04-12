@@ -78,7 +78,7 @@ public class ProjectRegistration extends JDialog {
 	private final JPanel FirstPanel = new JPanel();
 	private JTextField txtCodigoProyecto;
 	private JTextField txtNombreProyecto;
-	Validation VD = new Validation();
+	private Validation VD = new Validation();
 	private DefaultListModel DLM;
 	private DefaultListModel DLMWorkersSelected;
 	private JList listWorkers;
@@ -96,36 +96,15 @@ public class ProjectRegistration extends JDialog {
 	private JPanel panelTermsContract;
 	private JButton btnAtras;
 	private int cont=0;
-	SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy");
-	Date date=new Date();
-
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy");
+	private Date date=new Date();
 	private JTextPane BigTxtContract;
-	private Object formatCedula;
 	private JTextField txtpreciototal;
-	private Calendar init;
 	private JDateChooser dateEnd;
 	private JDateChooser dateBegin;
 	private JLabel lblimg;
-	
 
-	/**
-	 * Launch the application.
-	 *
-	public static void main(String[] args) {
-		try {
-			ProjectRegistration dialog = new ProjectRegistration();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Create the dialog.
-	 */
 	public ProjectRegistration() {
-	
 		setFont(new Font("SansSerif", Font.PLAIN, 16));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ProjectRegistration.class.getResource("/Imgs/newProject.png")));
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -154,20 +133,11 @@ public class ProjectRegistration extends JDialog {
 		JButton sigButton = new JButton("Siguiente");
 		DLM=new DefaultListModel();
 		DLMWorkersSelected=new DefaultListModel();
-		
-	    listWorkersSelected = new JList();
 	    panelTermsContract = new JPanel();
 	    panelTermsContract.setBounds(10, 154, 600, 215);
 	    FirstPanel.add(panelTermsContract);
 	    panelTermsContract.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "T\u00E9rminos y Condiciones ", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 	    panelTermsContract.setLayout(null);
-	    
-	     
-	    
-	    Label label_5 = new Label("Fecha Inicio:");
-	    label_5.setFont(new Font("SansSerif", Font.PLAIN, 14));
-	    label_5.setBounds(12, 29, 94, 20);
-	    panelTermsContract.add(label_5);
 	    
 	    JButton btnGenerar = new JButton("Generar Contrato");
 	    btnGenerar.setFont(new Font("SansSerif", Font.PLAIN, 12));
@@ -201,6 +171,13 @@ public class ProjectRegistration extends JDialog {
 	    btnGenerar.setBounds(458, 60, 132, 20);
 	    panelTermsContract.add(btnGenerar);
 	    btnGenerar.setEnabled(false);
+	    
+	     
+	    
+	    Label label_5 = new Label("Fecha Inicio:");
+	    label_5.setFont(new Font("SansSerif", Font.PLAIN, 14));
+	    label_5.setBounds(12, 29, 94, 20);
+	    panelTermsContract.add(label_5);
 	    
 	    JScrollPane scrollPane_2 = new JScrollPane();
 	    scrollPane_2.setBounds(12, 91, 578, 81);
@@ -346,7 +323,7 @@ public class ProjectRegistration extends JDialog {
 		lblimg = new JLabel("<Imagen>");
 		lblimg.setHorizontalAlignment(SwingConstants.CENTER);
 		lblimg.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
-		lblimg.setBounds(430, 15, 134, 110);
+		lblimg.setBounds(418, 15, 172, 110);
 		panelContractClient.add(lblimg);
 		
 		JButton button = new JButton("");
@@ -366,13 +343,12 @@ public class ProjectRegistration extends JDialog {
 					
 					
 					if (client.getPicture() == null) {
-						lblimg.setIcon(new ImageIcon(ClientRegistration.class.getResource("/com/sun/java/swing/plaf/windows/icons/UpFolder.gif")));
+						lblimg.setIcon(new ImageIcon(ProjectRegistration.class.getResource("/com/sun/java/swing/plaf/windows/icons/UpFolder.gif")));
 						lblimg.setText("<Imagen>");
 					} else {
 						lblimg.setIcon(client.getPicture());
-						
-						
-						}
+						lblimg.setText("");
+					}
 					
 					//BigTxtContract.setText("Yo "+SoftwareCompany.getInstance().clientById(auxCodQuery).getName()+" "+SoftwareCompany.getInstance().clientById(auxCodQuery).getLast_name()+" en virtud de esta prueba"+SoftwareCompany.getInstance().clientById(auxCodQuery).getId());
 					
@@ -385,11 +361,7 @@ public class ProjectRegistration extends JDialog {
 						ClientRegistration registration = new ClientRegistration(null);
 						registration.setModal(true);
 						registration.setVisible(true);
-						
-					}else {
-						
 					}
-				
 				}
 				
 				
@@ -434,6 +406,12 @@ public class ProjectRegistration extends JDialog {
 	    		comboBoxTipoWorkers.setVisible(true);
 	    		txtDateOriginContract.setVisible(true);
 	    		txtDateOriginContract.setEnabled(true);
+	    		listWorkers.setVisible(true);
+	    		InformacionGeneralPanel.setVisible(true);
+	    		TrabajadoresPanel.setVisible(true);
+	    
+	    		listWorkersSelected.setVisible(true);
+	    		
 	    	}
 	    });
 	    btnAtras.setVisible(false);
@@ -505,9 +483,11 @@ public class ProjectRegistration extends JDialog {
 				VD.setFocusBackground(comboBoxTipoProyecto, false);
 			}
 		});
-		
-		
-		comboBoxTipoProyecto.setModel(new DefaultComboBoxModel(new String[] {"<Selecciona un tipo de App>", "App. Escritorio", "Movil", "Paginas WEB"}));
+		DefaultComboBoxModel modelaux = new DefaultComboBoxModel();
+		for (String string : WorkerRegistration.especialidades) {
+			modelaux.addElement(string);
+		}
+		comboBoxTipoProyecto.setModel(modelaux);
 		comboBoxTipoProyecto.setBounds(115, 89, 198, 20);
 		InformacionGeneralPanel.add(comboBoxTipoProyecto);
 		comboBoxLenguaje = new JComboBox();
@@ -529,19 +509,23 @@ public class ProjectRegistration extends JDialog {
 		
 		comboBoxLenguaje.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (comboBoxTipoWorkers.getSelectedItem().toString().equalsIgnoreCase("Programador")) {
-					if (!comboBoxTipoProyecto.equals("<Selecciona un tipo de App>") && !comboBoxLenguaje.equals("<Selecciona un lenguaje>")) {
+				//if (comboBoxTipoWorkers.getSelectedItem().toString().equalsIgnoreCase("Programador")) {
+					if (!(comboBoxTipoProyecto.getSelectedIndex() == 0) && !(comboBoxLenguaje.getSelectedIndex() == 0)) {
 						comboBoxTipoWorkers.setEnabled(true);
 						listWorkers.setEnabled(true);
 						FuntioncomboTipoWorkers();
 					}
-				}
+				//}
 			}
 		});
 		
 		
-		
-		comboBoxLenguaje.setModel(new DefaultComboBoxModel(new String[] {"<Selecciona un lenguaje>", "PHP", "Python", "Java", "RubyOnRails", "Swift", "C#", "VisualBasic", "Delphi", "C", "C++"}));
+		DefaultComboBoxModel model = new DefaultComboBoxModel();
+		model.addElement("<Seleccione un Lenguaje>");
+		for (String lenguajes : WorkerRegistration.languajesDisponibles) {
+			model.addElement(lenguajes);
+		}
+		comboBoxLenguaje.setModel(model);
 		comboBoxLenguaje.setBounds(405, 89, 185, 20);
 		InformacionGeneralPanel.add(comboBoxLenguaje);
 		
@@ -570,15 +554,10 @@ public class ProjectRegistration extends JDialog {
 		txtNombreProyecto.setColumns(10);
 		comboBoxTipoProyecto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				if (!comboBoxTipoProyecto.equals("<Selecciona un tipo de App>") && !comboBoxLenguaje.equals("<Selecciona un lenguaje>")) {
+				if (!(comboBoxTipoProyecto.getSelectedIndex() == 0) && !(comboBoxLenguaje.getSelectedIndex() == 0)) {
 					comboBoxTipoWorkers.setEnabled(true);
 					FuntioncomboTipoWorkers();
 				}
-				
-				
-				
-			
 			}
 		});
 		
@@ -617,7 +596,7 @@ public class ProjectRegistration extends JDialog {
 					
 					addBoss();
 					
-				}else if(comboBoxTipoWorkers.getSelectedItem().equals("<Selecciona>")) {
+				}else if(comboBoxTipoWorkers.getSelectedIndex() == 0) { 
 					
 					String[] codSplit=listWorkers.getSelectedValue().toString().split(" ");
 					
@@ -635,17 +614,6 @@ public class ProjectRegistration extends JDialog {
 				}	
 			}
 		});
-		
-		
-		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(304, 53, 286, 137);
-		TrabajadoresPanel.add(scrollPane_1);
-		
-		
-		listWorkersSelected.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		scrollPane_1.setViewportView(listWorkersSelected);
-		listWorkersSelected.setModel(DLMWorkersSelected);
 		comboBoxTipoWorkers = new JComboBox();
 		
 		
@@ -677,6 +645,19 @@ public class ProjectRegistration extends JDialog {
 		TrabajadoresPanel.add(comboBoxTipoWorkers);
 		comboBoxTipoWorkers.setSelectedIndex(0);
 		comboBoxTipoWorkers.setEnabled(false);
+		
+	    listWorkersSelected = new JList();
+	    
+	    
+	    
+	    JScrollPane scrollPane_1 = new JScrollPane();
+	    scrollPane_1.setBounds(304, 53, 286, 137);
+	    TrabajadoresPanel.add(scrollPane_1);
+	    
+	    
+	    listWorkersSelected.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	    scrollPane_1.setViewportView(listWorkersSelected);
+	    listWorkersSelected.setModel(DLMWorkersSelected);
 		listWorkersSelected.addMouseListener(new MouseAdapter() {
 	    	@Override
 	    	public void mouseClicked(MouseEvent e) {
@@ -694,7 +675,7 @@ public class ProjectRegistration extends JDialog {
 				sigButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						
-						if ( validateData()==true && !comboBoxLenguaje.getSelectedItem().equals("<Selecciona un lenguaje>") && validateProgrammer_AndLanguajes()==true && validateLits()==true && validateDesigner()==true) {
+						if (validateData()==true && !(comboBoxLenguaje.getSelectedIndex() == 0) && validateProgrammer_AndLanguajes()==true && validateLits()==true && validateDesigner()==true) {
 							sigButton.setEnabled(false);
 							sigButton.setVisible(false);
 							comboBoxLenguaje.setEnabled(false);
@@ -704,6 +685,7 @@ public class ProjectRegistration extends JDialog {
 							listWorkersSelected.setEnabled(false);
 							panelContractClient.setVisible(true);
 							panelTermsContract.setVisible(true);
+							
 							btnAtras.setVisible(true);
 							btnFinalizar.setEnabled(true);
 				    		btnFinalizar.setVisible(true);
@@ -714,7 +696,11 @@ public class ProjectRegistration extends JDialog {
 				    		txtNombreProyecto.setVisible(false);
 				    		txtDateOriginContract.setVisible(false);
 				    		txtDateOriginContract.setEnabled(false);
-						
+				    		listWorkers.setVisible(false);
+				    		InformacionGeneralPanel.setVisible(false);
+				    		TrabajadoresPanel.setVisible(false);
+				    		listWorkersSelected.setVisible(false);
+				    	
 						}
 						
 						
@@ -824,12 +810,10 @@ public class ProjectRegistration extends JDialog {
 							JOptionPane.showMessageDialog(null, "Revise sus datos", "Error", JOptionPane.ERROR_MESSAGE);
 
 						}
-			    		
-			    		
-			    	}////aquiiii
+			    	}
 			    });
 			{
-				JButton cancelButton = new JButton("Cancel");
+				JButton cancelButton = new JButton("Salir");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						dispose();
@@ -933,16 +917,16 @@ public class ProjectRegistration extends JDialog {
 	public void loadWorkers() {
 		for (int i = 0; i < SoftwareCompany.getInstance().getWorkers().size(); i++) {
 			if (SoftwareCompany.getInstance().getWorkers().get(i) instanceof Boss &&  SoftwareCompany.getInstance().getWorkers().get(i).getProjects().size()<3) {
-				DLM.addElement(SoftwareCompany.getInstance().getWorkers().get(i).getCode()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getName()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getLast_name()+"->Jefe");
+				DLM.addElement(SoftwareCompany.getInstance().getWorkers().get(i).getCode()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getName()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getLast_name()+"->JEFE");
 
 			}else if(SoftwareCompany.getInstance().getWorkers().get(i) instanceof Programmer &&  SoftwareCompany.getInstance().getWorkers().get(i).getProjects().size()==0) {
-				DLM.addElement(SoftwareCompany.getInstance().getWorkers().get(i).getCode()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getName()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getLast_name()+"->Programador");
+				DLM.addElement(SoftwareCompany.getInstance().getWorkers().get(i).getCode()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getName()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getLast_name()+"->PROGRAMADOR");
 
 			}else if(SoftwareCompany.getInstance().getWorkers().get(i) instanceof Designer &&  SoftwareCompany.getInstance().getWorkers().get(i).getProjects().size()<3) {
-				DLM.addElement(SoftwareCompany.getInstance().getWorkers().get(i).getCode()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getName()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getLast_name()+"->Diseñador");
+				DLM.addElement(SoftwareCompany.getInstance().getWorkers().get(i).getCode()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getName()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getLast_name()+"->DISEÑADOR");
 
 			}else if(SoftwareCompany.getInstance().getWorkers().get(i) instanceof Planner) {
-				DLM.addElement(SoftwareCompany.getInstance().getWorkers().get(i).getCode()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getName()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getLast_name()+"->Planeador");
+				DLM.addElement(SoftwareCompany.getInstance().getWorkers().get(i).getCode()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getName()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getLast_name()+"->PLANEADOR");
 
 			}
 			
@@ -1082,8 +1066,8 @@ public class ProjectRegistration extends JDialog {
 		boolean validate = false;
 		String getTxtFromTxtNombreProjecto = txtNombreProyecto.getText();
 		String getTxtFromTxtCodContract=txtCodigoProyecto.getText();
-		String getTxtFromComboBoxTipoPro=(String) comboBoxTipoProyecto.getSelectedItem();
-		System.out.println(getTxtFromComboBoxTipoPro);
+		String getTxtFromComboBoxTipoPro=comboBoxTipoProyecto.getSelectedItem().toString();
+		//System.out.println(getTxtFromComboBoxTipoPro);
 		String getTxtFromComboBoxLanguaje=comboBoxLenguaje.getSelectedItem().toString();
 		if (getTxtFromTxtNombreProjecto.equalsIgnoreCase("") && getTxtFromComboBoxTipoPro.equalsIgnoreCase("") && comboBoxTipoProyecto.getSelectedIndex()>0 && getTxtFromComboBoxLanguaje.equalsIgnoreCase("") && comboBoxLenguaje.getSelectedIndex()>0) {
 			JOptionPane.showMessageDialog(null, "Rellena Todos los campos requeridos", "Registro Proyecto", JOptionPane.ERROR_MESSAGE);
@@ -1093,11 +1077,11 @@ public class ProjectRegistration extends JDialog {
 			JOptionPane.showMessageDialog(null, "Escribe el nombre del proyecto", "Registro Proyecto", JOptionPane.ERROR_MESSAGE);
 
 			
-		}else if(!getTxtFromTxtNombreProjecto.equalsIgnoreCase("") && getTxtFromComboBoxTipoPro.equalsIgnoreCase("<Selecciona un tipo de App>") && !getTxtFromComboBoxLanguaje.equalsIgnoreCase("")) {
+		}else if(!getTxtFromTxtNombreProjecto.equalsIgnoreCase("") && getTxtFromComboBoxTipoPro.equalsIgnoreCase("<Seleccione>") && !getTxtFromComboBoxLanguaje.equalsIgnoreCase("")) {
 			JOptionPane.showMessageDialog(null, "Selecciona el tipo del proyecto", "Registro Proyecto", JOptionPane.ERROR_MESSAGE);
 
 			
-		}else if(!getTxtFromTxtNombreProjecto.equalsIgnoreCase("") && !getTxtFromComboBoxTipoPro.equalsIgnoreCase("") && getTxtFromComboBoxLanguaje.equalsIgnoreCase("<Selecciona un lenguaje>")) {
+		}else if(!getTxtFromTxtNombreProjecto.equalsIgnoreCase("") && !getTxtFromComboBoxTipoPro.equalsIgnoreCase("") && getTxtFromComboBoxLanguaje.equalsIgnoreCase("<Seleccione un lenguaje>")) {
 			JOptionPane.showMessageDialog(null, "Selecciona el lenguaje a usar", "Registro Proyecto", JOptionPane.ERROR_MESSAGE);
 
 			
@@ -1111,39 +1095,28 @@ public class ProjectRegistration extends JDialog {
 	
 	
 	private void FuntioncomboTipoWorkers() {
-		if (!comboBoxTipoProyecto.getSelectedItem().equals("<Selecciona un tipo de App>") && !comboBoxLenguaje.getSelectedItem().equals("<Selecciona un lenguaje>")  ) {
-		DLM.removeAllElements();
-			if (!comboBoxTipoWorkers.getSelectedItem().equals("<Selecciona>")) {
-				DLM.removeAllElements();
-				
-				
+		if (!(comboBoxTipoProyecto.getSelectedIndex() == 0) && !(comboBoxLenguaje.getSelectedIndex() == 0)) {
+			//DLM.removeAllElements();
+			if (!(comboBoxTipoWorkers.getSelectedIndex() == 0)) {
+				//DLM.removeAllElements();
 				for (int i = 0; i < SoftwareCompany.getInstance().getWorkers().size(); i++) {
 					if (SoftwareCompany.getInstance().getWorkers().get(i) instanceof Programmer && comboBoxTipoWorkers.getSelectedItem().equals("Programador") && SoftwareCompany.getInstance().getWorkers().get(i).getProjects().size()==0) {
 						for (int j = 0; j < ((Programmer)SoftwareCompany.getInstance().getWorkers().get(i)).getLanguages().size(); j++) {
 							if (((Programmer)SoftwareCompany.getInstance().getWorkers().get(i)).getLanguages().get(j).equals(comboBoxLenguaje.getSelectedItem().toString())) {
-								
-								DLM.addElement(SoftwareCompany.getInstance().getWorkers().get(i).getCode()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getName()+""+SoftwareCompany.getInstance().getWorkers().get(i).getLast_name());
+								DLM.addElement(SoftwareCompany.getInstance().getWorkers().get(i).getCode()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getName()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getLast_name());
 							}
 						}
-						
 					}else if(SoftwareCompany.getInstance().getWorkers().get(i) instanceof Designer && comboBoxTipoWorkers.getSelectedItem().equals("Diseñador") ) {
 						if (((Designer)SoftwareCompany.getInstance().getWorkers().get(i)).getMaster().equals(comboBoxTipoProyecto.getSelectedItem().toString())) {
-							
-							DLM.addElement(SoftwareCompany.getInstance().getWorkers().get(i).getCode()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getName()+""+SoftwareCompany.getInstance().getWorkers().get(i).getLast_name());
-
+							DLM.addElement(SoftwareCompany.getInstance().getWorkers().get(i).getCode()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getName()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getLast_name());
 						}
 					}else if(SoftwareCompany.getInstance().getWorkers().get(i) instanceof Boss && comboBoxTipoWorkers.getSelectedItem().equals("Jefe") && SoftwareCompany.getInstance().getWorkers().get(i).getProjects().size()<3) {
-						DLM.addElement(SoftwareCompany.getInstance().getWorkers().get(i).getCode()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getName()+""+SoftwareCompany.getInstance().getWorkers().get(i).getLast_name());
+						DLM.addElement(SoftwareCompany.getInstance().getWorkers().get(i).getCode()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getName()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getLast_name());
 					}else if(SoftwareCompany.getInstance().getWorkers().get(i) instanceof Planner && comboBoxTipoWorkers.getSelectedItem().equals("Planeador")) {
-						DLM.addElement(SoftwareCompany.getInstance().getWorkers().get(i).getCode()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getName()+""+SoftwareCompany.getInstance().getWorkers().get(i).getLast_name());
-
-						
+						DLM.addElement(SoftwareCompany.getInstance().getWorkers().get(i).getCode()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getName()+" "+SoftwareCompany.getInstance().getWorkers().get(i).getLast_name());
 					}
 				}
-				
 			}
-			
 		}
-		
 	}
 }

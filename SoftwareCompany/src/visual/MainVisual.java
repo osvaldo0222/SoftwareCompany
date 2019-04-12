@@ -3,6 +3,8 @@ package visual;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.FileDialog;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,6 +31,7 @@ import logical.User;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
@@ -93,37 +96,20 @@ public class MainVisual extends JFrame implements Runnable {
 	private JFreeChart chart;
 	private ChartPanel chartPanel;
 	private Thread pieThread;
-	private String prueba;
 	private JPanel panelLineGraph;
 	private String[] split;
 	private int hora;
 	private int minutos;
-	private int segundos;
 	private int dia;
-	private int diaSemana;
 	private int mes;
 	private int year;
 	private Label labelforDate;
 	private JFreeChart lineChart;
-	private ListProjects listPro;
-	private Document documento;
-	private FileOutputStream ficheroPdf;
 	private PdfPTable tabla;
 	private JPanel panelForBar;
-	private Render render;
-	private Component log;
-	private String ficheroRura;
-	private File ficheroRuta;
-	private JFileChooser fileChose;
-
 	private ChartPanel panelBarGraph;
-
-
+	
 	public MainVisual(User user) {
-		
-		
-		
-		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainVisual.class.getResource("/Imgs/main-visual-icon.png")));
 		setTitle("Software Company");
 		setResizable(false);
@@ -150,7 +136,7 @@ public class MainVisual extends JFrame implements Runnable {
 		mnArchivo.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/folder30pc.png")));
 		menuBar.add(mnArchivo);
 		
-		JMenuItem mntmCerrar = new JMenuItem("Cerrar");
+		JMenuItem mntmCerrar = new JMenuItem("Salir");
 		mntmCerrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				saveData();
@@ -158,6 +144,15 @@ public class MainVisual extends JFrame implements Runnable {
 				System.exit(0);
 			}
 		});
+		
+		JMenuItem mntmImprimirEstadisticas = new JMenuItem("Imprimir Estad\u00EDsticas\r\n");
+		mntmImprimirEstadisticas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				openSavePdf();
+			}
+		});
+		mntmImprimirEstadisticas.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/icons8-print-30.png")));
+		mnArchivo.add(mntmImprimirEstadisticas);
 		mntmCerrar.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/exit30.png")));
 		mnArchivo.add(mntmCerrar);
 		
@@ -244,16 +239,7 @@ public class MainVisual extends JFrame implements Runnable {
 		mntmListarProyectos.setIcon(new ImageIcon(MainVisual.class.getResource("/Imgs/list30px.png")));
 		mntmListarProyectos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				//ListProjects listPro=new ListProjects();
-				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 				ListProjects.getInstance().setModal(true);
-				int height = screenSize.height;
-			    int width = screenSize.width;
-			    ListProjects.getInstance().setSize(width, height-45);
-				//listPro.setSize(1250, 700);
-			    ListProjects.getInstance().setResizable(false);
-			    ListProjects.getInstance().setLocationRelativeTo(null);
 			    ListProjects.getInstance().setVisible(true);
 				loadtable();
 				graphPie();
@@ -339,15 +325,8 @@ public class MainVisual extends JFrame implements Runnable {
 		table.setModel(model);
 		table.setAutoCreateRowSorter(true);
 		table.setDefaultEditor(Object.class, null);
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-		for (int i = 0; i < headers.length; i++) {
-			table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-		}
 		table.getColumnModel().getColumn(3).setPreferredWidth(95);
 		table.getColumnModel().getColumn(5).setPreferredWidth(95);
-		javax.swing.table.TableColumn column = table.getColumnModel().getColumn(6);
-		column.setCellRenderer(new ProgressRenderer());
 	    loadtable();
 		projects = new Thread(this);
 		projects.start();
@@ -381,7 +360,7 @@ public class MainVisual extends JFrame implements Runnable {
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(Color.WHITE);
-		panel_2.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Otra grafica", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_2.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Ingresos Mensuales", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panelAux.add(panel_2);
 		 panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.X_AXIS));
 		
@@ -452,14 +431,7 @@ public class MainVisual extends JFrame implements Runnable {
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ListProjects listPro=new ListProjects();
-				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 				listPro.setModal(true);
-				int height = screenSize.height;
-			    int width = screenSize.width;
-			    listPro.setSize(width, height-45);
-				//listPro.setSize(1250, 700);
-				listPro.setResizable(false);
-				listPro.setLocationRelativeTo(null);
 				listPro.setVisible(true);
 				loadtable();
 				
@@ -471,25 +443,11 @@ public class MainVisual extends JFrame implements Runnable {
 		btnNewButton_4.setFont(new Font("SansSerif", Font.PLAIN, 14));
 		panel_4.add(btnNewButton_4);
 		
-		JButton btnImprimirEstadoFinanciero = new JButton("<html><p style=\\\"text-align:center;\\\">Imprimir estado<br/>Financiero</p></html>");
+		JButton btnImprimirEstadoFinanciero = new JButton("<html><p style=\\\"text-align:center;\\\">Imprimir<br/>Estad\u00EDsticas</p></html>");
 		btnImprimirEstadoFinanciero.addActionListener(new ActionListener() {
 			
-
-			
-
 			public void actionPerformed(ActionEvent e) {
-				
-				 fileChose = new JFileChooser();
-			
-		        FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Files", ".pdf");
-		        int seleccion = fileChose.showSaveDialog(log);
-		        if (seleccion == JFileChooser.APPROVE_OPTION){
-		                     ficheroRuta = fileChose.getSelectedFile();
-		                     createPdf(ficheroRuta);
-		                    System.out.println("Ruta: "+ficheroRura);
-		        }
-				
-				
+				openSavePdf();
 			}
 		});
 		btnImprimirEstadoFinanciero.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -573,9 +531,24 @@ public class MainVisual extends JFrame implements Runnable {
 		rows = new Object[model.getColumnCount()];
 		for (Contract aux : SoftwareCompany.getInstance().getContracts()) {
 			if (!aux.getProject().isEnded()) {
+				if (aux.getDateBegin().before(new Date()) && aux.getFinalDate().after(new Date())) {
+					aux.getProject().setState("En Proceso");
+				} else if (!aux.getDateBegin().before(new Date())) {
+					aux.getProject().setState("Nuevo");
+				} else if (!aux.getProject().getState().equalsIgnoreCase("Prorrogado") && aux.getFinalDate().before(new Date())) {
+					aux.getProject().setState("Atrasado");
+				}
 				addRow(aux);
 			}
 		}
+		Render render = new Render(5);
+		table.setDefaultRenderer(Object.class, render);
+		render.setHorizontalAlignment(JLabel.CENTER);
+		for (int i = 0; i < headers.length; i++) {
+			table.getColumnModel().getColumn(i).setCellRenderer(render);
+		}	
+		javax.swing.table.TableColumn column = table.getColumnModel().getColumn(6);
+		column.setCellRenderer(new ProgressRenderer());
 	}
 
 	private void addRow(Contract aux) {
@@ -599,24 +572,29 @@ public class MainVisual extends JFrame implements Runnable {
 		int progressDays = SoftwareCompany.getInstance().calcDays(dateBegin, actualDate);
 		int totalDays = SoftwareCompany.getInstance().calcDays(dateBegin, finalDate);
 		int porcentage = (int) (((float) progressDays)/((float) totalDays) * 100);
+		if (porcentage >= 100) {
+			porcentage = 100;
+		}
 		return porcentage;
 	}
 
 	@Override
 	public void run() {
 		Thread ct = Thread.currentThread();
+		int time = 0;
 		while(ct == projects) {
-			int count = model.getRowCount();
-			for (int i = 0; i < count; i++) {
-				int porcentage = progressCalc(SoftwareCompany.getInstance().searchContractByCode(table.getValueAt(i, 1).toString()));
-				table.setValueAt(porcentage, i, 6);
+			if (time >= 30) {
+				loadtable();
 			}
 			try {
-				
-				Thread.sleep(3000);
+				Thread.sleep(1000);
+				time = (time == 30) ? 0 : (time + 1);
 				calcTime();
-				labelforDate.setText(dia+"/"+mes+"/"+year+" "+hora+":" + minutos);
-				//labelForClock.setText(hora + ":" + minutos);
+				if (minutos < 10) {
+					labelforDate.setText(dia+"/"+mes+"/"+year+" "+hora+":0" + minutos);
+				} else {
+					labelforDate.setText(dia+"/"+mes+"/"+year+" "+hora+":" + minutos);
+				}
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -720,7 +698,6 @@ public class MainVisual extends JFrame implements Runnable {
 		 for (int i = 0; i < SoftwareCompany.getInstance().getProjects().size(); i++) {
 			 if (SoftwareCompany.getInstance().getProjects().get(i).getState().equalsIgnoreCase("Terminado")) {
 				 proFin++;
-				
 			}else if(SoftwareCompany.getInstance().getProjects().get(i).getState().equalsIgnoreCase("En Proceso")) {
 				proInProces++;
 			}else if(SoftwareCompany.getInstance().getProjects().get(i).getState().equalsIgnoreCase("Prorrogado")) {
@@ -764,36 +741,35 @@ public class MainVisual extends JFrame implements Runnable {
 		
 		
 		for (int i = 0; i < SoftwareCompany.getInstance().getContracts().size(); i++) {
-			 split=SoftwareCompany.getInstance().getContracts().get(i).getFinalDate().toString().split(" ");
-			if (split[1].equalsIgnoreCase("Jan")) {
-				amountByMonth[0]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
-			}else if (split[1].equalsIgnoreCase("Feb")) {
-				amountByMonth[1]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
-			}else if (split[1].equalsIgnoreCase("Mar")) {
-				amountByMonth[2]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
-			}else if (split[1].equalsIgnoreCase("Apr")) {
-				amountByMonth[3]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
-			}else if (split[1].equalsIgnoreCase("May")) {
-				amountByMonth[4]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
-			}else if (split[1].equalsIgnoreCase("Jun")) {
-				amountByMonth[5]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
-			}else if (split[1].equalsIgnoreCase("Jul")) {
-				amountByMonth[6]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
-			}else if (split[1].equalsIgnoreCase("Aug")) {
-				amountByMonth[7]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
-			}else if (split[1].equalsIgnoreCase("Sep")) {
-				amountByMonth[8]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
-			}else if (split[1].equalsIgnoreCase("Oct")) {
-				amountByMonth[9]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
-			}else if (split[1].equalsIgnoreCase("Nov")) {
-				amountByMonth[10]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
-			}else if (split[1].equalsIgnoreCase("Dec")) {
-				amountByMonth[11]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+			split=SoftwareCompany.getInstance().getContracts().get(i).getFinalDate().toString().split(" ");
+			if (SoftwareCompany.getInstance().getContracts().get(i).getProject().isEnded()==true) {
+				if (split[1].equalsIgnoreCase("Jan")) {
+					amountByMonth[0]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+				}else if (split[1].equalsIgnoreCase("Feb")) {
+					amountByMonth[1]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+				}else if (split[1].equalsIgnoreCase("Mar")) {
+					amountByMonth[2]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+				}else if (split[1].equalsIgnoreCase("Apr")) {
+					amountByMonth[3]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+				}else if (split[1].equalsIgnoreCase("May")) {
+					amountByMonth[4]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+				}else if (split[1].equalsIgnoreCase("Jun")) {
+					amountByMonth[5]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+				}else if (split[1].equalsIgnoreCase("Jul")) {
+					amountByMonth[6]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+				}else if (split[1].equalsIgnoreCase("Aug")) {
+					amountByMonth[7]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+				}else if (split[1].equalsIgnoreCase("Sep")) {
+					amountByMonth[8]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+				}else if (split[1].equalsIgnoreCase("Oct")) {
+					amountByMonth[9]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+				}else if (split[1].equalsIgnoreCase("Nov")) {
+					amountByMonth[10]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+				}else if (split[1].equalsIgnoreCase("Dec")) {
+					amountByMonth[11]+=SoftwareCompany.getInstance().getContracts().get(i).getPrice();
+				}
 			}
-			
 		}
-		
-		
 		
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
 	      dataset.addValue( amountByMonth[0] , "Meses" , "Ene" );
@@ -829,27 +805,23 @@ public class MainVisual extends JFrame implements Runnable {
         Calendar calendario = new GregorianCalendar();
         hora =calendario.get(Calendar.HOUR_OF_DAY);
         minutos = calendario.get(Calendar.MINUTE);
-      
-        diaSemana=calendario.get(Calendar.DAY_OF_WEEK);
         dia=calendario.get(Calendar.DAY_OF_MONTH);
-        mes=calendario.get(Calendar.MONTH);
+        mes=calendario.get(Calendar.MONTH) + 1;
         year=calendario.get(Calendar.YEAR);
     }
-	public void createPdf(File file) {
-		
-		System.out.println("syso");
-		 
-		
+	
+	public void createPdf(String ruta) {
 		try {
 			 // Se crea el documento
-    	     documento = new Document();
-
-    	    // Se crea el OutputStream para el fichero donde queremos dejar el pdf.
-    	     file.toString();
-    	     ficheroPdf = new FileOutputStream("fichero2.pdf");
-		        fileChose.setCurrentDirectory(new File(System.getProperty(file.toString())));
-
+    	     Document documento = new Document();
     	     
+    	  // Se crea el OutputStream para el fichero donde queremos dejar el pdf.
+    	     if (!ruta.endsWith(".pdf")) {
+    	    	ruta += ".pdf";
+			}
+    	     
+    	     FileOutputStream ficheroPdf = new FileOutputStream(ruta);
+    	     System.out.println(ruta);
 
     	    // Se asocia el documento al OutputStream y se indica que el espaciado entre
     	    // lineas sera de 20. Esta llamada debe hacerse antes de abrir el documento
@@ -879,7 +851,7 @@ public class MainVisual extends JFrame implements Runnable {
     	    // cell.addElement();
     	     
     	    
-    	    System.out.println("Tabla"+ ListProjects.getInstance().getTableProjects().getRowCount());
+    	    //System.out.println("Tabla"+ ListProjects.getInstance().getTableProjects().getRowCount());
 			//tabla.addCell(ListProjects.getInstance().getHeaders().toString());
     	   
     		tabla.addCell( ListProjects.getInstance().getHeaders()[0].toString());
@@ -912,15 +884,22 @@ public class MainVisual extends JFrame implements Runnable {
     	   // documento.add(foto);
     	    
     	    documento.close();
-    	    
-			
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		
-		
-		
+ 
+		} catch (Exception e) {}	
 	}
-
 	
+	private void openSavePdf() {
+		JFileChooser file = new JFileChooser();
+        file.setCurrentDirectory(new File(System.getProperty("user.home")));
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(".pdf", "pdf");
+        file.addChoosableFileFilter(filter);
+        file.setFileFilter(filter);
+        file.setAcceptAllFileFilterUsed(false);
+        int result = file.showSaveDialog(null);
+        if(result == JFileChooser.APPROVE_OPTION){
+        	File selectedFile = file.getSelectedFile();
+            String path = selectedFile.getAbsolutePath();
+            createPdf(path);
+        }
+	}
 }

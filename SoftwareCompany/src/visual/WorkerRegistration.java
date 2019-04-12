@@ -72,7 +72,8 @@ import java.awt.Label;
 
 public class WorkerRegistration extends JDialog {
 
-	private String[] languajesDisponibles = {"<Lenguajes Disponibles>", "C", "C++", "C#", "Java", "JavaScript", "Python", "Visual Basic", "Go", "Angular JS", "PHP", "HTML", "CSS", "Verilog"};
+	public static String[] languajesDisponibles = {"C", "C++", "C#", "Java", "JavaScript", "Python", "Visual Basic", "Go", "Angular JS", "PHP", "HTML", "CSS", "Verilog"};
+	public static String[] especialidades = {"<Seleccione>", "App. Escritorio", "Paginas WEB", "Movil"};
 	private String[] lenguajesDominados = {"<Lenguajes Dominados>"};
 	private final JPanel contentPanel = new JPanel();
 	private Validation validation = new Validation();
@@ -647,6 +648,7 @@ public class WorkerRegistration extends JDialog {
 		panel_1.add(scrollPane, BorderLayout.CENTER);
 		
 		modelListDisponibles = new DefaultListModel();
+		modelListDisponibles.addElement("<Lenguajes Disponibles>");
 		for (String string : languajesDisponibles) {
 			modelListDisponibles.addElement(string);
 		}
@@ -712,7 +714,11 @@ public class WorkerRegistration extends JDialog {
 				validation.setFocusBackground(cbxEspecialidad, false);
 			}
 		});
-		cbxEspecialidad.setModel(new DefaultComboBoxModel(new String[] {"<Seleccione>", "App. Escritorio", "Paginas WEB", "Movil"}));
+		DefaultComboBoxModel model = new DefaultComboBoxModel();
+		for (String string : especialidades) {
+			model.addElement(string);
+		}
+		cbxEspecialidad.setModel(model);
 		cbxEspecialidad.setBounds(10, 41, 157, 20);
 		cbxEspecialidad.setEnabled(false);
 		panelDisenador.add(cbxEspecialidad);
@@ -1006,6 +1012,7 @@ public class WorkerRegistration extends JDialog {
 		spnExperencia.setValue(0);
 		modelListDisponibles.clear();
 		modelListDominados.clear();
+		modelListDisponibles.addElement("<Lenguajes Disponibles>");
 		for (String string : languajesDisponibles) {
 			modelListDisponibles.addElement(string);
 		}

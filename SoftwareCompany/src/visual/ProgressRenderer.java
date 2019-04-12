@@ -12,7 +12,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 
 public class ProgressRenderer extends DefaultTableCellRenderer {
-	  private final JProgressBar progress = new JProgressBar();
+	  private final JProgressBar progress = new JProgressBar(0, 100);
 	  private final JPanel renderer = new JPanel(new BorderLayout());
 
 	  @Override 

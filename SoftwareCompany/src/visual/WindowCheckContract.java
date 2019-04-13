@@ -410,7 +410,7 @@ public class WindowCheckContract extends JDialog {
 						}else if(!aux.getProject().getState().equalsIgnoreCase("Terminado")) {
 						if (radioProrroga.isSelected() && !txtTotalPagar.equals("") && !txtTotalAcordado.equals("")) {
 							
-							if(!dateChoserFinalDay.equals("")) {
+							if(dateChoserFinalDay.equals("")) {
 								JOptionPane.showMessageDialog(null, "Seleccione fecha entrega", "Proyectos", JOptionPane.ERROR_MESSAGE);
 									return;
 							}else {
